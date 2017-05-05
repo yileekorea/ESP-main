@@ -76,11 +76,11 @@ void startAP() {
   for (int i = 0; i < n; ++i){
     st += "\""+WiFi.SSID(i)+"\"";
     rssi += "\""+String(WiFi.RSSI(i))+"\"";
-	
-	DEBUG.print(WiFi.SSID(i));  
+
+	DEBUG.print(WiFi.SSID(i));
 	DEBUG.println(" : ");
 	DEBUG.println(String(WiFi.RSSI(i)));
-  
+
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
   }
@@ -109,6 +109,27 @@ void startAP() {
 // -------------------------------------------------------------------
 void startClient() {
   LED_setup(0.5);
+/*
+  delay(100);
+  DEBUG.print("WiFi Scan: ");
+  int n = WiFi.scanNetworks();
+  DEBUG.print(n);
+  DEBUG.println(" networks found");
+  st = "";
+  rssi = "";
+  for (int i = 0; i < n; ++i){
+    st += "\""+WiFi.SSID(i)+"\"";
+    rssi += "\""+String(WiFi.RSSI(i))+"\"";
+
+  DEBUG.print(WiFi.SSID(i));
+  DEBUG.println(" : ");
+  DEBUG.println(String(WiFi.RSSI(i)));
+
+    if (i<n-1) st += ",";
+    if (i<n-1) rssi += ",";
+  }
+*/
+  delay(100);
 
   DEBUG.print("Connecting as client to ");
   DEBUG.print(esid.c_str());

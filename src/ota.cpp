@@ -77,12 +77,16 @@ void ota_setup()
 
 void ota_loop()
 {
-  ArduinoOTA.handle();
-  int flashButtonState = digitalRead(0);
-  if (flashButtonState == LOW || doUpdateCheck) {
-    Serial.println("Going to update firmware...");
-    ota_http_update();
-    doUpdateCheck = false;
+  if (WiFi.status() != WL_CONNECTED) {
+
+  } else {
+    ArduinoOTA.handle();
+    int flashButtonState = digitalRead(0);
+    if (flashButtonState == LOW || doUpdateCheck) {
+      Serial.println("Going to update firmware...");
+      ota_http_update();
+      doUpdateCheck = false;
+    }
   }
 }
 

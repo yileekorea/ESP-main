@@ -76,7 +76,7 @@ void setup() {
   ota_setup();
 
   if (wifi_mode==WIFI_MODE_STA){
-	verifyFingerprint();
+	   verifyFingerprint();
   }
 
   mcp_GPIO_setup();
@@ -92,28 +92,27 @@ void setup() {
 // -------------------------------------------------------------------
 void loop()
 {
+    ota_loop();
+    web_server_loop();
+    wifi_loop();
 
-  ota_loop();
-  web_server_loop();
-  wifi_loop();
-
-  String input = "test";
-  boolean gotInput = input_get(input);
+  //String input = "test";
+  //boolean gotInput = input_get(input);
   if (wifi_mode==WIFI_MODE_STA || wifi_mode==WIFI_MODE_AP_AND_STA)
   {
-    if(mqtt_server != 0)
+    if((mqtt_server != 0) && (WiFi.status() == WL_CONNECTED))
     {
-		mqtt_loop();
+  		mqtt_loop();
 
-		if (tempTry == 0 || ((millis() - tempTry) > 15000UL))  // 15sec
-		{
-			if(readFromOneWire()) {
-				sendTempData();
-				relayControl();
-        DEBUG.println("Firmware: "+ currentfirmware);
-			}
-			tempTry = millis();
-		}
-	}
+  		if (tempTry == 0 || ((millis() - tempTry) > 15000UL))  // 15sec
+  		{
+  			if(readFromOneWire()) {
+  				sendTempData();
+  				relayControl();
+          DEBUG.println("Firmware: "+ currentfirmware);
+  			}
+  			tempTry = millis();
+  		}
+  	}
   }
 } // end loop

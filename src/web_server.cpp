@@ -127,25 +127,48 @@ void decodeURI(String& val)
 // Load Home page
 // url: /
 // -------------------------------------------------------------------
-void handleHome() {  
-DEBUG.println("handleHome");
-
+void handleHome() {
   SPIFFS.begin(); // mount the fs
-DEBUG.println("SPIFFS.begin");
-  File f = SPIFFS.open("/home.html", "r");
-DEBUG.println("SPIFFS.open");
+  DEBUG.println("simple_home");
+  File f = SPIFFS.open("/simple_home.html", "r");
+/*
+  if (wifi_mode = WIFI_MODE_AP_ONLY) {
+    f.close();
+    DEBUG.println("handleHome");
+    File f = SPIFFS.open("/home.html", "r");
+    //File f = SPIFFS.open("/simple_home.html", "r");
+  }
+*/
+
   if (f) {
     String s = f.readString();
     //String s = "f.readString()";
-DEBUG.println("f.readString()");
     server.send(200, "text/html", s);
-DEBUG.println("server.send(200, text/html, s)");
+    DEBUG.println("server.send(200, text/html, s)");
     f.close();
-DEBUG.println("f.close()");
-//DEBUG.println(s);
+    //DEBUG.println(s);
   } else {
     server.send(200, "text/plain","/home.html not found, have you flashed the SPIFFS?");
   }
+  //delay(100);
+  DEBUG.print("WiFi Scan: ");
+  int n = WiFi.scanNetworks();
+  DEBUG.print(n);
+  DEBUG.println(" networks found");
+  st = "";
+  rssi = "";
+  for (int i = 0; i < n; ++i){
+    st += "\""+WiFi.SSID(i)+"\"";
+    rssi += "\""+String(WiFi.RSSI(i))+"\"";
+
+  DEBUG.print(WiFi.SSID(i));
+  DEBUG.println(" : ");
+  DEBUG.println(String(WiFi.RSSI(i)));
+
+    if (i<n-1) st += ",";
+    if (i<n-1) rssi += ",";
+  }
+  
 }
 
 // -------------------------------------------------------------------
@@ -277,11 +300,12 @@ DEBUG.println("handleStatus-in");
   } else if (wifi_mode==WIFI_MODE_AP_AND_STA) {
     s += "\"mode\":\"STA+AP\",";
   }
-  DEBUG.println(st);
-  DEBUG.println(rssi);
 
   s += "\"networks\":["+st+"],";
   s += "\"rssi\":["+rssi+"],";
+
+  DEBUG.println(st);
+  DEBUG.println(rssi);
 
   s += "\"ssid\":\""+esid+"\",";
   //s += "\"pass\":\""+epass+"\",";
@@ -309,8 +333,8 @@ DEBUG.println("handleStatus-in");
   s += "\"version\":\""+currentfirmware+"\"";
 
   s += "}";
-  //server.send(200, "text/html", s);
-  server.send(200, "application/json", s);
+  server.send(200, "text/html", s);
+  //server.send(200, "application/json", s);
 }
 
 // -------------------------------------------------------------------
@@ -405,8 +429,8 @@ DEBUG.println("web_server_setup");
   });
 
   // Handle HTTP web interface button presses
-  server.on("/generate_204", handleHome);  //Android captive portal. Maybe not needed. Might be handled by notFound
-  server.on("/fwlink", handleHome);  //Microsoft captive portal. Maybe not needed. Might be handled by notFound
+  //server.on("/generate_204", handleHome);  //Android captive portal. Maybe not needed. Might be handled by notFound
+  //server.on("/fwlink", handleHome);  //Microsoft captive portal. Maybe not needed. Might be handled by notFound
 
   server.on("/status", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))
