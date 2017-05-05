@@ -1,0 +1,28 @@
+language: python
+python:
+- '2.7'
+sudo: false
+cache:
+  directories:
+  - "~/.platformio"
+install:
+- pip install -U platformio
+- platformio platform install espressif8266 --with-package tool-mkspiffs
+script:
+- platformio --version
+- platformio run -e io2life_deploy
+- platformio run -t buildfs -e io2life_deploy
+deploy:
+  provider: releases
+  skip_cleanup: true
+  overwrite: true
+  api_key:
+     secure: "ARSwLJV3FD/aYU1NAE2m148TFairEtn94M2GoPT3t6O7K3Bhfbx/k0KxLWwJW1DuCk5/lftsi5Wpr4g4qNSU5D2JxYKPoRRRDE1kd6OKhuyitTrNmrvKD2jLfa37hCXxpK6GD1G5zZgFiB5A75OdF2v8dBdSf7puMMgG/xiEqzjUwPEzApM1GY8c1sT0pZJlQL7ex6PeLz0aV4mCBdFhuwRmY8k7XnFbRl/0xvAN+XBwWeVynd5GnyIE0LhCftng1S2371yPBIjHeGCCCJOpwhchooTdRio0ZCAWgldfobhB+D01ZA3Ke6zEFjgwRXSTKZyi09GPaM7NQzPr1JkfpBEPLSB565CDfz4aeqfrzorOUA2fsEfT77bRTd3KHVIiv04cApROfScnrufYjSTOJBIhfu/1mXXOO0z3kH95xYrMxOQVgT1Q0Sg8t3SqG93Cyz+84ab1iW8UdFpI5eXJC1mPD0W77802HwU5ShYjeQsHrLUoN0tRk0HXxTDvq3srP98ucMFbkb4C1BQsCmQD7sxuaT/ZcioOVjxFk2Q4GI+EWrd8/ovTTZ+2lnIKng3a9TFIJX6FhwAkPPv6x5ohFxhHOkxPooZKSRQdQKP1WfVWQuiaYNN+gc6waJNLVGKcokDDWpf0nLpzAYilPDNwl9xSF68JJGjiAiuIAHGYRz0="
+
+  file:
+  - ".pioenvs/io2life_deploy/firmware.bin"
+  - ".pioenvs/io2life_deploy/spiffs.bin"
+  on:
+    repo: yileekorea/ESP-new
+    all_branches: true
+    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
