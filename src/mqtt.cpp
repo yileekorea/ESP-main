@@ -49,11 +49,11 @@ const char* do_reboot = "/do_reboot";
 const char* do_erase_all = "/do_erase_all";
 const char* do_format = "/do_format";
 
-String subCommand;
 String topic_sub = "/S_";
 String topic_pub = "/P_";
 String MAC;
 String strID = String(WiFi.macAddress());
+String exec_command = "";
 
 
 //WiFiClient espClient;                 // Create client for MQTT
@@ -61,6 +61,39 @@ WiFiClientSecure espClient;                 // Create client for MQTT
 //PubSubClient mqttclient(espClient);   // Create client for MQTT
 PubSubClient mqttclient(mqtt_server.c_str(), MQTT_PORT, mqttCallback, espClient);
 
+
+// -------------------------------------------------------------------
+// MQTT exec_save_command
+// -------------------------------------------------------------------
+void exec_save_command(String exec)
+{
+  exec_command = exec;
+  if (exec_command == do_fw_update) {
+    DEBUG.println(">> do_ots_update_exe ");
+    ota_http_update();
+    mqtt_restart();
+  }
+  else if (exec_command == do_web_update) {
+    DEBUG.println(">> do_web_update_exe ");
+    io2LIFEhttpUpdate(updateServer, fwImage);
+    mqtt_restart();
+  }
+  else if (exec_command == do_reboot) {
+    DEBUG.println(">> do_reboot_exe ");
+    do_reboot_exe();
+  }
+  else if (exec_command == do_format) {
+    DEBUG.println(">> do_format_exe:SPIFFS.format() ");
+    SPIFFS.format();
+    do_reboot_exe();
+  }
+  else if (exec_command == do_erase_all) {
+    DEBUG.println(">> do_erase_all_exec");
+    config_reset();
+    do_reboot_exe();
+  }
+
+}
 // -------------------------------------------------------------------
 // MQTT reconnect
 // -------------------------------------------------------------------
@@ -222,26 +255,29 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 		}
 	}
 	else {
-		subCommand = String(buffer);
-		if (subCommand == do_fw_update) {
+		String exec = String(buffer);
+    exec_save_command(exec);
+/*
+		if (exec_command == do_fw_update) {
 			DEBUG.println(">> do_ots_update_exe ");
       ota_http_update();
       mqtt_restart();
 		}
-    else if (subCommand == do_web_update) {
+    else if (exec_command == do_web_update) {
 			DEBUG.println(">> do_web_update_exe ");
 			io2LIFEhttpUpdate(updateServer, fwImage);
       mqtt_restart();
 		}
-		else if (subCommand == do_reboot) {
+		else if (exec_command == do_reboot) {
 			DEBUG.println(">> do_reboot_exe ");
 			do_reboot_exe();
 		}
-		else if (subCommand == do_format) {
+		else if (exec_command == do_format) {
 			DEBUG.println(">> do_format_exe:SPIFFS.format() ");
 			SPIFFS.format();
 			do_reboot_exe();
 		}
+*/
 	}
 }
 

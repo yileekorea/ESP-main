@@ -63,8 +63,8 @@ String getContentType(String filename){
 bool handleFileRead(String path){
 DEBUG.println("handleFileRead");
 
-  //if(path.endsWith("/")) path += "home.html";
-  if(path.endsWith("/")) path += "index.htm";
+  if(path.endsWith("/")) path += "simple_home.html";
+  //if(path.endsWith("/")) path += "index.htm";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
   if(SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)){
@@ -168,7 +168,7 @@ void handleHome() {
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
   }
-  
+
 }
 
 // -------------------------------------------------------------------
@@ -213,7 +213,11 @@ void handleSaveNetwork() {
     server.send(200, "text/plain", "saved");
     delay(2000);
 
-    wifi_restart();
+    //wifi_restart();
+    WiFi.disconnect();
+    delay(1000);
+    ESP.reset();
+
   } else {
     server.send(400, "text/plain", "No SSID");
   }
@@ -275,6 +279,19 @@ void handleSaveAdmin() {
 
   server.send(200, "text/html", "saved");
 }
+// -------------------------------------------------------------------
+// Save the web site user/pass
+// url: /savecommand
+// -------------------------------------------------------------------
+void handleSaveCommand() {
+  String qexec = server.arg("exec");
+
+  decodeURI(qexec);
+  DEBUG.println("handleSaveCommand: "+ qexec);
+  server.send(200, "text/html", "executed");
+
+  exec_save_command(qexec);
+}
 
 
 // -------------------------------------------------------------------
@@ -311,23 +328,23 @@ DEBUG.println("handleStatus-in");
   //s += "\"pass\":\""+epass+"\",";
   s += "\"srssi\":\""+String(WiFi.RSSI())+"\",";
   s += "\"ipaddress\":\""+ipaddress+"\",";
-  s += "\"emoncms_server\":\""+emoncms_server+"\",";
-  s += "\"emoncms_node\":\""+emoncms_node+"\",";
-  s += "\"emoncms_apikey\":\""+emoncms_apikey+"\",";
-  s += "\"emoncms_fingerprint\":\""+emoncms_fingerprint+"\",";
-  s += "\"emoncms_connected\":\""+String(emoncms_connected)+"\",";
-  s += "\"packets_sent\":\""+String(packets_sent)+"\",";
-  s += "\"packets_success\":\""+String(packets_success)+"\",";
+  //s += "\"emoncms_server\":\""+emoncms_server+"\",";
+  //s += "\"emoncms_node\":\""+emoncms_node+"\",";
+  //s += "\"emoncms_apikey\":\""+emoncms_apikey+"\",";
+  //s += "\"emoncms_fingerprint\":\""+emoncms_fingerprint+"\",";
+  //s += "\"emoncms_connected\":\""+String(emoncms_connected)+"\",";
+  //s += "\"packets_sent\":\""+String(packets_sent)+"\",";
+  //s += "\"packets_success\":\""+String(packets_success)+"\",";
 
   s += "\"mqtt_server\":\""+mqtt_server+"\",";
-  s += "\"mqtt_topic\":\""+mqtt_topic+"\",";
-  s += "\"mqtt_feed_prefix\":\""+mqtt_feed_prefix+"\",";
+  //s += "\"mqtt_topic\":\""+mqtt_topic+"\",";
+  //s += "\"mqtt_feed_prefix\":\""+mqtt_feed_prefix+"\",";
   s += "\"mqtt_user\":\""+mqtt_user+"\",";
   s += "\"mqtt_pass\":\""+mqtt_pass+"\",";
   s += "\"mqtt_connected\":\""+String(mqtt_connected())+"\",";
 
   s += "\"www_username\":\""+www_username+"\",";
-  //s += "\"www_password\":\""+www_password+"\",";
+  s += "\"www_password\":\""+www_password+"\",";
 
   s += "\"free_heap\":\""+String(ESP.getFreeHeap())+"\",";
   s += "\"version\":\""+currentfirmware+"\"";
@@ -458,6 +475,13 @@ DEBUG.println("handleStatus-out1");
     return server.requestAuthentication();
   handleSaveAdmin();
   });
+
+  server.on("/savecommand", [](){
+  if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))
+    return server.requestAuthentication();
+  handleSaveCommand();
+  });
+
   server.on("/scan", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))
     return server.requestAuthentication();
@@ -510,12 +534,14 @@ DEBUG.println("handleStatus-out2");
   handleInput();
   });
 
+
   server.onNotFound([](){
+DEBUG.println(server.uri());
   if(!handleFileRead(server.uri()))
     server.send(404, "text/plain", "NotFound");
   });
-DEBUG.println("server.begin()");
 
+DEBUG.println("server.begin()");
   server.begin();
 }
 

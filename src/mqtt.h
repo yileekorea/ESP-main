@@ -66,4 +66,7 @@ extern void sendmqttMsg(char* topictosend, String payload);
 
 extern void sendTempData();
 
+extern void exec_save_command(String exec);
+
+
 #endif // _EMONESP_MQTT_H
