@@ -21,7 +21,7 @@ deploy:
 
   file:
   - ".pioenvs/io2life_deploy/firmware.bin"
-  #- ".pioenvs/io2life_deploy/spiffs.bin"
+  - ".pioenvs/io2life_deploy/spiffs.bin"
   on:
     repo: yileekorea/ESP-main
     all_branches: true
