@@ -25,4 +25,4 @@ deploy:
   on:
     repo: yileekorea/ESP-main
     all_branches: true
-    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
+    #condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
