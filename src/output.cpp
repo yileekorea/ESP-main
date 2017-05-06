@@ -31,7 +31,7 @@
 #define R1_BUILTIN 4
 
 //const uint8_t sclk = 14;
-//const uint8_t mosi =13; //Master Output Slave Input ESP8266=Master,MCP23S08=slave 
+//const uint8_t mosi =13; //Master Output Slave Input ESP8266=Master,MCP23S08=slave
 const uint8_t MCP_CS = 15;
 gpio_MCP23S17 mcp(MCP_CS,0x20);//instance
 
@@ -50,9 +50,9 @@ void relayControl() {
 	}
 	for ( i = 1; i < (numSensor-1) ; i++) {
 		if(L_Temp[i] <= celsius[i]){
-			mcp.gpioDigitalWrite(i+3,LOW);
+			mcp.gpioDigitalWrite(i+3,LOW); //mcp.GPIO 0 ~ 3 for input sense
 		} else {
-			mcp.gpioDigitalWrite(i+3,HIGH);		
+			mcp.gpioDigitalWrite(i+3,HIGH);
 		}
 	}
 }
@@ -61,16 +61,16 @@ void mcp_GPIO_setup() {
   Serial.print("Attempting SPI mcp.begin()...");
   Serial.println();
   mcp.begin(0);//x.begin(1) will override automatic SPI initialization
-  
+
   pinMode(R1_BUILTIN, OUTPUT);
   mcp.gpioPinMode(0x0F);
-  
+
   digitalWrite(R1_BUILTIN, HIGH);
   mcp.gpioPort(0xFF);
   delay(1000);
   mcp.gpioPort(0x00);
   digitalWrite(R1_BUILTIN, LOW);
-  
+
 }
 
 void tick(){
@@ -85,11 +85,9 @@ void LED_setup(float t) {
   // start ticker with 0.5 because we start in AP mode and try to connect
   ticker.attach(t, tick);
  }
- 
+
 void LED_clear() {
  	ticker.detach();
 	//keep LED off
 	digitalWrite(ESP_LED, HIGH);
 }
-	
-	
