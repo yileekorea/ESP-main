@@ -12,16 +12,15 @@ script:
 - platformio --version
 - platformio run -e io2life_deploy
 - platformio run -t buildfs -e io2life_deploy
+
 deploy:
   provider: releases
   skip_cleanup: true
   overwrite: true
-  file:
-  - ".pioenvs/io2life_deploy/firmware.bin"
-  - ".pioenvs/io2life_deploy/spiffs.bin"
+  api_key:
+    secure: V+v043vfnPRZyManGG+D0UwwIoS5/WMucKAHvt29PPUsV/BDVWo9Kr4OOjgL6PPmJBu$
+  file: firmware.bin
   on:
     repo: yileekorea/ESP-main
-    all_branches: true
+    branch: ''
     #condition: "$TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+$"
-  api-key:
-    secure: jxtWE2rnwT9/YAN2VxRvGxyig9PgqcOHBNl+L21u3+PmPeooTOfyfRG5J3VAg61TlhA5cICNek035zN/PAJg/a0eghyAVZzqqM91t40dxZdxdbif0SfNxkxOHpdsFpE7Snv6vP8RupJshWCNIm+DR5+qcV8Xt6TAJ8fE9zllaTVL0oiQqgf8pZqq0U0hTno9RTKXHzKSMUHiAsixBdmqxoa2Wm8SeJmxmGJqNh9vwjJRTJ5Rmth6u9AGnug8Gzipv3l7ImAgGiaqWaMIjlFTDXjbBotOddnEz+pJ1s2xgA9xJMkpxV5WFuknC0tbvTtW/ie0DgWk6aC4rico81hWIe4qPIOO/PXxX2QOrb5y1OoyhquGNwnOBDOn8TUtNKL03Zg8IFz01jeaclHtbqabxSAepyubNX0rEGQEBzqnyghsQvuTyFzNgkcU/kiuNUk5OY1cNLRYp+4T2/tSMOkyT1I4FB3acaxLMQLZg3BNT62xSFmMZ44H4GS4ytvzks5syABbexJQiILkcuvUULNC+HH2kl3IPCTWeTy1pIgoEKcdIR3e7Buh+jwvdtPdQyYYcnQX0afek5gnXkqoQuz9zJtu8Hqnyn4ONtUFBhhIUQjk4HzEDo0LJcTY8KOMbCCV2golMqXrb9TncV4DwZR7eoGBp9M9fmU6v/Ig36Vqkc0=
