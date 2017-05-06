@@ -7,6 +7,7 @@ cache:
   - "~/.platformio"
 install:
 - pip install -U platformio
+- platformio lib install 567 562
 - platformio platform install espressif8266 --with-package tool-mkspiffs
 script:
 - platformio --version
