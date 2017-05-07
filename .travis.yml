@@ -15,9 +15,7 @@ script:
 - platformio run -t buildfs -e io2life_deploy
 
 - BUILD_VER="v0.0.6"
-- test -n $TRAVIS_TAG && ${TRAVIS_TAG:"$BUILD_VER"}
-#- echo $TRAVIS_BRANCH / $BRANCH_FOR_TAG
-- echo $TRAVIS_TAG
+- echo $TRAVIS_BRANCH / $BUILD_VER
 
 after_success:
 
@@ -26,7 +24,7 @@ after_success:
   - git config --global user.name "Travis CI"
   #- export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d-%H-%M-%S")-$TRAVIS_BUILD_NUMBER
   #- export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d")-$TRAVIS_BUILD_NUMBER
-  - export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d")-$TRAVIS_BUILD_NUMBER
+  - export GIT_TAG=$BUILD_VER-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d")-$TRAVIS_BUILD_NUMBER
   - echo -n $GIT_TAG > public/version
   - git commit -m "Set build VERSION number" public/version
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
