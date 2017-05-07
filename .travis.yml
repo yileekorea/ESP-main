@@ -16,7 +16,7 @@ script:
 #- if [[ -n $TRAVIS_TAG ]]; then $TRAVIS_TAG:0.0.0; fi
 #- BRANCH_FOR_TAG='rc-'${TRAVIS_BRANCH}
 #- echo $TRAVIS_BRANCH / $BRANCH_FOR_TAG
-- test -n $TRAVIS_TAG && $TRAVIS_TAG:0.0.0
+- test -n $TRAVIS_TAG && $TRAVIS_TAG:"0.0.0"
 - echo $TRAVIS_TAG
 
 after_success:
