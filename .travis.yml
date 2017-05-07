@@ -13,7 +13,6 @@ script:
 - platformio --version
 - platformio run -e io2life_deploy
 - platformio run -t buildfs -e io2life_deploy
-- ${TRAVIS_TAG:-"0.0.2"}
 #- if [[ -n $TRAVIS_TAG ]]; then $TRAVIS_TAG:0.0.0; fi
 #- BRANCH_FOR_TAG='rc-'${TRAVIS_BRANCH}
 #- echo $TRAVIS_BRANCH / $BRANCH_FOR_TAG
