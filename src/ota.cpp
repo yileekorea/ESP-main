@@ -56,7 +56,7 @@ const char* firmware_update_path = "/upload";
 extern const char *esp_hostname;
 
 Ticker updateCheck;
-boolean doUpdateCheck = false;
+boolean doUpdateCheck = true;
 
 void enableUpdateCheck() {
   doUpdateCheck = true;
@@ -85,7 +85,7 @@ void ota_loop()
     if (flashButtonState == LOW || doUpdateCheck) {
       Serial.println("Going to update firmware...");
       ota_http_update();
-      doUpdateCheck = true;
+      doUpdateCheck = false;
     }
   }
 }
