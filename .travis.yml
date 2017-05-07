@@ -15,7 +15,7 @@ script:
 - platformio run -t buildfs -e io2life_deploy
 
 - BUILD_VER="v0.0.6"
-- test -n $TRAVIS_TAG && $TRAVIS_TAG:'${BUILD_VER}'
+- test -n $TRAVIS_TAG && ${TRAVIS_TAG:-"$BUILD_VER"}
 #- echo $TRAVIS_BRANCH / $BRANCH_FOR_TAG
 - echo $TRAVIS_TAG
 
