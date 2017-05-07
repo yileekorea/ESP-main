@@ -20,7 +20,7 @@ script:
 
 after_success:
 
-if [ -z $TRAVIS_TAG ]; then
+if [ -z $TRAVIS_TAG ] && [
   # CREATE GIT TAG
   - git config --global user.email "builds@travis-ci.com"
   - git config --global user.name "Travis CI"
@@ -31,7 +31,7 @@ if [ -z $TRAVIS_TAG ]; then
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
   - git push --quiet https://$GITHUBKEY@github.com/yileekorea/ESP-main $GIT_TAG > /dev/null 2>&1
   - echo $TRAVIS_TAG 
-fi
+  ]
   
 #branches: true
   #except:
