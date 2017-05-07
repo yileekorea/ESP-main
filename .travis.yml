@@ -10,12 +10,13 @@ install:
 #- platformio lib install 567 562
 - platformio platform install espressif8266 --with-package tool-mkspiffs
 script:
-- platformio --version
-- platformio run -e io2life_deploy
-- platformio run -t buildfs -e io2life_deploy
+  - platformio --version
+  - platformio run -e io2life_deploy
+  - platformio run -t buildfs -e io2life_deploy
 
-- BUILD_VER="release.0.0.6"
-- echo $TRAVIS_BRANCH / $BUILD_VER
+  #- BUILD_VER="release.0.0.6"
+  - BUILD_VER="v.0.0.6"
+  - echo $TRAVIS_BRANCH / $BUILD_VER
 
 after_success:
 
