@@ -31,7 +31,7 @@ after_success:
   - echo $TRAVIS_TAG 
 branches: true
   except:
-    - /^build-[0-9a-z\-]*/
+    #- /^build-[0-9a-z\-]*/
     
 deploy:
   provider: releases
