@@ -43,7 +43,7 @@ deploy:
     #condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
     #condition: $TRAVIS_TAG =0.0.4
     #condition: $BRANCH_FOR_TAG =~ (pre|alpha|beta|rc)-[0-9]+$
-    condition: $TRAVIS_TAG =~ (pre|alpha|beta|rc)-[0-9]+\.[0-9]+\.[0-9]+$
+    condition: $TRAVIS_TAG =~ (pre|alpha|beta|rc-master)[0-9]+\.[0-9]+\.[0-9]+$
 
   api-key:
     secure: QxqlOYNNmTyGDVea6uUZ1Sf/GK+X3FmsWVVHwEXughkhDBUEaqvZMyB5MHd5TX+UQU1BpCFNoGzF2vEPfDlSRkhxAz1F5UL5IrfK0aqJC/Goj3/Ssw91KYW19vXsLP9ogsMhJ/ZD0v8Zlrj+BrhpbhdzZAQwpCVqkAJll7QRGNtI7p+b51gZhh4R315MuYGvwRFgCwc/TpDWNkLDl0qY+kiAzcGswXWKbozmeFCvU39wrnWHFtRx5Y5NtGpGSG157m9m6fnWEJgHSq3rRQx3WyjzQEShxPOp2oDZugsaVqUe3XKx13Sbd0pA5okcoyh9y+ky6SLfVwnIfic5monhb0oZNXx7orW+BrJLItLORS3MtDkAD/SjZEPA44KuaEuuGKLW93Pg9ZEq4hsw5WRVx3Yub5Pn9n6dp1h8Y+54gxsx1iu4uzBWtPH2V/GLrcWigMzB96YRWNaon1wFOL5T3rovn9IutmjmeldempwM+awwGIonFvRSx6ozWXNTUQ8TTWoClnb+tgBQfH9/kKJ/Jg4OK5Tj95Ryh7s6kZwozHoNPiz4UZ53J/siSYA9WTXj7ir1MqvqMGcwXY77Mzfvzw3+irz/esv6x3h3SCqCWrxGZMpXi6yJOcvY/Sk47XorwDevq8RRjbkywtRLA/fAnZlXgrNvOgo+PPgIjcgLVK4=
