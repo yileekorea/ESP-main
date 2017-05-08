@@ -128,6 +128,7 @@ function updateStatus() {
             if (status.rssi[z]=="undefined") status.rssi[z]="";
             out += "<tr><td><input class='networkcheckbox' name='"+status.networks[z]+"' type='checkbox'></td><td>"+status.networks[z]+"</td><td>"+status.rssi[z]+"</td></tr>"
           }
+          document.getElementById("wifiscan").innerHTML = "검색 (scan)";
           document.getElementById("networks").innerHTML = out;
           var networkcheckboxes = document.getElementsByClassName("networkcheckbox");
           for (var i = 0; i < networkcheckboxes.length; i++) {
@@ -181,7 +182,7 @@ function updateWiFiStatus() {
 // -----------------------------------------------------------------------
 document.getElementById("wifiscan").addEventListener("click", function(e) {
     var r3 = new XMLHttpRequest();
-    document.getElementById("wifiscan").innerHTML = "검색중...";
+    document.getElementById("wifiscan").innerHTML = "검색 시작...";
 
     r3.open("GET", "scan", true);
     r3.timeout = 5000;
@@ -192,7 +193,7 @@ document.getElementById("wifiscan").addEventListener("click", function(e) {
       }
 
       if(r3.status == 200) {
-        document.getElementById("wifiscan").innerHTML = "검색 (scan)";
+        document.getElementById("wifiscan").innerHTML = "검색중...";
       }
 	  };
     r3.send();

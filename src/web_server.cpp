@@ -173,13 +173,13 @@ void handleHome() {
 }
 
 // -------------------------------------------------------------------
-// Wifi scan /scan not currently used
+// Wifi scan 
 // url: /scan
 // -------------------------------------------------------------------
 void handleScan() {
   wifi_scan();
 
-  delay(800);
+  delay(500);
   server.send(200, "text/plain","[" +st+ "],[" +rssi+"]");
 /*
   String s = "{";
