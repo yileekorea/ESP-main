@@ -139,7 +139,7 @@ void handleHome() {
     //File f = SPIFFS.open("/simple_home.html", "r");
   }
 */
-
+  DEBUG.println("f.readString()");
   if (f) {
     String s = f.readString();
     //String s = "f.readString()";
@@ -150,7 +150,8 @@ void handleHome() {
   } else {
     server.send(200, "text/plain","/home.html not found, have you flashed the SPIFFS?");
   }
-  //delay(100);
+  delay(100);
+/*
   DEBUG.print("WiFi Scan: ");
   int n = WiFi.scanNetworks();
   DEBUG.print(n);
@@ -168,7 +169,7 @@ void handleHome() {
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
   }
-
+*/
 }
 
 // -------------------------------------------------------------------
@@ -177,7 +178,22 @@ void handleHome() {
 // -------------------------------------------------------------------
 void handleScan() {
   wifi_scan();
+
+  delay(800);
   server.send(200, "text/plain","[" +st+ "],[" +rssi+"]");
+/*
+  String s = "{";
+  s += "\"networks\":["+st+"],";
+  s += "\"rssi\":["+rssi+"],";
+
+  DEBUG.println(st);
+  //DEBUG.println(rssi);
+
+  s += "\"free_heap\":\""+String(ESP.getFreeHeap())+"\",";
+  s += "\"version\":\""+currentfirmware+"\"";
+  s += "}";
+  server.send(200, "text/html", s);
+*/
 }
 
 // -------------------------------------------------------------------
@@ -215,8 +231,9 @@ void handleSaveNetwork() {
 
     //wifi_restart();
     WiFi.disconnect();
-    delay(1000);
-    ESP.reset();
+    //delay(1000);
+    //ESP.reset();
+    do_reboot_exe();
 
   } else {
     server.send(400, "text/plain", "No SSID");
@@ -322,7 +339,7 @@ DEBUG.println("handleStatus-in");
   s += "\"rssi\":["+rssi+"],";
 
   DEBUG.println(st);
-  DEBUG.println(rssi);
+  //DEBUG.println(rssi);
 
   s += "\"ssid\":\""+esid+"\",";
   //s += "\"pass\":\""+epass+"\",";
@@ -446,8 +463,8 @@ DEBUG.println("web_server_setup");
   });
 
   // Handle HTTP web interface button presses
-  //server.on("/generate_204", handleHome);  //Android captive portal. Maybe not needed. Might be handled by notFound
-  //server.on("/fwlink", handleHome);  //Microsoft captive portal. Maybe not needed. Might be handled by notFound
+  server.on("/generate_204", handleHome);  //Android captive portal. Maybe not needed. Might be handled by notFound
+  server.on("/fwlink", handleHome);  //Microsoft captive portal. Maybe not needed. Might be handled by notFound
 
   server.on("/status", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))

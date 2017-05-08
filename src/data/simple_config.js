@@ -9,8 +9,6 @@ var r1 = new XMLHttpRequest();
 r1.open("GET", "status", true);
 r1.onreadystatechange = function () {
   if (r1.readyState != 4 || r1.status != 200) return;
-  //var responseText2 = JSON.stringify(r1.responseText);
-  //var status = eval("("+responseText2+")");
 
   var status_fix = r1.responseText.replace(/( �)|( �)/gi, "");
   var status = JSON.parse(status_fix);
@@ -88,7 +86,6 @@ r1.onreadystatechange = function () {
       }
 
   }
-
   //updateLastValues();
 };
 r1.send();
@@ -108,7 +105,6 @@ function updateStatus() {
       if(r2.status == 200) {
   		var status_fix = r2.responseText.replace(/( �)|( �)/gi, "");
   		var status = JSON.parse(status_fix);
-//alert("status.mode:"+status.mode);
 
         //document.getElementById("free_heap").innerHTML = status.free_heap;
         if (status.mqtt_connected == "1"){
@@ -122,6 +118,22 @@ function updateStatus() {
           var out="";
           out += "<tr><td>"+status.ssid+"</td><td>"+status.srssi+"</td></tr>"
           document.getElementById("sta-ssid").innerHTML = out;
+
+
+          var status_fix = r2.responseText.replace(/( �)|( �)/gi, "");
+      		var status = JSON.parse(status_fix);
+          //console.log(str);
+          var out = "";
+          for (var z in status.networks) {
+            if (status.rssi[z]=="undefined") status.rssi[z]="";
+            out += "<tr><td><input class='networkcheckbox' name='"+status.networks[z]+"' type='checkbox'></td><td>"+status.networks[z]+"</td><td>"+status.rssi[z]+"</td></tr>"
+          }
+          document.getElementById("networks").innerHTML = out;
+          var networkcheckboxes = document.getElementsByClassName("networkcheckbox");
+          for (var i = 0; i < networkcheckboxes.length; i++) {
+              networkcheckboxes[i].addEventListener('click', networkSelect, false);
+          }
+
         }
       }
       //updateLastValues();
@@ -141,8 +153,6 @@ function updateWiFiStatus() {
     }
 
     if(r1.status == 200) {
-      //var responseText21 = JSON.stringify(r1.responseText);
-      //var status = JSON.parse(responseText21);
       var status_fix = r1.responseText.replace(/( �)|( �)/gi, "");
   		var status = JSON.parse(status_fix);
       if (status.mode=="STA+AP" || status.mode=="STA") {
@@ -158,7 +168,6 @@ function updateWiFiStatus() {
         document.getElementById("sta-ip").innerHTML = "<a href='http://"+status.ipaddress+"'>"+status.ipaddress+"</a>";
 
         // View display
-        //document.getElementById("ap-view").style.display = 'none';
         document.getElementById("ap-view").style.display = '';
         document.getElementById("client-view").style.display = '';
       }
@@ -167,6 +176,27 @@ function updateWiFiStatus() {
   };
   r1.send();
 }
+// -----------------------------------------------------------------------
+// Event: Access Point wifiscan
+// -----------------------------------------------------------------------
+document.getElementById("wifiscan").addEventListener("click", function(e) {
+    var r3 = new XMLHttpRequest();
+    document.getElementById("wifiscan").innerHTML = "검색중...";
+
+    r3.open("GET", "scan", true);
+    r3.timeout = 5000;
+
+    r3.onreadystatechange = function () {
+      if (r3.readyState != 4) {
+        return;
+      }
+
+      if(r3.status == 200) {
+        document.getElementById("wifiscan").innerHTML = "검색 (scan)";
+      }
+	  };
+    r3.send();
+});
 
 // -----------------------------------------------------------------------
 // Event: WiFi Connect
@@ -176,7 +206,6 @@ document.getElementById("connect").addEventListener("click", function(e) {
     if (selected_network_ssid=="") {
         alert("Please select network");
     } else {
-        //document.getElementById("ap-view").style.display = 'none';
         document.getElementById("ap-view").style.display = '';
         document.getElementById("wait-view").style.display = '';
 
@@ -201,8 +230,6 @@ document.getElementById("connect").addEventListener("click", function(e) {
 document.getElementById("save-mqtt").addEventListener("click", function(e) {
     var mqtt = {
       server: document.getElementById("mqtt_server").value,
-      //topic: document.getElementById("mqtt_topic").value,
-      //prefix: document.getElementById("mqtt_feed_prefix").value,
       user: document.getElementById("mqtt_user").value,
       pass: document.getElementById("mqtt_pass").value
     }
@@ -280,7 +307,6 @@ document.getElementById("apoff").addEventListener("click", function(e) {
 	  };
     r.send();
 });
-
 // -----------------------------------------------------------------------
 // Event: Reset config and reboot
 // -----------------------------------------------------------------------
@@ -328,44 +354,6 @@ var networkSelect = function() {
             networkcheckboxes[i].checked = 0;
     }
 };
-
-// -----------------------------------------------------------------------
-// Event:Check for updates & display current / latest
-// URL /firmware
-// -----------------------------------------------------------------------
-/*
-document.getElementById("updatecheck").addEventListener("click", function(e) {
-    document.getElementById("firmware-version").innerHTML = "<tr><td>-</td><td>Connecting...</td></tr>";
-    var r = new XMLHttpRequest();
-    r.open("POST", "firmware", true);
-    r.onreadystatechange = function () {
-        if (r.readyState != 4 || r.status != 200) return;
-        var str = r.responseText;
-        console.log(str);
-        var firmware = JSON.parse(r.responseText);
-        document.getElementById("firmware").style.display = '';
-        document.getElementById("update").style.display = '';
-        document.getElementById("firmware-version").innerHTML = "<tr><td>"+firmware.current+"</td><td>"+firmware.latest+"</td></tr>";
-	  };
-    r.send();
-});
-*/
-
-// -----------------------------------------------------------------------
-// Event:Update Firmware DISABLED IN FIRMWARE
-// -----------------------------------------------------------------------
-// document.getElementById("update").addEventListener("click", function(e) {
-//     document.getElementById("update-info").innerHTML = "UPDATING..."
-//     var r1 = new XMLHttpRequest();
-//     r1.open("POST", "update", true);
-//     r1.onreadystatechange = function () {
-//         if (r1.readyState != 4 || r1.status != 200) return;
-//         var str1 = r1.responseText;
-//         document.getElementById("update-info").innerHTML = str1
-//         console.log(str1);
-// 	  };
-//     r1.send();
-// });
 
 // -----------------------------------------------------------------------
 // Event:Upload Firmware

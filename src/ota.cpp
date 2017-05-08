@@ -56,7 +56,7 @@ const char* firmware_update_path = "/upload";
 extern const char *esp_hostname;
 
 Ticker updateCheck;
-boolean doUpdateCheck = true;
+boolean doUpdateCheck = false;
 
 void enableUpdateCheck() {
   doUpdateCheck = true;

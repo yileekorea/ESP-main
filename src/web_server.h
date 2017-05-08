@@ -33,5 +33,6 @@ extern String currentfirmware;
 
 extern void web_server_setup();
 extern void web_server_loop();
+void handleStatus();
 
 #endif // _EMONESP_WEB_SERVER_H

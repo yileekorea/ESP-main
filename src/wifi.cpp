@@ -157,10 +157,11 @@ void startClient() {
       if (attempt >= 1 || digitalRead(0) == LOW){
 		DEBUG.println();
 		DEBUG.println("Terminate Client mode ... start AP mode");
+        WiFi.disconnect();
         startAP();
         // AP mode with SSID in EEPROM, connection will retry in 5 minutes
         wifi_mode = WIFI_MODE_AP_STA_RETRY;
-		LED_setup(0.2);
+        //wifi_mode = WIFI_MODE_AP_ONLY;
         break;
       }
     }
