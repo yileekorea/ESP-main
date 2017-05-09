@@ -112,6 +112,7 @@ function updateStatus() {
         } else {
          document.getElementById("mqtt_connected").innerHTML = "No";
         }
+        document.getElementById("save-mqtt").innerHTML = "설정 적용 (save)";
 
         if ((status.mode=="STA") || (status.mode=="STA+AP")){
           // Update connected network RSSI
@@ -237,7 +238,7 @@ document.getElementById("save-mqtt").addEventListener("click", function(e) {
     if (mqtt.server=="") {
       alert("Please enter MQTT server");
     } else {
-      document.getElementById("save-mqtt").innerHTML = "Saving...";
+      document.getElementById("save-mqtt").innerHTML = "저장중...";
       var r = new XMLHttpRequest();
       r.open("POST", "savemqtt", true);
       r.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -247,7 +248,7 @@ document.getElementById("save-mqtt").addEventListener("click", function(e) {
         if (r.readyState != 4 || r.status != 200) return;
         var str = r.responseText;
   	    console.log(str);
-  	    if (str!=0) document.getElementById("save-mqtt").innerHTML = "Saved";
+  	    if (str!=0) document.getElementById("save-mqtt").innerHTML = "저장완료";
       };
     }
 });

@@ -173,7 +173,7 @@ void handleHome() {
 }
 
 // -------------------------------------------------------------------
-// Wifi scan 
+// Wifi scan
 // url: /scan
 // -------------------------------------------------------------------
 void handleScan() {
@@ -463,8 +463,8 @@ DEBUG.println("web_server_setup");
   });
 
   // Handle HTTP web interface button presses
-  server.on("/generate_204", handleHome);  //Android captive portal. Maybe not needed. Might be handled by notFound
-  server.on("/fwlink", handleHome);  //Microsoft captive portal. Maybe not needed. Might be handled by notFound
+  //server.on("/generate_204", handleHome);  //Android captive portal. Maybe not needed. Might be handled by notFound
+  //server.on("/fwlink", handleHome);  //Microsoft captive portal. Maybe not needed. Might be handled by notFound
 
   server.on("/status", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))

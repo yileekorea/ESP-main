@@ -133,7 +133,13 @@ void do_reboot_exe()
 	Serial.println("WILL reboot ESP system soon!!!!");
 	pinMode(0, OUTPUT);
 	digitalWrite(0, HIGH);
-	delay(5000);
+	delay(1000);
+	
+	pinMode(5, OUTPUT);
+	digitalWrite(5, LOW);
+	delay(100);
+	digitalWrite(5, HIGH);
+
 	ESP.reset();
 }
 

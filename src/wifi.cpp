@@ -84,7 +84,7 @@ void startAP() {
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
   }
-  delay(100);
+  delay(2000);
 
   WiFi.softAPConfig(apIP, apIP, netMsk);
   // Create Unique SSID e.g "emonESP_XXXXXX"

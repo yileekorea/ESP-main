@@ -45,6 +45,9 @@ int numSensor = 0;
 // SETUP
 // -------------------------------------------------------------------
 void setup() {
+  pinMode(5, OUTPUT);
+  digitalWrite(5, HIGH);
+
   LED_setup(0.2);
 
   delay(1000);
