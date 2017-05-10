@@ -61,8 +61,6 @@ String getContentType(String filename){
 }
 
 bool handleFileRead(String path){
-DEBUG.println("handleFileRead");
-
   //if(path.endsWith("/")) path += "simple_home.html";
   if(path.endsWith("/")) path += "index.htm";
   String contentType = getContentType(path);
@@ -73,8 +71,10 @@ DEBUG.println("handleFileRead");
     File file = SPIFFS.open(path, "r");
     size_t sent = server.streamFile(file, contentType);
     file.close();
+    DEBUG.println("handleFileRead-true");
     return true;
   }
+  DEBUG.println("handleFileRead-false");
   return false;
 }
 
