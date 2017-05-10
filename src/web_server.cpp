@@ -63,8 +63,8 @@ String getContentType(String filename){
 bool handleFileRead(String path){
 DEBUG.println("handleFileRead");
 
-  if(path.endsWith("/")) path += "simple_home.html";
-  //if(path.endsWith("/")) path += "index.htm";
+  //if(path.endsWith("/")) path += "simple_home.html";
+  if(path.endsWith("/")) path += "index.htm";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
   if(SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)){
@@ -180,7 +180,9 @@ void handleScan() {
   wifi_scan();
 
   delay(500);
-  server.send(200, "text/plain","[" +st+ "],[" +rssi+"]");
+  //server.send(200, "text/plain","[" +st+ "],[" +rssi+"]");
+  server.send(200, "text/plain", "scaned");
+
 /*
   String s = "{";
   s += "\"networks\":["+st+"],";
