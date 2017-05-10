@@ -67,6 +67,7 @@ void startAP() {
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   delay(100);
+/*
   DEBUG.print("WiFi Scan: ");
   int n = WiFi.scanNetworks();
   DEBUG.print(n);
@@ -85,7 +86,7 @@ void startAP() {
     if (i<n-1) rssi += ",";
   }
   delay(2000);
-
+*/
   WiFi.softAPConfig(apIP, apIP, netMsk);
   // Create Unique SSID e.g "emonESP_XXXXXX"
   String softAP_ssid_ID = String(softAP_ssid)+"_"+String(ESP.getChipId());;

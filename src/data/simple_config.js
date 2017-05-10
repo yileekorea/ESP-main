@@ -114,7 +114,7 @@ function updateStatus() {
         }
         document.getElementById("save-mqtt").innerHTML = "설정 적용 (save)";
 
-        if ((status.mode=="STA") || (status.mode=="STA+AP")){
+        if ((status.mode=="STA") || (status.mode=="STA+AP") || (status.mode=="AP")){
           // Update connected network RSSI
           var out="";
           out += "<tr><td>"+status.ssid+"</td><td>"+status.srssi+"</td></tr>"
