@@ -118,10 +118,7 @@ t_httpUpdate_return ota_http_update()
     case HTTP_UPDATE_OK:
         Serial.println("HTTP_UPDATE_OK");
           Serial.println("WILL reboot ESP system soon!!!!");
-          pinMode(0, OUTPUT);
-          digitalWrite(0, HIGH);
-          delay(5000);
-          ESP.reset();
+          do_reboot_exe();
         break;
 	}
 
@@ -134,7 +131,7 @@ void do_reboot_exe()
 	pinMode(0, OUTPUT);
 	digitalWrite(0, HIGH);
 	delay(1000);
-	
+
 	pinMode(5, OUTPUT);
 	digitalWrite(5, LOW);
 	delay(100);
@@ -142,7 +139,7 @@ void do_reboot_exe()
 
 	ESP.reset();
 }
-
+/*
 void io2LIFEhttpUpdate(const char* updateServer, const char* fwImage)
 {
   if (WiFi.status() == WL_CONNECTED) {
@@ -151,11 +148,13 @@ void io2LIFEhttpUpdate(const char* updateServer, const char* fwImage)
 
 		String REMOTE_SERVER = updateServer;
 		String SKETCH_BIN = fwImage;
-
+}
+*/
+t_httpUpdate_return ota_spiffs_update()
+{
 		ESPhttpUpdate.rebootOnUpdate(BOOT_AFTER_UPDATE);
 		//ESPhttpUpdate.rebootOnUpdate(true);
 
-        //t_httpUpdate_return ret = ESPhttpUpdate.update(updateServer_fwImage);
         Serial.println("WILL start SPIFFS update");
         t_httpUpdate_return ret_spiffs = ESPhttpUpdate.updateSpiffs("http://iot2better.iptime.org:9000/spiffs.php?tag=" + currentfirmware);
 
@@ -174,5 +173,5 @@ void io2LIFEhttpUpdate(const char* updateServer, const char* fwImage)
 				        do_reboot_exe();
                 break;
         }
-    }
+        return ret_spiffs;
 }

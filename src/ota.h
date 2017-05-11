@@ -45,6 +45,7 @@ void ota_setup();
 void ota_loop();
 String ota_get_latest_version();
 t_httpUpdate_return ota_http_update();
+t_httpUpdate_return ota_spiffs_update();
 
 void do_reboot_exe();
 

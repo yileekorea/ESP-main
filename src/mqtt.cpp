@@ -75,7 +75,7 @@ void exec_save_command(String exec)
   }
   else if (exec_command == do_web_update) {
     DEBUG.println(">> do_web_update_exe ");
-    io2LIFEhttpUpdate(updateServer, fwImage);
+    ota_spiffs_update();
     mqtt_restart();
   }
   else if (exec_command == do_reboot) {
