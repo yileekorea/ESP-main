@@ -76,7 +76,8 @@ void setup() {
   ota_setup();
 
   if (wifi_mode==WIFI_MODE_STA){
-	   verifyFingerprint();
+    DEBUG.println("Start finger print verify : ");
+    verifyFingerprint();
   }
 
   mcp_GPIO_setup();
