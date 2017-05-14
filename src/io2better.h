@@ -23,8 +23,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _EMONESP_H
-#define _EMONESP_H
+#ifndef _IO2BETTER_H
+#define _IO2BETTER_H
 
 
 // -------------------------------------------------------------------
@@ -48,4 +48,4 @@ extern unsigned long tempTry;
 
 
 
-#endif // _EMONESP_H
+#endif // _IO2BETTER_H
