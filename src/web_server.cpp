@@ -33,7 +33,7 @@
 #include "wifi.h"
 #include "mqtt.h"
 #include "input.h"
-#include "emoncms.h"
+//#include "emoncms.h"
 #include "ota.h"
 
 ESP8266WebServer server(80);          //Create class for Web server

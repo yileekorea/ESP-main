@@ -24,7 +24,7 @@
  */
 
 #include "emonesp.h"
-#include "emoncms.h"
+//#include "emoncms.h"
 #include "config.h"
 #include "http.h"
 
