@@ -1,6 +1,6 @@
 /*
  * -------------------------------------------------------------------
- * EmonESP Serial to Emoncms gateway
+ * ESP-main Serial to ESP-main-2 gateway
  * -------------------------------------------------------------------
  * Adaptation of Chris Howells OpenEVSE ESP Wifi
  * by Trystan Lea, Glyn Hudson, OpenEnergyMonitor
@@ -8,17 +8,17 @@
  *
  * -------------------------------------------------------------------
  *
- * This file is part of OpenEnergyMonitor.org project.
- * EmonESP is free software; you can redistribute it and/or modify
+ * This file is part of ESP-main-web project.
+ * ESP-main is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * EmonESP is distributed in the hope that it will be useful,
+ * ESP-main is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with EmonESP; see the file COPYING.  If not, write to the
+ * along with ESP-main; see the file COPYING.  If not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
@@ -369,8 +369,8 @@ boolean mqtt_connect()
 // Publish to MQTT
 // Split up data string into sub topics: e.g
 // data = CT1:3935,CT2:325,T1:12.5,T2:16.9,T3:11.2,T4:34.7
-// base topic = emon/emonesp
-// MQTT Publish: emon/emonesp/CT1 > 3935 etc..
+// base topic = emon/ESP-main
+// MQTT Publish: emon/ESP-main/CT1 > 3935 etc..
 // -------------------------------------------------------------------
 void mqtt_publish(String data)
 {
@@ -379,7 +379,7 @@ void mqtt_publish(String data)
   int i=0;
   while (int(data[i])!=0)
   {
-    // Construct MQTT topic e.g. <base_topic>/CT1 e.g. emonesp/CT1
+    // Construct MQTT topic e.g. <base_topic>/CT1 e.g. ESP-main/CT1
     while (data[i]!=':'){
       topic+= data[i];
       i++;
