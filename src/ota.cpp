@@ -44,9 +44,9 @@ ESP8266HTTPUpdateServer httpUpdater;  // Create class for webupdate handleWebUpd
 //UPDATE SERVER strings and interfers for upate server
 // Array of strings Used to check firmware version
 
-String updateServer_fwImage;
+//String updateServer_fwImage;
 
-const char* updateServer = "http://iot2better.iptime.org:8003/fwImage/";
+//const char* updateServer = "http://iot2better.iptime.org:8003/fwImage/";
 const char* fwImage = "firmware.bin";
 
 const char* u_host = "http://iot2better.iptime.org:9000";
@@ -117,8 +117,11 @@ t_httpUpdate_return ota_http_update()
 
     case HTTP_UPDATE_OK:
         Serial.println("HTTP_UPDATE_OK");
-          Serial.println("WILL reboot ESP system soon!!!!");
-          do_reboot_exe();
+
+        ota_spiffs_update();
+
+        Serial.println("WILL reboot ESP system soon!!!!");
+        do_reboot_exe();
         break;
 	}
 
