@@ -118,7 +118,7 @@ t_httpUpdate_return ota_http_update()
     case HTTP_UPDATE_OK:
         Serial.println("HTTP_UPDATE_OK");
 
-        ota_spiffs_update();
+        //ota_spiffs_update();
 
         Serial.println("WILL reboot ESP system soon!!!!");
         do_reboot_exe();
