@@ -105,7 +105,7 @@ void loop()
     {
   		mqtt_loop();
 
-  		if (tempTry == 0 || ((millis() - tempTry) > 25000UL))  // 25sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 25000UL))  && mqtt_connected())  // 25sec
   		{
   			if(readFromOneWire()) {
   				sendTempData();
