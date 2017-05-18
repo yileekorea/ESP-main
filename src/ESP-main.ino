@@ -108,6 +108,7 @@ void loop()
   		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
   		{
         DEBUG.println("Firmware: "+ currentfirmware);
+        measureTemperature(s_loop);
         readoutTemperature(s_loop);
 				if (userTempset == 1){
           sendTempData(); //send all sensor temp data
@@ -116,7 +117,7 @@ void loop()
           send_a_TempData(s_loop);
         }
 				relayControl();
-        measureTemperature(s_loop);
+        //measureTemperature(s_loop);
   			tempTry = millis();
         s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
   		}

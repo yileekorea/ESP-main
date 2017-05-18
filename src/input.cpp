@@ -209,7 +209,7 @@ void measureTemperature(byte Sensor)
 
     //delay(1000);     	// maybe 750ms is enough, maybe not
     //delay(200);     	// maybe 187.5ms is enough, maybe not
-    //delay(20);     	// test purpose
+    delay(20);     	// test purpose
   //} //numSensor
 } //measureTemperature
 
