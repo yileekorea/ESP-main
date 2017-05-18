@@ -34,12 +34,13 @@
 
 extern String last_datastr;
 extern String input_string;
-
-extern String sName[]; 
+//extern byte numberofSensors;
+extern String sName[];
 extern float old_celsius[];
 extern float celsius[];
 extern float rStatus[];
 extern float L_Temp[];
+extern byte address[10][8];
 
 // -------------------------------------------------------------------
 // Read input sent via the web_server or serial.
@@ -50,5 +51,9 @@ extern float L_Temp[];
 extern boolean input_get(String& data);
 
 extern String readFromOneWire();
+extern void readOneWireAddr();
+extern void readoutTemperature(byte Sensor);
+extern void measureTemperature(byte Sensor);
+
 
 #endif // _EMONESP_INPUT_H

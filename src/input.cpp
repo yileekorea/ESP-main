@@ -35,11 +35,182 @@ String sName[]= {"a","b","c","d","e","f","g","h","i","j"};
 float old_celsius[] = {26,26,26,26,26,26,26,26,26,26};
 float celsius[] = {26,26,26,26,26,26,26,26,26,26};
 float rStatus[] = {0,0,0,0,0,0,0,0}; //room status all OFF
-float L_Temp[] = {26,26,26,26,26,26,26,26}; 
+float L_Temp[] = {26,26,26,26,26,26,26,26};
+byte address[10][8];
 
+//byte numberofSensors = 0;
 
 String input_string="";
 String last_datastr="";
+
+/*
+ * Sensor address read
+ */
+void readOneWireAddr()
+{
+  byte nSensor = 0;
+  byte i;
+  //byte present = 0;
+  byte type_s;
+  //byte data[12];
+  byte addr[8];
+
+  //Serial.println("readOneWireAddr");
+  while (ds.search(addr)) {
+    sName[nSensor] = "";
+    Serial.println();
+    Serial.print("ROM =");
+    for ( i = 0; i < 8; i++) {
+      sName[nSensor] += String(addr[i], HEX);
+      address[nSensor][i] = addr[i];
+      Serial.write(' ');
+      //Serial.print(addr[i], HEX);
+      Serial.print(address[nSensor][i], HEX);
+    }
+    //Serial.print(sName[nSensor]);
+
+    if (OneWire::crc8(addr, 7) != addr[7]) {
+        Serial.println("CRC is not valid!:" + nSensor);
+    }
+    Serial.println();
+
+    // the first ROM byte indicates which chip
+    switch (addr[0]) {
+          case 0x10:
+          //Serial.println("  Chip = DS18S20");  // or old DS1820
+          type_s = 1;
+          break;
+    case 0x28:
+          //Serial.println("  Chip = DS18B20");
+          type_s = 0;
+          break;
+    case 0x22:
+          //Serial.println("  Chip = DS1822");
+          type_s = 0;
+          break;
+    default:
+          Serial.println("Device is not a DS18x20 family device.");
+    }
+    nSensor++;
+    delay(200);     	// maybe 187.5ms is enough, maybe not
+  }
+  //numberofSensors = nSensor;
+  numSensor = nSensor;
+  DEBUG.printf("numberofSensors is '%d'\n", numSensor);
+}
+
+/*
+ * ask Sensor to measure Temperature
+ */
+void readoutTemperature(byte Sensor)
+{
+  byte nSensor = Sensor;
+  byte s, i;
+  byte present = 0;
+  byte type_s;
+  byte data[12];
+  byte addr[8];
+
+  //Serial.println("readoutTemperature");
+  //while (ds.search(addr)) {
+  //for ( s = 0; i < numSensor; i++) {
+    for ( i = 0; i < 8; i++) {
+      addr[i] = address[nSensor][i];
+    }
+
+    // we might do a ds.depower() here, but the reset will take care of it.
+    present = ds.reset();
+    ds.select(addr);
+    ds.write(0xBE);     // Read Scratchpad
+    /*
+    Serial.print("  Data = ");
+    Serial.print(present, HEX);
+    Serial.print(" ");
+    */
+    for ( i = 0; i < 9; i++) {           // we need 9 bytes
+        data[i] = ds.read();
+        //Serial.print(data[i], HEX);
+        //Serial.print(" ");
+    }
+    /*
+    Serial.print(" CRC=");
+    Serial.print(OneWire::crc8(data, 8), HEX);
+    Serial.println();
+    */
+
+
+    int16_t raw = (data[1] << 8) | data[0];
+    if (type_s) {
+        raw = raw << 3; // 9 bit resolution default
+        if (data[7] == 0x10) {
+			// "count remain" gives full 12 bit resolution
+			raw = (raw & 0xFFF0) + 12 - data[6];
+        }
+    } else {
+        byte cfg = (data[4] & 0x60);
+        // at lower res, the low bits are undefined, so let's zero them
+        if (cfg == 0x00) raw = raw & ~7;  // 9 bit resolution, 93.75 ms
+        else if (cfg == 0x20) raw = raw & ~3; // 10 bit res, 187.5 ms
+        else if (cfg == 0x40) raw = raw & ~1; // 11 bit res, 375 ms
+        // default is 12 bit resolution, 750 ms conversion time
+		// but set as 10bits
+		//raw = raw & ~3; // 10 bit res, 187.5 ms
+    }
+    celsius[nSensor] = (float)raw / 16.0;
+    //fahrenheit[nSensor] = celsius[nSensor] * 1.8 + 32.0;
+    Serial.print("  Temps = ");
+    Serial.print(celsius[nSensor]);
+    Serial.print(" 'C");
+
+
+	if(L_Temp[nSensor]){
+		Serial.print("  L_Temp[");
+		Serial.print(nSensor);
+		Serial.print("] ====> ");
+		Serial.print(L_Temp[nSensor]);
+	}
+
+	if(L_Temp[nSensor] <= celsius[nSensor]){
+		rStatus[nSensor] = 0;
+	}else{
+		rStatus[nSensor] = L_Temp[nSensor];
+		if(L_Temp[nSensor]){
+			Serial.print("  rStatus[] -----> ");
+			Serial.println(rStatus[nSensor]);
+		}
+	}
+
+  //} //numSensor
+} //readTemperature
+
+/*
+ * ask Sensor to measure Temperature
+ */
+void measureTemperature(byte Sensor)
+{
+  byte nSensor = Sensor;
+  byte s, i;
+  //byte present = 0;
+  byte type_s;
+  //byte data[12];
+  byte addr[8];
+
+  //Serial.println("measureTemperature");
+  //while (ds.search(addr)) {
+  //for ( s = 0; i < numSensor; i++) {
+    for ( i = 0; i < 8; i++) {
+      addr[i] = address[nSensor][i];
+    }
+
+    ds.reset();
+    ds.select(addr);
+    ds.write(0x44, 1);  // start conversion, with parasite power on at the end
+
+    //delay(1000);     	// maybe 750ms is enough, maybe not
+    //delay(200);     	// maybe 187.5ms is enough, maybe not
+    //delay(20);     	// test purpose
+  //} //numSensor
+} //measureTemperature
 
 /*
  * Temperature measurement
@@ -54,9 +225,10 @@ String readFromOneWire()
     byte type_s;
     byte data[12];
     byte addr[8];
-    
-    while (ds.search(addr)) {	
-    ////    measure ();
+
+    while (ds.search(addr)) {
+    //    measure ();
+    sName[nSensor] = "";
     //Serial.print("ROM =");
     for ( i = 0; i < 8; i++) {
         //Serial.write(' ');
@@ -64,14 +236,14 @@ String readFromOneWire()
 		sName[nSensor] += String(addr[i], HEX);
     }
     //Serial.print(sName[nSensor]);
-      
+
     if (OneWire::crc8(addr, 7) != addr[7]) {
         Serial.println("CRC is not valid!");
 		payload="";
         return payload;
     }
     Serial.println();
-    
+
     // the first ROM byte indicates which chip
     switch (addr[0]) {
           case 0x10:
@@ -91,16 +263,17 @@ String readFromOneWire()
 		  payload="";
           return payload;
     }
-        
+
     ds.reset();
     ds.select(addr);
     ds.write(0x44, 1);  // start conversion, with parasite power on at the end
-    
+
     //delay(1000);     	// maybe 750ms is enough, maybe not
     delay(200);     	// maybe 187.5ms is enough, maybe not
     //delay(20);     	// test purpose
+
+
     // we might do a ds.depower() here, but the reset will take care of it.
-    
     present = ds.reset();
     ds.select(addr);
     ds.write(0xBE);     // Read Scratchpad
@@ -119,8 +292,8 @@ String readFromOneWire()
     Serial.print(OneWire::crc8(data, 8), HEX);
     Serial.println();
     */
-	
-	
+
+
     int16_t raw = (data[1] << 8) | data[0];
     if (type_s) {
         raw = raw << 3; // 9 bit resolution default
@@ -144,13 +317,13 @@ String readFromOneWire()
     Serial.print(celsius[nSensor]);
     Serial.print(" 'C");
 
-	
+
 	if(L_Temp[nSensor]){
 		Serial.print("  L_Temp[");
 		Serial.print(nSensor);
 		Serial.print("] ====> ");
 		Serial.print(L_Temp[nSensor]);
-	}	
+	}
 
 	if(L_Temp[nSensor] <= celsius[nSensor]){
 		rStatus[nSensor] = 0;
@@ -161,8 +334,7 @@ String readFromOneWire()
 			Serial.println(rStatus[nSensor]);
 		}
 	}
-	
-	
+
     nSensor += 1;
 	payload = "OK";
 
@@ -171,7 +343,7 @@ String readFromOneWire()
     Serial.println("No more addresses.");
     ds.reset_search();
     delay(1000);
-	
+
 	numSensor = nSensor;
     return payload;
 }

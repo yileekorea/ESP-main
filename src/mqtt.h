@@ -33,7 +33,7 @@
 
 #include <Arduino.h>
 
-
+extern byte userTempset;
 // -------------------------------------------------------------------
 // Perform the background MQTT operations. Must be called in the main
 // loop function
@@ -65,6 +65,7 @@ extern void mqttCallback(char* topic_sub, byte* payload, unsigned int length);
 extern void sendmqttMsg(char* topictosend, String payload);
 
 extern void sendTempData();
+extern void send_a_TempData(byte Sensor);
 
 extern void exec_save_command(String exec);
 

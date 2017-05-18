@@ -39,6 +39,7 @@
 
 unsigned long tempTry = 1;
 int numSensor = 0;
+byte s_loop = 0;
 
 
 // -------------------------------------------------------------------
@@ -82,8 +83,7 @@ void setup() {
 
   mcp_GPIO_setup();
 
-  delay(100);
-
+  readOneWireAddr();
 
   DEBUG.println("Loop start");
 } // end setup
@@ -105,14 +105,20 @@ void loop()
     {
   		mqtt_loop();
 
-  		if ((tempTry == 0 || ((millis() - tempTry) > 25000UL))  && mqtt_connected())  // 25sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 5000UL))  && mqtt_connected())  // 5sec
   		{
-  			if(readFromOneWire()) {
-  				sendTempData();
-  				relayControl();
-          DEBUG.println("Firmware: "+ currentfirmware);
-  			}
+        DEBUG.println("Firmware: "+ currentfirmware);
+        readoutTemperature(s_loop);
+				if (userTempset == 1){
+          sendTempData(); //send all sensor temp data
+          userTempset = 0;
+        } else {
+          send_a_TempData(s_loop);
+        }
+				relayControl();
+        measureTemperature(s_loop);
   			tempTry = millis();
+        s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
   		}
   	}
   }

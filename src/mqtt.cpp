@@ -54,7 +54,7 @@ String topic_pub = "/P_";
 String MAC;
 String strID = String(WiFi.macAddress());
 String exec_command = "";
-
+byte userTempset = 0;
 
 //WiFiClient espClient;                 // Create client for MQTT
 WiFiClientSecure espClient;                 // Create client for MQTT
@@ -138,6 +138,51 @@ boolean reconnect() {
     return mqttclient.connected();
 }
 // -------------------------------------------------------------------
+// MQTT send A TempData
+// -------------------------------------------------------------------
+void send_a_TempData(byte Sensor) {
+    byte i = Sensor;
+    //for ( i = 0; i < numSensor ; i++) {
+		if(old_celsius[i] != celsius[i]){
+
+			char pChrBuffer[5];
+			String payload = "{\"tbl_name\":";
+			payload += "\"";
+			payload += MAC;
+			payload += "\"";
+
+			payload += ",\"id\":";
+			payload += i+1;   // id
+
+			payload += ",\"numSensor\":";
+			payload += numSensor;   // numSensor
+
+			payload += ",\"cTemps\":";
+			if ( isnan(celsius[i]) )
+				payload += "0";
+			else {
+				dtostrf(celsius[i] , 3, 1, pChrBuffer);
+				payload += pChrBuffer;   // *C
+			}
+
+			payload += ",\"sName\":";
+			payload += "\"";
+			payload += sName[i];   // sensor name
+			payload += "\"";
+
+			payload += ",\"cStatus\":";
+			payload += rStatus[i];   // room status
+			payload += "}";
+
+			sendmqttMsg((char *)topic_pub.c_str(), (char *)payload.c_str());
+		}
+		sName[i] = "";
+		old_celsius[i] = celsius[i];
+
+	//} //numSensor
+}
+
+// -------------------------------------------------------------------
 // MQTT sendTempData
 // -------------------------------------------------------------------
 void sendTempData() {
@@ -178,7 +223,8 @@ void sendTempData() {
 		}
 		sName[i] = "";
 		old_celsius[i] = celsius[i];
-	}
+
+	} //numSensor
 }
 // -------------------------------------------------------------------
 // MQTT sendmqttMsg sending
@@ -188,6 +234,7 @@ void sendmqttMsg(char* topictosend, String payload)
 
   if (mqttclient.connected()) {
     if (DEBUG_PRINT) {
+      Serial.println();
       Serial.print("Sending payload: ");
       Serial.print(payload);
     }
@@ -240,7 +287,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 	char * pch=0;
 	//printf ("Looking for the ':' chars in \"%s\"...\n",buffer);
 	pch=strchr(buffer,':');
-	if(pch){
+	if(pch) {
 		tempTry = 0;
 		r_Sensor = atoi(buffer);	// number of Sensors
 		printf ("number of sensor %d\n",r_Sensor);
@@ -254,6 +301,8 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 			old_celsius[i] += 0.5;
 			++i;
 		}
+    //sendTempData();
+    userTempset = 1;
 	}
 	else {
 		String exec = String(buffer);
