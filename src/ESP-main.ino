@@ -105,7 +105,7 @@ void loop()
     {
   		mqtt_loop();
 
-  		if ((tempTry == 0 || ((millis() - tempTry) > 5000UL))  && mqtt_connected())  // 5sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
   		{
         DEBUG.println("Firmware: "+ currentfirmware);
         readoutTemperature(s_loop);
