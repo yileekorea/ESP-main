@@ -73,7 +73,7 @@ void readOneWireAddr()
         Serial.println("CRC is not valid!:" + nSensor);
     }
     Serial.println();
-
+/*
     // the first ROM byte indicates which chip
     switch (addr[0]) {
           case 0x10:
@@ -91,6 +91,7 @@ void readOneWireAddr()
     default:
           Serial.println("Device is not a DS18x20 family device.");
     }
+*/
     nSensor++;
     delay(250);
   }
@@ -117,6 +118,24 @@ void readoutTemperature(byte Sensor)
   //for ( s = 0; i < numSensor; i++) {
     for ( i = 0; i < 8; i++) {
       addr[i] = address[nSensor][i];
+    }
+
+    // the first ROM byte indicates which chip
+    switch (addr[0]) {
+          case 0x10:
+          //Serial.println("  Chip = DS18S20");  // or old DS1820
+          type_s = 1;
+          break;
+    case 0x28:
+          //Serial.println("  Chip = DS18B20");
+          type_s = 0;
+          break;
+    case 0x22:
+          //Serial.println("  Chip = DS1822");
+          type_s = 0;
+          break;
+    default:
+          Serial.println("Device is not a DS18x20 family device.");
     }
 
     // we might do a ds.depower() here, but the reset will take care of it.
