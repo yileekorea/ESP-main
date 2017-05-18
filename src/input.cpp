@@ -108,7 +108,7 @@ void readoutTemperature(byte Sensor)
   byte nSensor = Sensor;
   byte s, i;
   byte present = 0;
-  byte type_s;
+  byte type_s = 0; //Chip = DS18B20
   byte data[12];
   byte addr[8];
 
