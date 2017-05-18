@@ -143,7 +143,8 @@ boolean reconnect() {
 void send_a_TempData(byte Sensor) {
     byte i = Sensor;
     //for ( i = 0; i < numSensor ; i++) {
-		if(old_celsius[i] != celsius[i]){
+    if(abs(old_celsius[i] - celsius[i]) > 0.1){ //temp. difference is...
+		//if(old_celsius[i] != celsius[i]){
 
 			char pChrBuffer[5];
 			String payload = "{\"tbl_name\":";
