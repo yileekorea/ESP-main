@@ -92,11 +92,12 @@ void readOneWireAddr()
           Serial.println("Device is not a DS18x20 family device.");
     }
     nSensor++;
-    delay(200);     	// maybe 187.5ms is enough, maybe not
+    delay(250);
   }
   //numberofSensors = nSensor;
   numSensor = nSensor;
   DEBUG.printf("numberofSensors is '%d'\n", numSensor);
+
 }
 
 /*
