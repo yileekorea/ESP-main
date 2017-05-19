@@ -38,7 +38,6 @@ float rStatus[] = {0,0,0,0,0,0,0,0}; //room status all OFF
 float L_Temp[] = {26,26,26,26,26,26,26,26};
 byte address[10][8];
 
-//byte numberofSensors = 0;
 
 String input_string="";
 String last_datastr="";
@@ -51,7 +50,7 @@ void readOneWireAddr()
   byte nSensor = 0;
   byte i;
   //byte present = 0;
-  byte type_s;
+  //byte type_s;
   //byte data[12];
   byte addr[8];
 
@@ -73,31 +72,11 @@ void readOneWireAddr()
         Serial.println("CRC is not valid!:" + nSensor);
     }
     Serial.println();
-/*
-    // the first ROM byte indicates which chip
-    switch (addr[0]) {
-          case 0x10:
-          //Serial.println("  Chip = DS18S20");  // or old DS1820
-          type_s = 1;
-          break;
-    case 0x28:
-          //Serial.println("  Chip = DS18B20");
-          type_s = 0;
-          break;
-    case 0x22:
-          //Serial.println("  Chip = DS1822");
-          type_s = 0;
-          break;
-    default:
-          Serial.println("Device is not a DS18x20 family device.");
-    }
-*/
     nSensor++;
     delay(250);
   }
-  //numberofSensors = nSensor;
   numSensor = nSensor;
-  DEBUG.printf("numberofSensors is '%d'\n", numSensor);
+  DEBUG.printf("number of Sensors are '%d'\n", numSensor);
 
 }
 
@@ -174,7 +153,7 @@ void readoutTemperature(byte Sensor)
         else if (cfg == 0x40) raw = raw & ~1; // 11 bit res, 375 ms
         // default is 12 bit resolution, 750 ms conversion time
 		// but set as 10bits
-		//raw = raw & ~3; // 10 bit res, 187.5 ms
+		raw = raw & ~3; // 10 bit res, 187.5 ms
     }
     celsius[nSensor] = (float)raw / 16.0;
     //fahrenheit[nSensor] = celsius[nSensor] * 1.8 + 32.0;
