@@ -36,6 +36,11 @@ const uint8_t MCP_CS = 15;
 gpio_MCP23S17 mcp(MCP_CS,0x20);//instance
 
 Ticker ticker;
+/*
+unsigned long Timer_1[] = {0,0,0,0,0,0,0,0};
+unsigned long Timer_2[] = {0,0,0,0,0,0,0,0};
+byte isOFF[] = {0,0,0,0,0,0,0,0};
+*/
 
 
 /*
@@ -48,13 +53,55 @@ void relayControl() {
 	} else {
 		digitalWrite(R1_BUILTIN,HIGH);
 	}
+  for ( i = 1; i < (numSensor-1) ; i++) {
+    rStatus[i] == 0 ? mcp.gpioDigitalWrite(i+3,LOW) : mcp.gpioDigitalWrite(i+3,HIGH);
+  }
+/*
 	for ( i = 1; i < (numSensor-1) ; i++) {
-		if(L_Temp[i] <= celsius[i]){
-			mcp.gpioDigitalWrite(i+3,LOW); //mcp.GPIO 0 ~ 3 for input sense
-		} else {
-			mcp.gpioDigitalWrite(i+3,HIGH);
+		if((L_Temp[i] <= celsius[i]) && ((millis() - Timer_2[i]) > 60000UL) && (isOFF[i] == 0)) { // 1min
+
+			mcp.gpioDigitalWrite(i+3,LOW); //if current celsius Greater than setting --> off
+			Timer_1[i] = millis();
+			isOFF[i] = 1;
+			DEBUG.print(" isOFF: ");
+			DEBUG.print(i);
+			DEBUG.println(isOFF[i]);
 		}
-	}
+
+		if(L_Temp[i] > celsius[i]) {
+		  DEBUG.println();
+		  DEBUG.print("L_Temp-");
+		  DEBUG.print(i);
+		  DEBUG.print(" : ");
+		  DEBUG.print(L_Temp[i]);
+		  DEBUG.print("    celsius-");
+		  DEBUG.print(i);
+		  DEBUG.print(" : ");
+		  DEBUG.println(celsius[i]);
+		  DEBUG.println();
+
+		  mcp.gpioDigitalWrite(i+3,HIGH);
+		  isOFF[i] = 0;
+			}
+		else if((millis() - Timer_1[i]) > 180000UL) { //3min
+		  DEBUG.println();
+		  DEBUG.print(i);
+		  DEBUG.print(" : millis-");
+		  DEBUG.print(millis());
+		  DEBUG.print("  -   vControlTimer-");
+		  DEBUG.print(Timer_1[i]);
+		  DEBUG.print("  =  ");
+		  DEBUG.println((millis() - Timer_1[i]));
+
+		  Timer_1[i] = millis();
+		  Timer_2[i] = millis();
+		  mcp.gpioDigitalWrite(i+3,HIGH);
+		  isOFF[i] = 0;
+
+		}
+
+	} // for
+*/
 }
 
 void mcp_GPIO_setup() {

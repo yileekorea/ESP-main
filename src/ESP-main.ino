@@ -54,6 +54,7 @@ void setup() {
   delay(1000);
 
   Serial.begin(115200);
+  
 #ifdef DEBUG_SERIAL1
   Serial1.begin(115200);
 #endif
@@ -105,9 +106,9 @@ void loop()
     {
   		mqtt_loop();
 
-  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && 1)  // 6sec
   		{
-        DEBUG.println("Firmware: "+ currentfirmware);
+        //DEBUG.println("Firmware: "+ currentfirmware);
         measureTemperature(s_loop);
         readoutTemperature(s_loop);
 				if (userTempset == 1){

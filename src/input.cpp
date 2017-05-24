@@ -38,6 +38,11 @@ float rStatus[] = {0,0,0,0,0,0,0,0}; //room status all OFF
 float L_Temp[] = {26,26,26,26,26,26,26,26};
 byte address[10][8];
 
+unsigned long Timer_1[] = {0,0,0,0,0,0,0,0};
+unsigned long Timer_2[] = {0,0,0,0,0,0,0,0};
+byte isOFF[] = {0,0,0,0,0,0,0,0};
+
+//byte numberofSensors = 0;
 
 String input_string="";
 String last_datastr="";
@@ -50,7 +55,7 @@ void readOneWireAddr()
   byte nSensor = 0;
   byte i;
   //byte present = 0;
-  //byte type_s;
+  byte type_s;
   //byte data[12];
   byte addr[8];
 
@@ -72,11 +77,31 @@ void readOneWireAddr()
         Serial.println("CRC is not valid!:" + nSensor);
     }
     Serial.println();
+/*
+    // the first ROM byte indicates which chip
+    switch (addr[0]) {
+          case 0x10:
+          //Serial.println("  Chip = DS18S20");  // or old DS1820
+          type_s = 1;
+          break;
+    case 0x28:
+          //Serial.println("  Chip = DS18B20");
+          type_s = 0;
+          break;
+    case 0x22:
+          //Serial.println("  Chip = DS1822");
+          type_s = 0;
+          break;
+    default:
+          Serial.println("Device is not a DS18x20 family device.");
+    }
+*/
     nSensor++;
     delay(250);
   }
+  //numberofSensors = nSensor;
   numSensor = nSensor;
-  DEBUG.printf("number of Sensors are '%d'\n", numSensor);
+  DEBUG.printf("numberofSensors is '%d'\n", numSensor);
 
 }
 
@@ -153,7 +178,7 @@ void readoutTemperature(byte Sensor)
         else if (cfg == 0x40) raw = raw & ~1; // 11 bit res, 375 ms
         // default is 12 bit resolution, 750 ms conversion time
 		// but set as 10bits
-		raw = raw & ~3; // 10 bit res, 187.5 ms
+		//raw = raw & ~3; // 10 bit res, 187.5 ms
     }
     celsius[nSensor] = (float)raw / 16.0;
     //fahrenheit[nSensor] = celsius[nSensor] * 1.8 + 32.0;
@@ -168,9 +193,51 @@ void readoutTemperature(byte Sensor)
 		Serial.print("] ====> ");
 		Serial.print(L_Temp[nSensor]);
 	}
+  setON_OFFstatus(nSensor);
+} //readTemperature
 
-	if(L_Temp[nSensor] <= celsius[nSensor]){
+/*
+ * setON_OFFstatus by the measured Temperature
+ */
+void setON_OFFstatus(byte Sensor){
+  byte nSensor = Sensor;
+
+  if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > 60000UL) && (isOFF[nSensor] == 0)) { // 1min
 		rStatus[nSensor] = 0;
+    Timer_1[nSensor] = millis();
+    isOFF[nSensor] = 1;
+  }
+  if(L_Temp[nSensor] > celsius[nSensor]) {
+    rStatus[nSensor] = L_Temp[nSensor];
+    isOFF[nSensor] = 0;
+    if(L_Temp[nSensor]){
+			Serial.print("  rStatus[] -----> ");
+			Serial.println(rStatus[nSensor]);
+		}
+  }
+  else if((millis() - Timer_1[nSensor]) > 180000UL) { //3min
+    rStatus[nSensor] = L_Temp[nSensor];
+    DEBUG.println();
+    DEBUG.print(nSensor);
+    DEBUG.print(" : millis-");
+    DEBUG.print(millis());
+    DEBUG.print("  -   vControlTimer-");
+    DEBUG.print(Timer_1[nSensor]);
+    DEBUG.print("  =  ");
+    DEBUG.println((millis() - Timer_1[nSensor]));
+
+    Timer_1[nSensor] = millis();
+    Timer_2[nSensor] = millis();
+
+    isOFF[nSensor] = 0;
+    if(L_Temp[nSensor]){
+			Serial.print("  rStatus[] -----> ");
+			Serial.println(rStatus[nSensor]);
+		}
+
+  } //else if((millis() - Timer_1...
+}
+/*
 	}else{
 		rStatus[nSensor] = L_Temp[nSensor];
 		if(L_Temp[nSensor]){
@@ -178,9 +245,8 @@ void readoutTemperature(byte Sensor)
 			Serial.println(rStatus[nSensor]);
 		}
 	}
-
+*/
   //} //numSensor
-} //readTemperature
 
 /*
  * ask Sensor to measure Temperature
