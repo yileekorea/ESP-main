@@ -161,7 +161,7 @@ protected:
 		//SPI.beginTransaction(SPISettings(_MCPMaxSpeed, MSBFIRST, SPI_MODE0));
 	#endif
 	#if defined(ESP8266)
-		//DEBUG_MCP("_STARTSend");
+		DEBUG_MCP("_STARTSend");
 		digitalWrite(_cs, LOW);
 		delay(1);
 
@@ -175,10 +175,12 @@ protected:
 //		mode == 1 ? SPI.write(_readCmd) : SPI.write(_writeCmd);
 		if(mode == 1 ){
 			SPI.write(_readCmd);
-			//DEBUG_MCP(_readCmd);
+			DEBUG_MCP("_readCmd");
+			DEBUG_MCP(_readCmd);
 		} else{
 			SPI.write(_writeCmd);
-			//DEBUG_MCP(_writeCmd);
+			DEBUG_MCP("_writeCmd");
+			DEBUG_MCP(_writeCmd); //0x40 
 		
 		}
 		delay(1);
@@ -189,7 +191,7 @@ protected:
 	inline __attribute__((always_inline))
 	void _GPIOendSend(void){
 	#if defined(ESP8266)
-		//DEBUG_MCP("_ENDSend");
+		DEBUG_MCP("_ENDSend");
 		//GPIO_REG_WRITE(GPIO_OUT_W1TS_ADDRESS, _pinRegister(_cs));//H
 		digitalWrite(_cs, HIGH);
 	#elif defined(__FASTWRITE)
@@ -209,9 +211,9 @@ protected:
 		//SPI.transfer(addr);
 		//SPI.transfer(data);
 		
-		//DEBUG_MCP("_GPIOwriteByte");
-		//DEBUG_MCP(addr);
-		//DEBUG_MCP(data);
+		DEBUG_MCP("_GPIOwriteByte");
+		DEBUG_MCP(addr);
+		DEBUG_MCP(data);
 
 		SPI.write(addr);
 		SPI.write(data);

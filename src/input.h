@@ -54,6 +54,6 @@ extern String readFromOneWire();
 extern void readOneWireAddr();
 extern void readoutTemperature(byte Sensor);
 extern void measureTemperature(byte Sensor);
-extern void setON_OFFstatus(byte Sensor);
+
 
 #endif // _EMONESP_INPUT_H

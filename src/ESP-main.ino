@@ -47,14 +47,13 @@ byte s_loop = 0;
 // -------------------------------------------------------------------
 void setup() {
   pinMode(5, OUTPUT);
-  digitalWrite(5, HIGH);
+  digitalWrite(ESP_RESET_CTL, HIGH);
 
   LED_setup(0.2);
 
   delay(1000);
 
   Serial.begin(115200);
-  
 #ifdef DEBUG_SERIAL1
   Serial1.begin(115200);
 #endif
@@ -84,6 +83,7 @@ void setup() {
 
   mcp_GPIO_setup();
 
+  
   readOneWireAddr();
 
   DEBUG.println("Loop start");
@@ -97,7 +97,7 @@ void loop()
     ota_loop();
     web_server_loop();
     wifi_loop();
-
+	
   //String input = "test";
   //boolean gotInput = input_get(input);
   if (wifi_mode==WIFI_MODE_STA || wifi_mode==WIFI_MODE_AP_AND_STA)
@@ -106,20 +106,22 @@ void loop()
     {
   		mqtt_loop();
 
-  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && 1)  // 6sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
   		{
-        //DEBUG.println("Firmware: "+ currentfirmware);
+        DEBUG.println("Firmware: "+ currentfirmware);
         measureTemperature(s_loop);
         readoutTemperature(s_loop);
-				if (userTempset == 1){
+		if (userTempset == 1){
           sendTempData(); //send all sensor temp data
           userTempset = 0;
         } else {
           send_a_TempData(s_loop);
         }
-				relayControl();
-        //measureTemperature(s_loop);
-  			tempTry = millis();
+		//relayControl();
+
+		//wireLoop();
+
+  		tempTry = millis();
         s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
   		}
   	}

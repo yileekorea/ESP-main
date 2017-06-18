@@ -35,7 +35,7 @@
 #include <FS.h>
 
 ESP8266HTTPUpdateServer httpUpdater;  // Create class for webupdate handleWebUpdate()
-#define CHECK_INTERVAL 36000
+#define CHECK_INTERVAL 3600
 
 
 // -------------------------------------------------------------------
@@ -136,9 +136,9 @@ void do_reboot_exe()
 	delay(1000);
 
 	pinMode(5, OUTPUT);
-	digitalWrite(5, LOW);
+	digitalWrite(ESP_RESET_CTL, LOW);
 	delay(100);
-	digitalWrite(5, HIGH);
+	digitalWrite(ESP_RESET_CTL, HIGH);
 
 	ESP.reset();
 }

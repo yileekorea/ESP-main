@@ -1,4 +1,4 @@
-  /*
+/*
  * -------------------------------------------------------------------
  * ESP-main Serial to ESP-main-2 gateway
  * -------------------------------------------------------------------
@@ -28,10 +28,9 @@
 
 #include <Arduino.h>
 #include <Ticker.h>
+#include <Wire.h>
 
-// -------------------------------------------------------------------
-// Support for reading input
-// -------------------------------------------------------------------
+
 
 
 
@@ -47,5 +46,8 @@ extern void LED_clear();
 
 extern void relayControl();
 extern void mcp_GPIO_setup();
+
+extern void wireSetup();
+//extern void wireLoop();
 
 #endif // _EMONESP_INPUT_H
