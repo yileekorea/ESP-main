@@ -26,11 +26,11 @@
 #include "io2better.h"
 #include "input.h"
 #include "output.h"
-#include "gpio_MCP23S17.h"   // import library
+//#include "gpio_MCP23S17.h"   // import library
 
 //#include "Adafruit_MCP23017.h"
 
-#define R1_BUILTIN 4
+//#define R1_BUILTIN 4
 
 //const uint8_t sclk = 14;
 //const uint8_t mosi =13; //Master Output Slave Input ESP8266=Master,MCP23S08=slave
@@ -38,18 +38,152 @@
 const uint8_t MCP_CS = 15;
 gpio_MCP23S17 mcp(MCP_CS,0x20);//instance
 
-//Adafruit_MCP23017 mcp_i2c;
+//Adafruit_MCP23017 mcp;
 
 Ticker ticker;
+/*
+unsigned long Timer_1[] = {0,0,0,0,0,0,0,0};
+unsigned long Timer_2[] = {0,0,0,0,0,0,0,0};
+byte isOFF[] = {0,0,0,0,0,0,0,0};
+*/
+
+/*
+void wireSetup() //I2C setup
+{
+  byte i;
+  mcp.begin();      // use default address 0
+  DEBUG.println("Start I2C wireSetup: ");
+
+  for ( i = 0; i < numberofOUT_gpio ; i++) {
+    mcp.pinMode(i, OUTPUT);
+    mcp.digitalWrite(i, LOW);
+    delay(100);
+  }
+  delay(300);
+  for ( i = 0; i < numberofOUT_gpio ; i++) {
+    mcp.digitalWrite(i, HIGH);
+    delay(100);
+  }
+
+  DEBUG.println("End I2C wireSetup: ");
+
+  for ( i = 8; i < (numberofIN_gpio + 8) ; i++) {
+    mcp.pinMode(i, INPUT);
+  }
+}
+*/
+
+/*
+ * I2C relayControl
+ */
+void valve_relayControl() {
+    byte i;
+/*
+    DEBUG.print("gpioDigitalWrite LOW-");
+    for (int i=8;i<16;i++){
+  		mcp.gpioDigitalWrite(i,LOW);
+  		delay(300);
+  	}
+
+    DEBUG.print("gpioDigitalWrite HIGH-");
+  	//for (int i=0;i<16;i++){
+  	for (int i=15;i>7;i--){
+  		mcp.gpioDigitalWrite(i,HIGH);
+  		delay(300);
+  	}
+*/
+    for ( i = 0; i < (numSensor-1) ; i++) {
+//      rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
+      DEBUG.print("valve_relayControl rStatus-");
+      DEBUG.print(i);
+      DEBUG.print(" : ");
+      DEBUG.println(rStatus[i]);
+
+      //rStatus[i] > 0 ? mcp.gpioDigitalWrite(i+8,LOW) : mcp.gpioDigitalWrite(i+8,HIGH);
+      if (rStatus[i] > 0){
+        //mcp.gpioPinMode(OUTPUT);
+        mcp.gpioDigitalWrite(i+8,LOW);
+        DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
+      } else {
+        //mcp.gpioPinMode(OUTPUT);
+        mcp.gpioDigitalWrite(i+8,HIGH);
+        DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
+      }
+
+
+    }
+
+/*
+	for ( i = 0; i < (numSensor) ; i++) {
+    //if((L_Temp[i] <= celsius[i]) && ((millis() - Timer_2[i]) > 60000UL)) { // 1min
+		if((L_Temp[i] <= celsius[i]) && ((millis() - Timer_2[i]) > 60000UL) && (isOFF[i] == 0)) { // 1min
+      //if(isOFF[i] == 0)
+      {
+        mcp.digitalWrite(i,HIGH); //if current celsius Greater than setting --> off
+        Timer_1[i] = millis();
+        isOFF[i] = 1;
+        DEBUG.print(" isOFF: ");
+        DEBUG.print(i);
+        DEBUG.println(isOFF[i]);
+      }
+		}
 
 
 
+    //if((L_Temp[i] > celsius[i]) || ((millis() - Timer_1[i]) > 60000UL)) {
+    if(L_Temp[i] > celsius[i]) {
+      DEBUG.println();
+      DEBUG.print("L_Temp-");
+      DEBUG.print(i);
+      DEBUG.print(" : ");
+      DEBUG.print(L_Temp[i]);
+      DEBUG.print("    celsius-");
+      DEBUG.print(i);
+      DEBUG.print(" : ");
+      DEBUG.println(celsius[i]);
+      DEBUG.println();
+
+      mcp.digitalWrite(i,LOW);
+      isOFF[i] = 0;
+		}
+    else if((millis() - Timer_1[i]) > 180000UL) { //3min
+      DEBUG.println();
+      DEBUG.print(i);
+      DEBUG.print(" : millis-");
+      DEBUG.print(millis());
+      DEBUG.print("  -   vControlTimer-");
+      DEBUG.print(Timer_1[i]);
+      DEBUG.print("  =  ");
+      DEBUG.println((millis() - Timer_1[i]));
+
+      Timer_1[i] = millis();
+      Timer_2[i] = millis();
+      mcp.digitalWrite(i,LOW);
+      isOFF[i] = 0;
+
+    }
+	} // for
+*/
+}
 
 
 /*
- * relayControl 
- */
+void wireLoop()
+{
+  int state = mcp.digitalRead(0);  // get the current state of GPIO1 pin
+      DEBUG.println(" digitalRead(0): " + state);
 
+  mcp.digitalWrite(0, !state);     // set pin to the opposite state
+  mcp.digitalWrite(7, state);     // set pin to the opposite state
+  delay(9000);
+
+}
+*/
+
+/*
+ * relayControl
+ */
+/*
 void relayControl() {
     byte i;
 	if(L_Temp[0] <= celsius[0]){
@@ -65,27 +199,44 @@ void relayControl() {
 		}
 	}
 }
+*/
 
-void mcp_GPIO_setup() {
-  Serial.print("Attempting SPI mcp.begin()...");
-  Serial.println();
-  mcp.begin(0);//x.begin(1) will override automatic SPI initialization
+void mcp_GPIO_setup()
+{
+	byte i;
+	Serial.println("Attempting SPI mcp.begin()...");
+	mcp.begin();//x.begin(1) will override automatic SPI initialization
+	// Set all pins to be outputs (by default they are all inputs)
+	mcp.gpioPinMode(OUTPUT);
+	// Change all pins at once, 16-bit value
+	mcp.gpioPort(0xFFFF);
 
-  pinMode(R1_BUILTIN, OUTPUT);
-  //mcp.gpioPinMode(0x00);
-  mcp.gpioPinMode(OUTPUT);
+  //for (int i=0;i<16;i++){
+	for (int i=8;i<16;i++){
+		mcp.gpioDigitalWrite(i,LOW);
+		delay(300);
+	}
+	//for (int i=0;i<16;i++){
+	for (int i=15;i>7;i--){
+		mcp.gpioDigitalWrite(i,HIGH);
+		delay(300);
+	}
+}
+void mcp_GPIO_test()
+{
+	byte i;
+	Serial.println("Attempting SPI mcp_GPIO_test...");
 
-  digitalWrite(R1_BUILTIN, HIGH);
-  mcp.gpioPort(0xFFFF);
-  Serial.print("mcp.gpioPort(0xFF)...");
-  delay(1000);
-  mcp.gpioPort(0x0000);
-  digitalWrite(R1_BUILTIN, LOW);
-  Serial.print("mcp.gpioPort(0x00)...");
-  delay(9000);
-  mcp.gpioPort(0xFFFF);
-  Serial.print("mcp.gpioPort(0xFF)...");
-  delay(1000);
+  //for (int i=0;i<16;i++){
+	for (int i=8;i<16;i++){
+		mcp.gpioDigitalWrite(i,LOW);
+		delay(50);
+	}
+	//for (int i=0;i<16;i++){
+	for (int i=15;i>7;i--){
+		mcp.gpioDigitalWrite(i,HIGH);
+		delay(50);
+	}
 }
 
 void tick(){

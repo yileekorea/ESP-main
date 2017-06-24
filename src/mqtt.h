@@ -34,6 +34,8 @@
 #include <Arduino.h>
 
 extern byte userTempset;
+extern byte initSending;
+
 // -------------------------------------------------------------------
 // Perform the background MQTT operations. Must be called in the main
 // loop function

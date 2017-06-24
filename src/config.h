@@ -88,4 +88,10 @@ extern void config_save_wifi(String qsid, String qpass);
 // -------------------------------------------------------------------
 extern void config_reset();
 
+extern void L_Temp2SPIFFS();
+extern void SPIFFS2L_Temp();
+
+extern void accHistory2SPIFFS();
+extern void SPIFFS2accHistory();
+
 #endif // _EMONESP_CONFIG_H

@@ -54,7 +54,9 @@ String topic_pub = "/P_";
 String MAC;
 String strID = String(WiFi.macAddress());
 String exec_command = "";
-byte userTempset = 0;
+byte userTempset = 1;
+byte initSending = 10;
+
 
 //WiFiClient espClient;                 // Create client for MQTT
 WiFiClientSecure espClient;                 // Create client for MQTT
@@ -143,10 +145,10 @@ boolean reconnect() {
 void send_a_TempData(byte Sensor) {
     byte i = Sensor;
     //for ( i = 0; i < numSensor ; i++) {
-    if(abs(old_celsius[i] - celsius[i]) > 0.1){ //temp. difference is...
-		//if(old_celsius[i] != celsius[i]){
+    if((abs(old_celsius[i] - celsius[i]) > 0.1) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
 
-			char pChrBuffer[5];
+      char pChrBuffer[5];
+			char pChrBuffer_acc[8];
 			String payload = "{\"tbl_name\":";
 			payload += "\"";
 			payload += MAC;
@@ -165,20 +167,31 @@ void send_a_TempData(byte Sensor) {
 				dtostrf(celsius[i] , 3, 1, pChrBuffer);
 				payload += pChrBuffer;   // *C
 			}
-
+/*
 			payload += ",\"sName\":";
 			payload += "\"";
 			payload += sName[i];   // sensor name
 			payload += "\"";
-
+*/
 			payload += ",\"cStatus\":";
 			payload += rStatus[i];   // room status
+
+      payload += ",\"cCount\":";
+			if ( isnan(accCountValue) )
+				payload += "0";
+			else {
+				dtostrf(accCountValue , 7, 2, pChrBuffer_acc);
+				payload += pChrBuffer_acc;
+			}
+
 			payload += "}";
 
 			sendmqttMsg((char *)topic_pub.c_str(), (char *)payload.c_str());
+
+			old_celsius[i] = celsius[i];
 		}
-		sName[i] = "";
-		old_celsius[i] = celsius[i];
+		//old_celsius[i] = celsius[i];
+		old_rStatus[i] = rStatus[i];
 
 	//} //numSensor
 }
@@ -189,8 +202,11 @@ void send_a_TempData(byte Sensor) {
 void sendTempData() {
     byte i;
     for ( i = 0; i < numSensor ; i++) {
+      send_a_TempData(i);
+/*
 		//if(old_celsius[i] != celsius[i]){
-    if(abs(old_celsius[i] - celsius[i]) > 0.1 ){
+    //if(abs(old_celsius[i] - celsius[i]) > 0.1 )
+    {
 
 			char pChrBuffer[5];
 			String payload = "{\"tbl_name\":";
@@ -227,8 +243,9 @@ void sendTempData() {
 		} //if(abs(old_celsius[i] - celsius[i]) > 0.1 )
 		sName[i] = "";
 		//old_celsius[i] = celsius[i];
+    */
 
-	} //numSensor
+	} //for ( i = 0; i < numSensor...
 }
 // -------------------------------------------------------------------
 // MQTT sendmqttMsg sending
@@ -278,6 +295,8 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 	int i = 0;
 	int r_Sensor;
     char buffer[80];
+	float tmp_accCountValue;
+	
     int len = length >= 79 ? 79 : length;
     memcpy(buffer, payload, len);
     buffer[length] = 0;
@@ -296,17 +315,32 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 		r_Sensor = atoi(buffer);	// number of Sensors
 		printf ("number of sensor %d\n",r_Sensor);
 
-		while (pch!=NULL)
-		{
+    autoOff_OnTimer = atof(pch+1);
+    printf ("autoOff_OnTimer %d\n",autoOff_OnTimer);
+    pch=strchr(pch+1,':');
+
+    tmp_accCountValue = atof(pch+1);
+	if(tmp_accCountValue > accCountValue) {
+		accCountValue = tmp_accCountValue;
+		INTstateHistory = 1;
+	}
+	DEBUG.print("accCountValue : ");
+	DEBUG.println(accCountValue);
+	pch=strchr(pch+1,':');
+
+	while (pch!=NULL)
+	{
 			L_Temp[i] = atof(pch+1);
 			DEBUG.println(L_Temp[i]);
 			//printf ("found at %d\n",pch-buffer+1);
 			pch=strchr(pch+1,':');
 			old_celsius[i] += 0.5;
 			++i;
-		}
+	}
     //sendTempData();
     userTempset = 1;
+    initSending = 2; //3times send all sensor data
+    L_Temp2SPIFFS(); //store received L_Temp to SPIFFS
 	}
 	else {
 		String exec = String(buffer);

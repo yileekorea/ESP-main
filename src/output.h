@@ -29,9 +29,11 @@
 #include <Arduino.h>
 #include <Ticker.h>
 #include <Wire.h>
+#include "gpio_MCP23S17.h"   // import library
 
 
-
+#define numberofOUT_gpio 8
+#define numberofIN_gpio 8
 
 
 // -------------------------------------------------------------------
@@ -40,14 +42,21 @@
 // data: if true is returned data will be updated with the new line of
 //       input
 // -------------------------------------------------------------------
+/*
+extern unsigned long Timer_1[];
+extern unsigned long Timer_2[];
+extern byte isOFF[];
+*/
+
 extern void tick();
 extern void LED_setup(float t);
 extern void LED_clear();
 
-extern void relayControl();
+extern void valve_relayControl();
 extern void mcp_GPIO_setup();
+extern void mcp_GPIO_test();
 
-extern void wireSetup();
+//extern void wireSetup();
 //extern void wireLoop();
 
 #endif // _EMONESP_INPUT_H

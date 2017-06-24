@@ -25,22 +25,118 @@
 
 #include "io2better.h"
 #include "input.h"
+#include "mqtt.h"
 
 #include "OneWire.h"
 
+#define a_min 60000UL //1min
+#define interOpenTimer 300000UL //5min
+//#define autoOff_OnTimer 1800000UL //30min
 
+/*
+#define interOpenTimer 60000UL //1min
+#define autoOff_OnTimer 120000UL //2min
+*/
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
 String sName[]= {"a","b","c","d","e","f","g","h","i","j"};
-float old_celsius[] = {26,26,26,26,26,26,26,26,26,26};
-float celsius[] = {26,26,26,26,26,26,26,26,26,26};
+float old_celsius[] = {26,26,26,26,26,26,26,26};
+float celsius[] = {26,26,26,26,26,26,26,26};
+float old_rStatus[] = {1,1,1,1,1,1,1,1}; //room status all ON
 float rStatus[] = {0,0,0,0,0,0,0,0}; //room status all OFF
-float L_Temp[] = {26,26,26,26,26,26,26,26};
+float L_Temp[] = {26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7}; //max 9
 byte address[10][8];
 
+unsigned long Timer_1[] = {0,0,0,0,0,0,0,0};
+unsigned long Timer_2[] = {0,0,0,0,0,0,0,0};
+byte isOFF[] = {0,0,0,0,0,0,0,0};
+int autoOff_OnTimer = 30; //30min
 
 String input_string="";
 String last_datastr="";
+
+//const byte interruptPin = 13;
+const byte interruptPin = 5;
+float accCountValue = 0.00;
+volatile byte INTstateHistory = 0;
+
+void accCount() {
+  delayMicroseconds(4000);
+  if(digitalRead(interruptPin) != LOW) return;
+
+  detachInterrupt(interruptPin);
+  accCountValue = accCountValue + 0.01;
+  INTstateHistory = 1;
+  userTempset = 1;
+  old_celsius[0] += 0.5;
+
+  //state = !state;
+  Serial.print("  INT_Status[] -----> ");
+  Serial.println(accCountValue);
+
+}
+
+void INTsetup() {
+  pinMode(interruptPin, INPUT_PULLUP);
+  //attachInterrupt(digitalPinToInterrupt(interruptPin), accCount, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(interruptPin), accCount, FALLING);
+}
+
+/*
+ * setON_OFFstatus by the measured Temperature
+ */
+void setON_OFFstatus(byte Sensor){
+  byte nSensor = Sensor;
+
+  if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+    rStatus[nSensor] = 0;
+    Timer_1[nSensor] = millis();
+    isOFF[nSensor] = 1;
+  }
+
+  if(L_Temp[nSensor] > celsius[nSensor]) {
+    rStatus[nSensor] = L_Temp[nSensor];
+    isOFF[nSensor] = 0;
+/*
+    if(L_Temp[nSensor]) //print when control is ON
+    {
+			Serial.print("  rStatus[] -----> ");
+			Serial.println(rStatus[nSensor]);
+		}
+*/
+  }
+  else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
+    rStatus[nSensor] = L_Temp[nSensor];
+    DEBUG.println();
+    DEBUG.print(nSensor);
+    DEBUG.print(" : millis-");
+    DEBUG.print(millis());
+    DEBUG.print("  -   vControlTimer-");
+    DEBUG.print(Timer_1[nSensor]);
+    DEBUG.print("  =  ");
+    DEBUG.println((millis() - Timer_1[nSensor]));
+
+    Timer_1[nSensor] = millis();
+    Timer_2[nSensor] = millis();
+
+    isOFF[nSensor] = 0;
+/*
+    if(L_Temp[nSensor]) //print when control is ON
+    {
+			Serial.print("  rStatus[] -----> ");
+			Serial.println(rStatus[nSensor]);
+		}
+*/
+  } //else if((millis() - Timer_1...
+
+  if(rStatus[nSensor]) //print when control is ON
+  {
+  	Serial.print("  rStatus[] -----> ");
+  	Serial.println(rStatus[nSensor]);
+  }
+
+}
+
 
 /*
  * Sensor address read
@@ -49,9 +145,6 @@ void readOneWireAddr()
 {
   byte nSensor = 0;
   byte i;
-  //byte present = 0;
-  //byte type_s;
-  //byte data[12];
   byte addr[8];
 
   //Serial.println("readOneWireAddr");
@@ -63,10 +156,11 @@ void readOneWireAddr()
       sName[nSensor] += String(addr[i], HEX);
       address[nSensor][i] = addr[i];
       Serial.write(' ');
-      //Serial.print(addr[i], HEX);
       Serial.print(address[nSensor][i], HEX);
     }
-    //Serial.print(sName[nSensor]);
+    Serial.println();
+    Serial.print("sName :");
+    Serial.print(sName[nSensor]);
 
     if (OneWire::crc8(addr, 7) != addr[7]) {
         Serial.println("CRC is not valid!:" + nSensor);
@@ -81,7 +175,7 @@ void readOneWireAddr()
 }
 
 /*
- * ask Sensor to measure Temperature
+ * read out the measured Temperature data
  */
 void readoutTemperature(byte Sensor)
 {
@@ -168,7 +262,7 @@ void readoutTemperature(byte Sensor)
 		Serial.print("] ====> ");
 		Serial.print(L_Temp[nSensor]);
 	}
-
+/*
 	if(L_Temp[nSensor] <= celsius[nSensor]){
 		rStatus[nSensor] = 0;
 	}else{
@@ -178,9 +272,12 @@ void readoutTemperature(byte Sensor)
 			Serial.println(rStatus[nSensor]);
 		}
 	}
+*/
+  setON_OFFstatus(nSensor);
 
   //} //numSensor
 } //readTemperature
+
 
 /*
  * ask Sensor to measure Temperature
@@ -189,9 +286,7 @@ void measureTemperature(byte Sensor)
 {
   byte nSensor = Sensor;
   byte s, i;
-  //byte present = 0;
   byte type_s;
-  //byte data[12];
   byte addr[8];
 
   //Serial.println("measureTemperature");
@@ -226,7 +321,6 @@ String readFromOneWire()
     byte addr[8];
 
     while (ds.search(addr)) {
-    //    measure ();
     sName[nSensor] = "";
     //Serial.print("ROM =");
     for ( i = 0; i < 8; i++) {
@@ -242,6 +336,8 @@ String readFromOneWire()
         return payload;
     }
     Serial.println();
+
+    //readoutTemperature(nSensor);
 
     // the first ROM byte indicates which chip
     switch (addr[0]) {
@@ -323,7 +419,7 @@ String readFromOneWire()
 		Serial.print("] ====> ");
 		Serial.print(L_Temp[nSensor]);
 	}
-
+/*
 	if(L_Temp[nSensor] <= celsius[nSensor]){
 		rStatus[nSensor] = 0;
 	}else{
@@ -333,9 +429,11 @@ String readFromOneWire()
 			Serial.println(rStatus[nSensor]);
 		}
 	}
+*/
+    setON_OFFstatus(nSensor);
 
     nSensor += 1;
-	payload = "OK";
+    payload = "OK";
 
   }
     Serial.println();

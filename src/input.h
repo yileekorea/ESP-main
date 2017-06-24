@@ -38,9 +38,14 @@ extern String input_string;
 extern String sName[];
 extern float old_celsius[];
 extern float celsius[];
+extern float old_rStatus[];
 extern float rStatus[];
 extern float L_Temp[];
 extern byte address[10][8];
+extern int autoOff_OnTimer;
+
+extern float accCountValue;
+extern volatile byte INTstateHistory;
 
 // -------------------------------------------------------------------
 // Read input sent via the web_server or serial.
@@ -48,12 +53,18 @@ extern byte address[10][8];
 // data: if true is returned data will be updated with the new line of
 //       input
 // -------------------------------------------------------------------
+void accCount();
+extern void INTsetup();
+
 extern boolean input_get(String& data);
+extern void setON_OFFstatus(byte Sensor);
 
 extern String readFromOneWire();
 extern void readOneWireAddr();
 extern void readoutTemperature(byte Sensor);
 extern void measureTemperature(byte Sensor);
+
+
 
 
 #endif // _EMONESP_INPUT_H

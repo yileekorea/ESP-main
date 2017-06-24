@@ -37,7 +37,7 @@
 
 
 
-unsigned long tempTry = 1;
+unsigned long tempTry = 0;
 int numSensor = 0;
 byte s_loop = 0;
 
@@ -46,7 +46,7 @@ byte s_loop = 0;
 // SETUP
 // -------------------------------------------------------------------
 void setup() {
-  pinMode(5, OUTPUT);
+  pinMode(ESP_RESET_CTL, OUTPUT);
   digitalWrite(ESP_RESET_CTL, HIGH);
 
   LED_setup(0.2);
@@ -59,8 +59,9 @@ void setup() {
 #endif
 
   DEBUG.println();
-  DEBUG.print("io2LIFE ");
-  DEBUG.println(ESP.getChipId());
+  DEBUG.print("io2Better ");
+  //DEBUG.println(ESP.getChipId());
+  DEBUG.println(WiFi.macAddress());
   DEBUG.println("Firmware: "+ currentfirmware);
 
   // Read saved settings from the config
@@ -81,12 +82,29 @@ void setup() {
     verifyFingerprint();
   }
 
-  mcp_GPIO_setup();
+  SPIFFS2accHistory();
 
-  
+  // wireSetup(); //I2C setup
+
   readOneWireAddr();
 
-  DEBUG.println("Loop start");
+  SPIFFS2L_Temp();
+
+  //delay(500);
+
+  INTsetup();
+
+  if (wifi_mode == WIFI_MODE_STA){
+      DEBUG.println("Loop start...");
+      LED_clear();
+  }
+  else{
+	   DEBUG.println("WIFI_MODE is not STA...");
+     LED_setup(0.2);
+  }
+
+  mcp_GPIO_setup(); //SPI GPIO
+
 } // end setup
 
 // -------------------------------------------------------------------
@@ -97,7 +115,7 @@ void loop()
     ota_loop();
     web_server_loop();
     wifi_loop();
-	
+
   //String input = "test";
   //boolean gotInput = input_get(input);
   if (wifi_mode==WIFI_MODE_STA || wifi_mode==WIFI_MODE_AP_AND_STA)
@@ -105,25 +123,37 @@ void loop()
     if((mqtt_server != 0) && (WiFi.status() == WL_CONNECTED))
     {
   		mqtt_loop();
-
-  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
+      //if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && 1)  // 6sec
   		{
-        DEBUG.println("Firmware: "+ currentfirmware);
-        measureTemperature(s_loop);
-        readoutTemperature(s_loop);
-		if (userTempset == 1){
-          sendTempData(); //send all sensor temp data
-          userTempset = 0;
-        } else {
-          send_a_TempData(s_loop);
-        }
-		//relayControl();
-
-		//wireLoop();
-
-  		tempTry = millis();
-        s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
-  		}
-  	}
-  }
+			if(INTstateHistory){
+			  INTstateHistory = 0;
+			  INTsetup();
+			  accHistory2SPIFFS();
+			  //SPIFFS2accHistory();
+			}
+			DEBUG.println();
+			DEBUG.println("Firmware: "+ currentfirmware);
+			if ((userTempset == 1)){
+				readFromOneWire();
+				sendTempData(); //send all sensor temp data
+				userTempset = 0;
+			}
+			else {
+				measureTemperature(s_loop);
+				readoutTemperature(s_loop);
+				if (initSending > 0) {
+				  sendTempData(); //send all sensor temp data
+				  initSending > 0 ? initSending-- : initSending = 0;
+				}
+				else {
+				  send_a_TempData(s_loop);
+				}
+			}
+			valve_relayControl();
+			tempTry = millis();
+			s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
+  		} //if ((tempTry == 0 ||...
+    } //if((mqtt_server != 0) ...
+  } //if (wifi_mode==WIFI_MODE_STA ...
 } // end loop
