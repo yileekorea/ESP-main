@@ -94,6 +94,7 @@ void valve_relayControl() {
 */
     for ( i = 0; i < (numSensor-1) ; i++) {
 //      rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
+      DEBUG.println();
       DEBUG.print("valve_relayControl rStatus-");
       DEBUG.print(i);
       DEBUG.print(" : ");
