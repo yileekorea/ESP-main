@@ -138,8 +138,10 @@ void loop()
 				readFromOneWire();
 				sendTempData(); //send all sensor temp data
 				userTempset = 0;
+        readOneWireAddr();
 			}
-			else {
+      else {
+        //readOneWireAddr();
 				measureTemperature(s_loop);
 				readoutTemperature(s_loop);
 				if (initSending > 0) {
@@ -149,10 +151,10 @@ void loop()
 				else {
 				  send_a_TempData(s_loop);
 				}
+        s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
 			}
 			valve_relayControl();
 			tempTry = millis();
-			s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
   		} //if ((tempTry == 0 ||...
     } //if((mqtt_server != 0) ...
   } //if (wifi_mode==WIFI_MODE_STA ...

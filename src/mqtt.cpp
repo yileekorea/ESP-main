@@ -201,6 +201,9 @@ void send_a_TempData(byte Sensor) {
 // -------------------------------------------------------------------
 void sendTempData() {
     byte i;
+    DEBUG.print("sendTempData numSensor : ");
+    DEBUG.println(numSensor);
+
     for ( i = 0; i < numSensor ; i++) {
       send_a_TempData(i);
 /*
@@ -296,7 +299,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 	int r_Sensor;
     char buffer[80];
 	float tmp_accCountValue;
-	
+
     int len = length >= 79 ? 79 : length;
     memcpy(buffer, payload, len);
     buffer[length] = 0;
@@ -337,6 +340,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 			old_celsius[i] += 0.5;
 			++i;
 	}
+    old_celsius[i] += 0.5; //the last 'input temp'
     //sendTempData();
     userTempset = 1;
     initSending = 2; //3times send all sensor data

@@ -94,7 +94,7 @@ void valve_relayControl() {
 */
     for ( i = 0; i < (numSensor-1) ; i++) {
 //      rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
-      DEBUG.println();
+      //DEBUG.println();
       DEBUG.print("valve_relayControl rStatus-");
       DEBUG.print(i);
       DEBUG.print(" : ");
@@ -104,11 +104,11 @@ void valve_relayControl() {
       if (rStatus[i] > 0){
         //mcp.gpioPinMode(OUTPUT);
         mcp.gpioDigitalWrite(i+8,LOW);
-        DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
+        //DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
       } else {
         //mcp.gpioPinMode(OUTPUT);
         mcp.gpioDigitalWrite(i+8,HIGH);
-        DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
+        //DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
       }
 
 

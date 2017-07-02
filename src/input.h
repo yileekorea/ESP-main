@@ -41,7 +41,7 @@ extern float celsius[];
 extern float old_rStatus[];
 extern float rStatus[];
 extern float L_Temp[];
-extern byte address[10][8];
+extern byte address[9][8];
 extern int autoOff_OnTimer;
 
 extern float accCountValue;

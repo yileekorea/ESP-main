@@ -40,16 +40,16 @@
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
 String sName[]= {"a","b","c","d","e","f","g","h","i","j"};
-float old_celsius[] = {26,26,26,26,26,26,26,26};
-float celsius[] = {26,26,26,26,26,26,26,26};
-float old_rStatus[] = {1,1,1,1,1,1,1,1}; //room status all ON
-float rStatus[] = {0,0,0,0,0,0,0,0}; //room status all OFF
+float old_celsius[] = {26,26,26,26,26,26,26,26,26};
+float celsius[] = {26,26,26,26,26,26,26,26,26};
+float old_rStatus[] = {1,1,1,1,1,1,1,1,1}; //room status all ON
+float rStatus[] = {0,0,0,0,0,0,0,0,0}; //room status all OFF
 float L_Temp[] = {26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7}; //max 9
-byte address[10][8];
+byte address[9][8]; // sensor's max 9, each address is 8
 
-unsigned long Timer_1[] = {0,0,0,0,0,0,0,0};
-unsigned long Timer_2[] = {0,0,0,0,0,0,0,0};
-byte isOFF[] = {0,0,0,0,0,0,0,0};
+unsigned long Timer_1[] = {0,0,0,0,0,0,0,0,0};
+unsigned long Timer_2[] = {0,0,0,0,0,0,0,0,0};
+byte isOFF[] = {0,0,0,0,0,0,0,0,0};
 int autoOff_OnTimer = 30; //30min
 
 String input_string="";
@@ -106,7 +106,6 @@ void setON_OFFstatus(byte Sensor){
 */
   }
   else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
-    rStatus[nSensor] = L_Temp[nSensor];
     DEBUG.println();
     DEBUG.print(nSensor);
     DEBUG.print(" : millis-");
@@ -116,10 +115,13 @@ void setON_OFFstatus(byte Sensor){
     DEBUG.print("  =  ");
     DEBUG.println((millis() - Timer_1[nSensor]));
 
-    Timer_1[nSensor] = millis();
-    Timer_2[nSensor] = millis();
+	Timer_1[nSensor] = millis();
+	Timer_2[nSensor] = millis();
 
-    isOFF[nSensor] = 0;
+	if ((L_Temp[nSensor] >= 25 )||(celsius[nSensor] < 29 )){
+		rStatus[nSensor] = L_Temp[nSensor];
+		isOFF[nSensor] = 0;
+	}
 /*
     if(L_Temp[nSensor]) //print when control is ON
     {
@@ -189,9 +191,14 @@ void readoutTemperature(byte Sensor)
   //Serial.println("readoutTemperature");
   //while (ds.search(addr)) {
   //for ( s = 0; i < numSensor; i++) {
+    //Serial.println();
+    //Serial.print("ROM =");
     for ( i = 0; i < 8; i++) {
       addr[i] = address[nSensor][i];
+      //Serial.write(' ');
+      //Serial.print(addr[i], HEX);
     }
+    //Serial.println();
 
     // the first ROM byte indicates which chip
     switch (addr[0]) {
@@ -260,7 +267,7 @@ void readoutTemperature(byte Sensor)
 		Serial.print("  L_Temp[");
 		Serial.print(nSensor);
 		Serial.print("] ====> ");
-		Serial.print(L_Temp[nSensor]);
+		Serial.println(L_Temp[nSensor]);
 	}
 /*
 	if(L_Temp[nSensor] <= celsius[nSensor]){
@@ -292,9 +299,14 @@ void measureTemperature(byte Sensor)
   //Serial.println("measureTemperature");
   //while (ds.search(addr)) {
   //for ( s = 0; i < numSensor; i++) {
+    //Serial.println();
+    //Serial.print("ROM =");
     for ( i = 0; i < 8; i++) {
       addr[i] = address[nSensor][i];
+      //Serial.write(' ');
+      //Serial.print(addr[i], HEX);
     }
+    //Serial.println();
 
     ds.reset();
     ds.select(addr);
