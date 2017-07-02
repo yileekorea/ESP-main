@@ -203,7 +203,7 @@ void sendTempData() {
     byte i;
     DEBUG.print("sendTempData numSensor : ");
     DEBUG.println(numSensor);
-
+    
     for ( i = 0; i < numSensor ; i++) {
       send_a_TempData(i);
 /*
@@ -340,9 +340,14 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 			old_celsius[i] += 0.5;
 			++i;
 	}
-    old_celsius[i] += 0.5; //the last 'input temp'
-    //sendTempData();
-    userTempset = 1;
+	old_celsius[i] += 0.5;
+    
+    for ( i = 0; i < numSensor; i++) {
+		isOFF[i] = 0;
+		Timer_2[i] += 3000000UL;
+    }
+	
+	userTempset = 1;
     initSending = 2; //3times send all sensor data
     L_Temp2SPIFFS(); //store received L_Temp to SPIFFS
 	}
