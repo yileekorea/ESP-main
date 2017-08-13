@@ -191,6 +191,13 @@ void send_a_TempData(byte Sensor) {
 
 			old_celsius[i] = celsius[i];
 		}
+    else{
+        DEBUG.print("NOT send a TempData : ");
+        DEBUG.print(i);
+        DEBUG.print(",  Temps = ");
+        DEBUG.print(celsius[i]);
+        DEBUG.println(" 'C");
+    }
 		//old_celsius[i] = celsius[i];
 		old_rStatus[i] = rStatus[i];
 
@@ -299,7 +306,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 	int i = 0;
 	int r_Sensor;
     char buffer[80];
-	float tmp_accCountValue;
+	  float tmp_accCountValue;
 
     int len = length >= 79 ? 79 : length;
     memcpy(buffer, payload, len);
@@ -419,6 +426,7 @@ void verifyFingerprint() {
 void macToTopic()
 {
   String result;
+  MAC = "";
   result = WiFi.macAddress();
   for (int i = 0; i < 16; ) {
   MAC += result.substring(i, i+2);
