@@ -34,14 +34,27 @@
 #include "output.h"
 //#include "ESP-main-2.h"
 #include "mqtt.h"
+#include "fauxmoESP.h"
 
+fauxmoESP fauxmo;
 
 
 unsigned long tempTry = 0;
 int numSensor = 0;
 byte s_loop = 0;
 
-
+// -------------------------------------------------------------------
+// fauxmo_callback
+// -------------------------------------------------------------------
+void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
+  Serial.print("Device "); Serial.print(device_name);
+  Serial.print(" state: ");
+  if (state) {
+    Serial.println("ON");
+  } else {
+    Serial.println("OFF");
+  }
+}
 // -------------------------------------------------------------------
 // SETUP
 // -------------------------------------------------------------------
@@ -105,6 +118,11 @@ void setup() {
 
   mcp_GPIO_setup(); //SPI GPIO
 
+    // Fauxmo
+    fauxmo.addDevice("relay");
+    fauxmo.addDevice("pixels");
+    fauxmo.onMessage(fauxmo_callback);
+
 } // end setup
 
 // -------------------------------------------------------------------
@@ -112,6 +130,8 @@ void setup() {
 // -------------------------------------------------------------------
 void loop()
 {
+    fauxmo.handle();
+    
     ota_loop();
     web_server_loop();
     wifi_loop();
