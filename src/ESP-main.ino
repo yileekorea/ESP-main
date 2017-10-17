@@ -48,7 +48,7 @@ byte s_loop = 0;
 // -------------------------------------------------------------------
 void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
   Serial.print("Device "); Serial.print(device_name);
-  Serial.print(" state: ");
+  Serial.print(" state is: ");
   if (state) {
     Serial.println("ON");
   } else {
@@ -131,7 +131,7 @@ void setup() {
 void loop()
 {
     fauxmo.handle();
-    
+
     ota_loop();
     web_server_loop();
     wifi_loop();
