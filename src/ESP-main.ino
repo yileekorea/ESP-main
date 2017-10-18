@@ -42,17 +42,41 @@ fauxmoESP fauxmo;
 unsigned long tempTry = 0;
 int numSensor = 0;
 byte s_loop = 0;
+int heating_system_status = 0; //OFF state
+
+
 
 // -------------------------------------------------------------------
 // fauxmo_callback
 // -------------------------------------------------------------------
 void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
-  Serial.print("Device "); Serial.print(device_name);
+  Serial.print("Device "); Serial.print(device_name); Serial.print(device_id);
   Serial.print(" state is: ");
+
+
   if (state) {
     Serial.println("ON");
   } else {
     Serial.println("OFF");
+  }
+
+  if (device_id == 0){
+    if (state) {
+			Serial.println("heating is ON");
+			heating_system_status = 1; //"ON"
+		} else {
+			Serial.println("heating is OFF");
+			heating_system_status = 0; //"OFF"
+		}
+  }
+  else if (device_id == 1){
+    if (state) {
+			Serial.println("relay is ON");
+			heating_system_status = 1; //"ON"
+		} else {
+			Serial.println("relay is OFF");
+			heating_system_status = 0; //"OFF"
+		}
   }
 }
 // -------------------------------------------------------------------
@@ -119,8 +143,8 @@ void setup() {
   mcp_GPIO_setup(); //SPI GPIO
 
     // Fauxmo
+    fauxmo.addDevice("heating");
     fauxmo.addDevice("relay");
-    fauxmo.addDevice("pixels");
     fauxmo.onMessage(fauxmo_callback);
 
 } // end setup
@@ -158,23 +182,24 @@ void loop()
 				readFromOneWire();
 				sendTempData(); //send all sensor temp data
 				userTempset = 0;
-        readOneWireAddr();
+				readOneWireAddr();
 			}
-      else {
-        //readOneWireAddr();
+			else {
+				//readOneWireAddr();
 				measureTemperature(s_loop);
 				readoutTemperature(s_loop);
-				if (initSending > 0) {
-				  sendTempData(); //send all sensor temp data
-				  initSending > 0 ? initSending-- : initSending = 0;
-				}
-				else {
-				  send_a_TempData(s_loop);
-				}
-        s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
+					if (initSending > 0) {
+					  sendTempData(); //send all sensor temp data
+					  initSending > 0 ? initSending-- : initSending = 0;
+					}
+					else {
+					  send_a_TempData(s_loop);
+					}
+				s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
 			}
 			valve_relayControl();
 			tempTry = millis();
+
   		} //if ((tempTry == 0 ||...
     } //if((mqtt_server != 0) ...
   } //if (wifi_mode==WIFI_MODE_STA ...

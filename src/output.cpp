@@ -92,28 +92,34 @@ void valve_relayControl() {
   		delay(300);
   	}
 */
-    for ( i = 0; i < (numSensor-1) ; i++) {
-//      rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
-      //DEBUG.println();
-      DEBUG.print("valve_relayControl rStatus-");
-      DEBUG.print(i);
-      DEBUG.print(" : ");
-      DEBUG.println(rStatus[i]);
 
-      //rStatus[i] > 0 ? mcp.gpioDigitalWrite(i+8,LOW) : mcp.gpioDigitalWrite(i+8,HIGH);
-      if (rStatus[i] > 0){
-        //mcp.gpioPinMode(OUTPUT);
-        mcp.gpioDigitalWrite(i+8,LOW);
-        //DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
-      } else {
-        //mcp.gpioPinMode(OUTPUT);
-        mcp.gpioDigitalWrite(i+8,HIGH);
-        //DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
-      }
+	if (heating_system_status) {
+		for ( i = 0; i < (numSensor-1) ; i++) {
+		  //rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
+		  //DEBUG.println();
+		  DEBUG.print("valve_relayControl rStatus-");
+		  DEBUG.print(i);
+		  DEBUG.print(" : ");
+		  DEBUG.println(rStatus[i]);
 
-
-    }
-
+		  //rStatus[i] > 0 ? mcp.gpioDigitalWrite(i+8,LOW) : mcp.gpioDigitalWrite(i+8,HIGH);
+		  if (rStatus[i] > 0){
+			//mcp.gpioPinMode(OUTPUT);
+			mcp.gpioDigitalWrite(i+8,LOW);
+			//DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
+		  } else {
+			//mcp.gpioPinMode(OUTPUT);
+			mcp.gpioDigitalWrite(i+8,HIGH);
+			//DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
+		  }
+		}
+	}
+	else {
+		for ( i = 0; i < (numSensor-1) ; i++) {
+			mcp.gpioDigitalWrite(i+8,HIGH);		
+		}		
+	}
+	
 /*
 	for ( i = 0; i < (numSensor) ; i++) {
     //if((L_Temp[i] <= celsius[i]) && ((millis() - Timer_2[i]) > 60000UL)) { // 1min

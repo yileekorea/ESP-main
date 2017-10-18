@@ -45,6 +45,7 @@
 
 extern int numSensor;
 extern unsigned long tempTry;
+extern int heating_system_status;
 
 
 
