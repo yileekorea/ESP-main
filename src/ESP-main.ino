@@ -42,6 +42,7 @@ fauxmoESP fauxmo;
 unsigned long tempTry = 0;
 int numSensor = 0;
 byte s_loop = 0;
+
 int heating_system_status = 1; //ON state is default
 
 
@@ -144,7 +145,7 @@ void setup() {
 
     // Fauxmo
     fauxmo.addDevice("heating");
-    fauxmo.addDevice("relay");
+    //fauxmo.addDevice("relay");
     fauxmo.onMessage(fauxmo_callback);
 
 } // end setup
