@@ -79,6 +79,8 @@ void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
 			heating_system_status = 0; //"OFF"
 		}
   }
+
+  systemSTATUS2SPIFFS();
 }
 // -------------------------------------------------------------------
 // SETUP
@@ -121,6 +123,8 @@ void setup() {
   }
 
   SPIFFS2accHistory();
+
+  SPIFFS2systemSTATUS();
 
   // wireSetup(); //I2C setup
 

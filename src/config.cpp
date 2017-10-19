@@ -176,6 +176,76 @@ void SPIFFS2accHistory()
 }
 
 // -------------------------------------------------------------------
+//save the system status parameters to FS
+// -------------------------------------------------------------------
+void systemSTATUS2SPIFFS()
+{
+  if (SPIFFS.begin())
+  {
+   Serial.println("system status History json save...");
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& json = jsonBuffer.createObject();
+    String systemSTATUS = "systemSTATUS";
+    {
+
+      json[systemSTATUS] = heating_system_status;
+    }
+
+    File configFile = SPIFFS.open("/systemSTATUS.json", "w");
+    if (!configFile) {
+      Serial.println("failed to open systemSTATUS file for writing");
+    }
+    json.prettyPrintTo(Serial);
+    json.printTo(configFile);
+    configFile.close();
+  }
+}
+
+
+void SPIFFS2systemSTATUS()
+{
+
+  Serial.println("Before .... mounted file system SPIFFS2systemSTATUS");
+  if (SPIFFS.begin()) {
+    Serial.println("mounted file system for SPIFFS2systemSTATUS");
+    if (SPIFFS.exists("/systemSTATUS.json"))
+    {
+      //file exists, reading and loading
+      Serial.println("reading systemSTATUS file");
+      File configFile = SPIFFS.open("/systemSTATUS.json", "r");
+      if (configFile) {
+        Serial.println("opened systemSTATUS file");
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        json.printTo(Serial);
+        if (json.success()) {
+          Serial.println("\nparsed systemSTATUS json");
+
+          String systemSTATUS = "systemSTATUS";
+          {
+				{
+      				accCountValue = atof(json[systemSTATUS]);
+      				DEBUG.println(systemSTATUS);
+				}
+          } 
+        } 
+        else {
+          Serial.println("failed to load json systemSTATUS");
+        }
+      }
+    }
+  } else {
+    Serial.println("failed to mount FS for systemSTATUS");
+  }
+}
+
+
+// -------------------------------------------------------------------
 //save the custom parameters to FS
 // -------------------------------------------------------------------
 void L_Temp2SPIFFS()

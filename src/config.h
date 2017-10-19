@@ -94,4 +94,7 @@ extern void SPIFFS2L_Temp();
 extern void accHistory2SPIFFS();
 extern void SPIFFS2accHistory();
 
+extern void systemSTATUS2SPIFFS();
+extern void SPIFFS2systemSTATUS();
+
 #endif // _EMONESP_CONFIG_H
