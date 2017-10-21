@@ -116,8 +116,8 @@ void valve_relayControl() {
 	}
 	else {
 		for ( i = 0; i < (numSensor-1) ; i++) {
-			mcp.gpioDigitalWrite(i+8,HIGH);		
-		}		
+			mcp.gpioDigitalWrite(i+8,HIGH);
+		}
 	}
 	
 /*

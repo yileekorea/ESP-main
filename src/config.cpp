@@ -229,7 +229,7 @@ void SPIFFS2systemSTATUS()
           String systemSTATUS = "systemSTATUS";
           {
 				{
-      				accCountValue = atof(json[systemSTATUS]);
+      				heating_system_status = atof(json[systemSTATUS]);
       				DEBUG.println(systemSTATUS);
 				}
           } 
