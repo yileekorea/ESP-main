@@ -173,7 +173,7 @@ void loop()
     {
   		mqtt_loop();
       //if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
-  		if ((tempTry == 0 || ((millis() - tempTry) > 3000UL))  && 1)  // 3sec
+  		if ((tempTry == 0 || ((millis() - tempTry) > 5000UL))  && 1)  // 3sec
   		{
 			if(INTstateHistory){
 			  INTstateHistory = 0;
