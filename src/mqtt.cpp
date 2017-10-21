@@ -185,6 +185,9 @@ void send_a_TempData(byte Sensor) {
 				payload += pChrBuffer_acc;
 			}
 
+      payload += ",\"hOF\":";
+			payload += heating_system_status;   // heating_system_status ON_OFF
+
 			payload += "}";
 
 			sendmqttMsg((char *)topic_pub.c_str(), (char *)payload.c_str());
