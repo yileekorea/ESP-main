@@ -307,7 +307,9 @@ void sendmqttMsg(char* topictosend, String payload)
 void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 {
 	int i = 0;
-	int r_Sensor;
+  int r_Sensor;
+	int r_hOF; //heatingON_OFF
+
     char buffer[80];
 	  float tmp_accCountValue;
 
@@ -329,6 +331,12 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 		r_Sensor = atoi(buffer);	// number of Sensors
 		printf ("number of sensor %d\n",r_Sensor);
 
+    r_hOF = atoi(pch+1);	// heating_system_status
+    heating_system_status = r_hOF;
+    systemSTATUS2SPIFFS();
+    printf ("heating_system_status %d\n",r_hOF);
+    pch=strchr(pch+1,':');
+
     autoOff_OnTimer = atof(pch+1);
     printf ("autoOff_OnTimer %d\n",autoOff_OnTimer);
     pch=strchr(pch+1,':');
@@ -341,6 +349,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 	DEBUG.print("accCountValue : ");
 	DEBUG.println(accCountValue);
 	pch=strchr(pch+1,':');
+
 
 	while (pch!=NULL)
 	{
