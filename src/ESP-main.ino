@@ -65,9 +65,13 @@ void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
     if (state) {
 			Serial.println("heating is ON");
 			heating_system_status = 1; //"ON"
+      userTempset = 1;
+
 		} else {
 			Serial.println("heating is OFF");
 			heating_system_status = 0; //"OFF"
+      userTempset = 1;
+
 		}
   }
   else if (device_id == 1){
