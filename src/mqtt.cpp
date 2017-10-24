@@ -290,7 +290,8 @@ void sendmqttMsg(char* topictosend, String payload)
       }
       free(p);
       //return 1;
-    } else {
+    }
+    else {
       if (DEBUG_PRINT) {
         Serial.println("Publish length TEMP failed");
         do_reboot_exe();
@@ -318,7 +319,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     buffer[length] = 0;
 
     DEBUG.print(">> Topic: ");
-    DEBUG.print(topic_sub);
+    DEBUG.println(topic_sub);
 
     DEBUG.print(">> Payload: ");
     DEBUG.println(buffer);
@@ -342,7 +343,8 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     pch=strchr(pch+1,':');
 
     tmp_accCountValue = atof(pch+1);
-	if(tmp_accCountValue > accCountValue) {
+	//if(tmp_accCountValue > accCountValue) 
+  {
 		accCountValue = tmp_accCountValue;
 		INTstateHistory = 1;
 	}
