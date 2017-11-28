@@ -146,7 +146,8 @@ boolean reconnect() {
 void send_a_TempData(byte Sensor) {
     byte i = Sensor;
     //for ( i = 0; i < numSensor ; i++) {
-    if((abs(old_celsius[i] - celsius[i]) > 0.1) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
+    //if((abs(old_celsius[i] - celsius[i]) > 0.1) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
+    if((abs(old_celsius[i] - celsius[i]) > 0.0) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
 
       char pChrBuffer[5];
 			char pChrBuffer_acc[8];
