@@ -40,7 +40,7 @@
 #endif
 
 #define ESP_LED 2
-#define ESP_RESET_CTL 16
+#define ESP_RESET_CTL 16   //D0 pin for reset control
 
 
 extern int numSensor;
