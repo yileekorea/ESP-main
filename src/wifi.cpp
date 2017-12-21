@@ -155,7 +155,7 @@ void startClient() {
       WiFi.begin(esid.c_str(), epass.c_str());
       t = 0;
       attempt++;
-      if (attempt >= 1 || digitalRead(0) == LOW){
+      if (attempt >= 3 || digitalRead(0) == LOW){
 		DEBUG.println();
 		DEBUG.println("Terminate Client mode ... start AP mode");
         WiFi.disconnect();
