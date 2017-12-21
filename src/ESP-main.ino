@@ -24,7 +24,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 
 #include "io2better.h"
 #include "config.h"
@@ -180,35 +180,37 @@ void loop()
       //if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
   		if ((tempTry == 0 || ((millis() - tempTry) > 3000UL))  && 1)  // 3sec
   		{
-			if(INTstateHistory){
-			  INTstateHistory = 0;
-			  INTsetup();
-			  accHistory2SPIFFS();
-			  //SPIFFS2accHistory();
-			}
-			DEBUG.println();
-			DEBUG.println("Firmware: "+ currentfirmware);
-			if ((userTempset == 1)){
-				readFromOneWire();
-				sendTempData(); //send all sensor temp data
-				userTempset = 0;
-				readOneWireAddr();
-			}
-			else {
-				//readOneWireAddr();
-				measureTemperature(s_loop);
-				readoutTemperature(s_loop);
-					if (initSending > 0) {
-					  sendTempData(); //send all sensor temp data
-					  initSending > 0 ? initSending-- : initSending = 0;
-					}
-					else {
-					  send_a_TempData(s_loop);
-					}
-				s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
-			}
-			valve_relayControl();
-			tempTry = millis();
+    			if(INTstateHistory){
+    			  INTstateHistory = 0;
+    			  INTsetup();
+    			  accHistory2SPIFFS();
+    			  //SPIFFS2accHistory();
+    			}
+    			DEBUG.println();
+    			DEBUG.println("Firmware: "+ currentfirmware);
+    			if ((userTempset == 1)){
+            DEBUG.println("send all sensor temp data");
+    				readFromOneWire();
+    				sendTempData(); //send all sensor temp data
+    				userTempset = 0;
+    				readOneWireAddr();
+    			}
+    			else {
+    				//readOneWireAddr();
+            DEBUG.println("send single sensor temp data");
+    				measureTemperature(s_loop);
+    				readoutTemperature(s_loop);
+    					if (initSending > 0) {
+    					  sendTempData(); //send all sensor temp data
+    					  initSending > 0 ? initSending-- : initSending = 0;
+    					}
+    					else {
+    					  send_a_TempData(s_loop);
+    					}
+    				s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
+    			}
+    			valve_relayControl();
+    			tempTry = millis();
 
   		} //if ((tempTry == 0 ||...
     } //if((mqtt_server != 0) ...
