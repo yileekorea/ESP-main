@@ -164,7 +164,7 @@ void setup() {
 // -------------------------------------------------------------------
 void loop()
 {
-    fauxmo.handle();
+    //fauxmo.handle();
 
     ota_loop();
     web_server_loop();
