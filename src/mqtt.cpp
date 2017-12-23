@@ -277,13 +277,13 @@ void sendmqttMsg(char* topictosend, String payload)
 
     unsigned int msg_length = payload.length();
 
+    byte* p = (byte*)malloc(msg_length);
+    memcpy(p, (char*) payload.c_str(), msg_length);
+
     if (DEBUG_PRINT) {
       Serial.print(" length: ");
       Serial.println(msg_length);
     }
-
-    byte* p = (byte*)malloc(msg_length);
-    memcpy(p, (char*) payload.c_str(), msg_length);
 
     if ( mqttclient.publish(topictosend, p, msg_length)) {
       if (DEBUG_PRINT) {
