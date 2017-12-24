@@ -105,6 +105,8 @@ void valve_relayControl() {
 		  //rStatus[i] > 0 ? mcp.gpioDigitalWrite(i+8,LOW) : mcp.gpioDigitalWrite(i+8,HIGH);
 		  if (rStatus[i] > 0){
 			//mcp.gpioPinMode(OUTPUT);
+      mcp.gpioDigitalWrite(i+8,LOW);
+  		delay(50);
 			mcp.gpioDigitalWrite(i+8,LOW);
 			//DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
 		  } else {
@@ -119,7 +121,7 @@ void valve_relayControl() {
 			mcp.gpioDigitalWrite(i+8,HIGH);
 		}
 	}
-	
+
 /*
 	for ( i = 0; i < (numSensor) ; i++) {
     //if((L_Temp[i] <= celsius[i]) && ((millis() - Timer_2[i]) > 60000UL)) { // 1min
