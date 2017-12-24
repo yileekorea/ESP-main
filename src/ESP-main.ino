@@ -169,6 +169,7 @@ void loop()
     ota_loop();
     web_server_loop();
     wifi_loop();
+    valve_relayControl();
 
   //String input = "test";
   //boolean gotInput = input_get(input);
