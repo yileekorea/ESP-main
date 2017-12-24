@@ -106,13 +106,13 @@ void valve_relayControl() {
 		  if (rStatus[i] > 0){
 			//mcp.gpioPinMode(OUTPUT);
       //mcp.gpioDigitalWrite(i+8,LOW);
-  		delay(50);
+  		delay(10);
 			mcp.gpioDigitalWrite(i+8,LOW);
 			//DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
 		  } else {
 			//mcp.gpioPinMode(OUTPUT);
       //mcp.gpioDigitalWrite(i+8,HIGH);
-  		delay(50);
+  		delay(10);
 			mcp.gpioDigitalWrite(i+8,HIGH);
 			//DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
 		  }
@@ -120,7 +120,7 @@ void valve_relayControl() {
 	}
 	else {
 		for ( i = 0; i < (numSensor-1) ; i++) {
-      delay(50);
+      delay(10);
 			mcp.gpioDigitalWrite(i+8,HIGH);
 		}
 	}
