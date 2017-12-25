@@ -147,7 +147,9 @@ void send_a_TempData(byte Sensor) {
     byte i = Sensor;
     //for ( i = 0; i < numSensor ; i++) {
     //if((abs(old_celsius[i] - celsius[i]) > 0.1) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
-    if((abs(old_celsius[i] - celsius[i]) > 0.0) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
+    //if((abs(old_celsius[i] - celsius[i]) > 0.0) || (old_rStatus[i] != rStatus[i]))
+    if((old_rStatus[i] != rStatus[i]))
+    { //temp. difference is...
 
       char pChrBuffer[5];
 			char pChrBuffer_acc[8];
@@ -195,7 +197,8 @@ void send_a_TempData(byte Sensor) {
 
 			old_celsius[i] = celsius[i];
 		}
-    else{
+    else
+    {
         DEBUG.print("NOT send a TempData : ");
         DEBUG.print(i);
         DEBUG.print(",  Temps = ");
