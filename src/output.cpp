@@ -78,7 +78,7 @@ void wireSetup() //I2C setup
  */
 void valve_relayControl() {
     byte i;
-    heating_system_status = 1;
+    //heating_system_status = 1;
 	if (heating_system_status)
   {
 		for ( i = 0; i < (numSensor-1) ; i++) {
