@@ -78,8 +78,9 @@ void wireSetup() //I2C setup
  */
 void valve_relayControl() {
     byte i;
-
-	if (heating_system_status) {
+    heating_system_status = 1;
+	if (heating_system_status)
+  {
 		for ( i = 0; i < (numSensor-1) ; i++) {
 		  //rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
 
@@ -104,7 +105,8 @@ void valve_relayControl() {
 		  }
 		}
 	}
-	else {
+	else
+  {
 		for ( i = 0; i < (numSensor-1) ; i++) {
       delay(10);
 			mcp.gpioDigitalWrite(i+8,HIGH);
