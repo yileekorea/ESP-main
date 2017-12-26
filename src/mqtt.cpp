@@ -366,8 +366,8 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 	old_celsius[i] += 0.5;
 
     for ( i = 0; i < numSensor; i++) {
-		isOFF[i] = 0;
-		Timer_2[i] += 3000000UL;
+	//	isOFF[i] = 0;
+	//	Timer_2[i] += 3000000UL;
     }
 
 	userTempset = 1;
