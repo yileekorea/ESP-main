@@ -74,7 +74,7 @@ void wireSetup() //I2C setup
 */
 
 /*
- * I2C relayControl
+ * SPI relayControl
  */
 void valve_relayControl() {
     byte i;
@@ -107,10 +107,12 @@ void valve_relayControl() {
 	}
 	else
   {
+		LED_setup(0.2);
 		for ( i = 0; i < (numSensor-1) ; i++) {
-      delay(10);
+      			delay(100);
 			mcp.gpioDigitalWrite(i+8,HIGH);
 		}
+		LED_clear();
 	}
 
 /*
