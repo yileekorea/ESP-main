@@ -30,7 +30,7 @@
 #include "OneWire.h"
 
 #define a_min 60000UL //1min
-#define interOpenTimer 300000UL //5min
+//#define interOpenTimer 300000UL //5min
 //#define autoOff_OnTimer 1800000UL //30min
 
 /*
@@ -88,66 +88,83 @@ void INTsetup() {
 void setON_OFFstatus(byte Sensor){
 byte nSensor = Sensor;
 
-if(heating_system_status)
-{
-  if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-    rStatus[nSensor] = 0;
-    Timer_1[nSensor] = millis();
-    isOFF[nSensor] = 1;
-  }
-
-  if(L_Temp[nSensor] > celsius[nSensor]) {
-    rStatus[nSensor] = L_Temp[nSensor];
-    isOFF[nSensor] = 0;
 /*
-    if(L_Temp[nSensor]) //print when control is ON
-    {
-			Serial.print("  rStatus[] -----> ");
-			Serial.println(rStatus[nSensor]);
-		}
-*/
-  }
-  else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
-    DEBUG.println();
-    DEBUG.print(nSensor);
-    DEBUG.print(" : millis-");
-    DEBUG.print(millis());
-    DEBUG.print("  -   vControlTimer-");
-    DEBUG.print(Timer_1[nSensor]);
-    DEBUG.print("  =  ");
-    DEBUG.println((millis() - Timer_1[nSensor]));
-
-	//Timer_1[nSensor] = millis();
-	//Timer_2[nSensor] = millis();
-
-	//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
-	{
-		rStatus[nSensor] = L_Temp[nSensor];
-		isOFF[nSensor] = 0;
-		Timer_1[nSensor] = millis();
-		Timer_2[nSensor] = millis();
-	}
-/*
-    if(L_Temp[nSensor]) //print when control is ON
-    {
-			Serial.print("  rStatus[] -----> ");
-			Serial.println(rStatus[nSensor]);
-		}
-*/
-  } //else if((millis() - Timer_1...
-}
-else{	//heating_system_status is OFF
-    rStatus[nSensor] = 0;
-}
-
-  if(rStatus[nSensor]) //print when control is ON
+  if(heating_system_status)
   {
-  	Serial.print("  rStatus[] -----> ");
-  	Serial.println(rStatus[nSensor]);
+    if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+      rStatus[nSensor] = 0;
+      Timer_1[nSensor] = millis();
+      isOFF[nSensor] = 1;
+    }
+
+    if(L_Temp[nSensor] > celsius[nSensor]) {
+      rStatus[nSensor] = L_Temp[nSensor];
+      isOFF[nSensor] = 0;
+    }
+    else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
+      DEBUG.println();
+      DEBUG.print(nSensor);
+      DEBUG.print(" : millis-");
+      DEBUG.print(millis());
+      DEBUG.print("  -   vControlTimer-");
+      DEBUG.print(Timer_1[nSensor]);
+      DEBUG.print("  =  ");
+      DEBUG.println((millis() - Timer_1[nSensor]));
+
+  	//Timer_1[nSensor] = millis();
+  	//Timer_2[nSensor] = millis();
+
+    	//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
+    	{
+    		rStatus[nSensor] = L_Temp[nSensor];
+    		isOFF[nSensor] = 0;
+    		Timer_1[nSensor] = millis();
+    		Timer_2[nSensor] = millis();
+    	}
+    } //else if((millis() - Timer_1...
+  }
+*/
+
+  if(heating_system_status)
+  {
+  	// going ON status
+  	if(L_Temp[nSensor] > celsius[nSensor]) {
+  		rStatus[nSensor] = L_Temp[nSensor];
+  		isOFF[nSensor] = 0;
+  	}
+  	//going OFF status
+  	else{
+  		if(((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+  			rStatus[nSensor] = 0;
+  			Timer_1[nSensor] = millis();
+  			isOFF[nSensor] = 1;	//really valve is OFF state
+  		}
+  		else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
+  			DEBUG.println();
+  			DEBUG.print(nSensor);
+  			DEBUG.print(" : millis-");
+  			DEBUG.print(millis());
+  			DEBUG.print("  -   vControlTimer-");
+  			DEBUG.print(Timer_1[nSensor]);
+  			DEBUG.print("  =  ");
+  			DEBUG.println((millis() - Timer_1[nSensor]));
+
+  			//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
+        {
+  				rStatus[nSensor] = L_Temp[nSensor];
+  				isOFF[nSensor] = 0;
+  				Timer_1[nSensor] = millis();
+  				Timer_2[nSensor] = millis();
+  			}
+  		} //else if((millis() - Timer_1...
+  	} //else
   }
 
-}
+  else{	//heating_system_status is OFF
+    rStatus[nSensor] = 0;
+  }
 
+} //void setON_OFFstatus(byte Sensor){
 
 /*
  * Sensor address read

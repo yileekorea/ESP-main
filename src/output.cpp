@@ -107,12 +107,12 @@ void valve_relayControl() {
 	}
 	else
   {
-		LED_setup(0.2);
-		for ( i = 0; i < (numSensor-1) ; i++) {
-      			delay(100);
-			mcp.gpioDigitalWrite(i+8,HIGH);
-		}
-		LED_clear();
+    LED_setup(0.2);
+    for ( i = 0; i < (numSensor-1) ; i++) {
+      delay(300);
+      mcp.gpioDigitalWrite(i+8,HIGH);
+    }
+    LED_clear();
 	}
 
 /*
