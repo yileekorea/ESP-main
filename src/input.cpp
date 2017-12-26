@@ -86,7 +86,7 @@ void INTsetup() {
  * setON_OFFstatus by the measured Temperature
  */
 void setON_OFFstatus(byte Sensor){
-  byte nSensor = Sensor;
+byte nSensor = Sensor;
 
 if(heating_system_status)
 {
@@ -117,12 +117,14 @@ if(heating_system_status)
     DEBUG.print("  =  ");
     DEBUG.println((millis() - Timer_1[nSensor]));
 
-	Timer_1[nSensor] = millis();
-	Timer_2[nSensor] = millis();
+	//Timer_1[nSensor] = millis();
+	//Timer_2[nSensor] = millis();
 
-	if ((L_Temp[nSensor] >= 25 )&&(celsius[nSensor] < 29 )){
+	if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 )){
 		rStatus[nSensor] = L_Temp[nSensor];
 		isOFF[nSensor] = 0;
+		Timer_1[nSensor] = millis();
+		Timer_2[nSensor] = millis();
 	}
 /*
     if(L_Temp[nSensor]) //print when control is ON
