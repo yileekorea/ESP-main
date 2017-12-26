@@ -344,8 +344,8 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     pch=strchr(pch+1,':');
 
     tmp_accCountValue = atof(pch+1);
-	//if(tmp_accCountValue > accCountValue)
-  {
+    if(tmp_accCountValue != accCountValue)
+    {
 		accCountValue = tmp_accCountValue;
 		INTstateHistory = 1;
 	}
