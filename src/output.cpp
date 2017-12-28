@@ -77,8 +77,8 @@ void wireSetup() //I2C setup
  * SPI relayControl
  */
 void valve_relayControl() {
-    byte i;
-    //heating_system_status = 1;
+  byte i;
+
 	if (heating_system_status)
   {
 		for ( i = 0; i < (numSensor-1) ; i++) {

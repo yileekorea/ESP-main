@@ -91,16 +91,19 @@ byte nSensor = Sensor;
 
   if(heating_system_status)
   {
+    //really going OFF condition...
     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
       rStatus[nSensor] = 0;
       Timer_1[nSensor] = millis();
       isOFF[nSensor] = 1;
     }
 
+    //going ON condition
     if(L_Temp[nSensor] > celsius[nSensor]) {
       rStatus[nSensor] = L_Temp[nSensor];
       isOFF[nSensor] = 0;
     }
+    //for auto off on timer condition...
     else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
       DEBUG.println();
       DEBUG.print(nSensor);

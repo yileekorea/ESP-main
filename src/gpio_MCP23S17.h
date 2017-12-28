@@ -1,12 +1,12 @@
 /*
- ___  _   _  _ __ ___    ___  | |_  ___   _   _ 
+ ___  _   _  _ __ ___    ___  | |_  ___   _   _
 / __|| | | || '_ ` _ \  / _ \ | __|/ _ \ | | | |
 \__ \| |_| || | | | | || (_) || |_| (_) || |_| |
 |___/ \__,_||_| |_| |_| \___/  \__|\___/  \__, |
-                                          |___/ 
-										  
+                                          |___/
+
 	gpio_MCP23S17 - A complete library for Microchip MCP23S17 for many MCU's.
-	
+
 model:			company:		pins:		protocol:		Special Features:
 ---------------------------------------------------------------------------------------------------------------------
 mcp23s17		Microchip		 16			SPI					INT/HAEN
@@ -63,15 +63,16 @@ A2,A1,A0 tied to ground = 0x20
 #include <SPI.h>//this chip needs SPI
 
 #if defined (SPI_HAS_TRANSACTION)
+
 #if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 const static uint32_t _MCPMaxSpeed = 30000000UL;
 #elif defined(ESP8266)
 const static uint32_t _MCPMaxSpeed = 80000000UL;
 #elif defined(__MKL26Z64__) //Teensy LC
 const static uint32_t _MCPMaxSpeed = 12000000UL;
-#elif defined(ARDUINO) && defined(__arm__) && !defined(CORE_TEENSY)	//DUE	
+#elif defined(ARDUINO) && defined(__arm__) && !defined(CORE_TEENSY)	//DUE
 const static uint32_t _MCPMaxSpeed = 24000000UL;
-#elif defined(__32MX320F128H__) || defined(__32MX795F512L__) //uno and max	chipkit	
+#elif defined(__32MX320F128H__) || defined(__32MX795F512L__) //uno and max	chipkit
 const static uint32_t _MCPMaxSpeed = 8000000UL;
 #elif defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
 const static uint32_t _MCPMaxSpeed = 2000000UL;
@@ -80,6 +81,7 @@ const static uint32_t _MCPMaxSpeed = 8000000UL;
 #else
 const static uint32_t _MCPMaxSpeed = 2000000UL;
 #endif
+
 #endif
 
 
@@ -110,7 +112,7 @@ INTPOL: (This bit sets the polarity of the INT output pin)
 */
 
 #include "_includes/MCP23S17_registers.h"
-	
+
 #if defined(ESP8266)
 	#include <eagle_soc.h>
 #endif
@@ -118,21 +120,21 @@ INTPOL: (This bit sets the polarity of the INT output pin)
 class gpio_MCP23S17 {
 
 public:
-	
+
 
 	gpio_MCP23S17(const uint8_t csPin,const uint8_t haenAdrs);//any pin,0x20....0x27
 	void 			postSetup(const uint8_t csPin,const uint8_t haenAdrs);//used with other libraries only
 	gpio_MCP23S17();//For include inside other libraries
 
-	void 			begin(bool protocolInitOverride=false); //protocolInitOverride=true	will not init the SPI	
-    
+	void 			begin(bool protocolInitOverride=false); //protocolInitOverride=true	will not init the SPI
+
 	void 			gpioPinMode(uint16_t mode);					//OUTPUT=all out,INPUT=all in,0xxxx=you choose
 	void 			gpioPinMode(uint8_t pin, bool mode);		//set a unique pin as IN(1) or OUT (0)
 	void 			gpioPort(uint16_t value);					//HIGH=all Hi, LOW=all Low,0xxxx=you choose witch low or hi
 	void			gpioPort(byte lowByte, byte highByte);		//same as abowe but uses 2 separate bytes
 	uint16_t 		readGpioPort();								//read the state of the pins (all)
-	uint16_t 		readGpioPortFast();							
-	
+	uint16_t 		readGpioPortFast();
+
 	void 			gpioDigitalWrite(uint8_t pin, bool value);  //write data to one pin
 	void			gpioDigitalWriteFast(uint8_t pin, bool value);
 	int 			gpioDigitalRead(uint8_t pin);				//read data from one pin
@@ -148,11 +150,11 @@ public:
 	// direct access commands
 	uint16_t 		gpioReadAddress(byte addr);
 
-	
+
 
 protected:
-	
-	
+
+
 	inline __attribute__((always_inline))
 	void _GPIOstartSend(bool mode) {
 	#if defined (SPI_HAS_TRANSACTION)
@@ -171,8 +173,8 @@ protected:
 		//mode == 1 ? SPI.transfer(_readCmd) : SPI.transfer(_writeCmd);
 		mode == 1 ? SPI.write(_readCmd) : SPI.write(_writeCmd);
 	}
-	
-	
+
+
 	inline __attribute__((always_inline))
 	void _GPIOendSend(void){
 	#if defined(ESP8266)
@@ -188,7 +190,7 @@ protected:
 		//SPI.endTransaction();
 	#endif
 	}
-	
+
 	inline __attribute__((always_inline))
 	void _GPIOwriteByte(byte addr, byte data){
 		_GPIOstartSend(0);
@@ -196,7 +198,7 @@ protected:
 		SPI.write(data);
 		_GPIOendSend();
 	}
-	
+
 	inline __attribute__((always_inline))
 	void _GPIOwriteWord(byte addr, uint16_t data){
 		_GPIOstartSend(0);
@@ -211,20 +213,20 @@ protected:
 		#endif
 		_GPIOendSend();
 	}
-	
+
 	#if defined(ESP8266)
 	uint32_t _pinRegister(uint8_t pin)
 	__attribute__((always_inline)) {
 		return _BV(pin);
 	}
 	#endif
-	
-    boolean       _debug = true;
-	
-    template <typename Generic>
-    void          DEBUG_MCP(Generic text);	
 
-	
+    boolean       _debug = true;
+
+    template <typename Generic>
+    void          DEBUG_MCP(Generic text);
+
+
 private:
     uint8_t 		_cs;
 	uint8_t 		_adrs;
@@ -233,7 +235,7 @@ private:
 		boolean	_useAltSPI;
 	#endif
 
-	
+
 	uint8_t 		_useHaen;
 	uint8_t 		_readCmd;
 	uint8_t 		_writeCmd;

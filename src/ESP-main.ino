@@ -157,6 +157,9 @@ void setup() {
     //fauxmo.addDevice("relay");
     fauxmo.onMessage(fauxmo_callback);
 
+    ESP.wdtDisable();
+    ESP.wdtEnable(WDTO_8S);
+
 } // end setup
 
 // -------------------------------------------------------------------
@@ -164,7 +167,9 @@ void setup() {
 // -------------------------------------------------------------------
 void loop()
 {
-    fauxmo.handle();
+  ESP.wdtFeed();
+
+  fauxmo.handle();
 
     ota_loop();
     web_server_loop();
