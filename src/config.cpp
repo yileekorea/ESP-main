@@ -228,18 +228,22 @@ void SPIFFS2systemSTATUS()
 
           String systemSTATUS = "systemSTATUS";
           {
-				{
-      				heating_system_status = atof(json[systemSTATUS]);
-      				DEBUG.println(systemSTATUS);
-				}
+		{
+			heating_system_status = atof(json[systemSTATUS]);
+			DEBUG.println(systemSTATUS);
+		}
           } 
         } 
         else {
           Serial.println("failed to load json systemSTATUS");
         }
       }
+    } //if (SPIFFS.exists("/systemSTATUS.json"))
+    else{
+	heating_system_status = 1;
     }
-  } else {
+  
+  } else { //if (SPIFFS.begin()) {
     Serial.println("failed to mount FS for systemSTATUS");
   }
 }
