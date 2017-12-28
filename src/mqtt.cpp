@@ -464,7 +464,9 @@ boolean mqtt_connect()
   if (mqttclient.connect(strID.c_str(), mqtt_user.c_str(), mqtt_pass.c_str())) {  // Attempt to connect
     DEBUG.println("MQTT connected");
 		// Publish
-		if (mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...")) {
+		//if (mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...")) {
+		if (mqttclient.publish((char *)topic_pub.c_str(), (char *)topic_pub.c_str())) {
+			mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...");
 			DEBUG.println("publish ok");
 		}
 		else {
