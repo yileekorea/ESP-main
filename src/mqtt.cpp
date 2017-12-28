@@ -28,6 +28,7 @@
 #include "config.h"
 #include "input.h"
 #include "ota.h"
+#include "web_server.h"
 
 #include <FS.h>                   //this needs to be first, or it all crashes and burns...
 
@@ -181,13 +182,15 @@ void send_a_TempData(byte Sensor) {
 			payload += rStatus[i];   // room status
 
       payload += ",\"cCount\":";
+      payload += buildVersion;
+/*
 			if ( isnan(accCountValue) )
 				payload += "0";
 			else {
 				dtostrf(accCountValue , 7, 2, pChrBuffer_acc);
 				payload += pChrBuffer_acc;
 			}
-
+*/
       payload += ",\"hOF\":";
 			payload += heating_system_status;   // heating_system_status ON_OFF
 
@@ -466,18 +469,18 @@ boolean mqtt_connect()
 		// Publish
 		//if (mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...")) {
 		if (mqttclient.publish((char *)topic_pub.c_str(), (char *)topic_pub.c_str())) {
-			mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...");
-			DEBUG.println("publish ok");
+        mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...");
+	      DEBUG.println("publish ok");
 		}
 		else {
-			DEBUG.println("publish failed");
+        DEBUG.println("publish failed");
 		}
 		// Subscribe
 		if (mqttclient.subscribe((char *)topic_sub.c_str())) {
-			DEBUG.println("Subscribe ok");
+        DEBUG.println("Subscribe ok");
 		}
 		else {
-			DEBUG.println("Subscribe failed");
+        DEBUG.println("Subscribe failed");
 		}
 		//mqttclient.publish(mqtt_topic.c_str(), "connected"); // Once connected, publish an announcement..
   } else {

@@ -42,6 +42,30 @@ ESP8266WebServer server(80);          //Create class for Web server
 #define TEXTIFY(A) #A
 #define ESCAPEQUOTE(A) TEXTIFY(A)
 String currentfirmware = ESCAPEQUOTE(BUILD_TAG);
+//String currentfirmware = "release.0.0.6-master-2017-12-28-389";
+String buildVersion = "";
+
+void BuildVersion(){
+  String message = currentfirmware;
+	byte hyphenPosition;
+	byte i;
+
+	for(i=0; i<2; i++){
+		hyphenPosition = message.indexOf('-');
+		if(hyphenPosition != -1)
+		{
+			//Serial.println(message.substring(0,hyphenPosition));
+			message = message.substring(hyphenPosition+1,message.length());
+		}
+		else
+		{
+			if(message.length()>0)
+			Serial.println(message);
+		}
+	}
+	buildVersion = message;
+  Serial.println(message);
+}
 
 String getContentType(String filename){
   if(server.hasArg("download")) return "application/octet-stream";

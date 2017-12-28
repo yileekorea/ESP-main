@@ -30,9 +30,12 @@
 
 extern ESP8266WebServer server;
 extern String currentfirmware;
+extern String buildVersion;
 
 extern void web_server_setup();
 extern void web_server_loop();
+extern void BuildVersion();
+
 void handleStatus();
 
 #endif // _EMONESP_WEB_SERVER_H

@@ -107,7 +107,9 @@ void setup() {
   DEBUG.print("io2Better ");
   //DEBUG.println(ESP.getChipId());
   DEBUG.println(WiFi.macAddress());
+  BuildVersion();
   DEBUG.println("Firmware: "+ currentfirmware);
+  DEBUG.println("buildVersion: "+ buildVersion);
 
   // Read saved settings from the config
   config_load_settings();
@@ -150,7 +152,7 @@ void setup() {
      LED_setup(0.2);
   }
 
-  mcp_GPIO_setup(); //SPI GPIO
+    mcp_GPIO_setup(); //SPI GPIO
 
     // Fauxmo
     fauxmo.addDevice("heating");
@@ -190,8 +192,8 @@ void loop()
     			  INTstateHistory = 0;
     			  INTsetup();
     			  accHistory2SPIFFS();
-    			  //SPIFFS2accHistory();
     			}
+
     			DEBUG.println();
     			DEBUG.println("Firmware: "+ currentfirmware);
     			if ((userTempset == 1)){
