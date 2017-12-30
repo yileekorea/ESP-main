@@ -300,8 +300,7 @@ void sendmqttMsg(char* topictosend, String payload)
     else {
         free(p);
         Serial.println("Publish length TEMP failed");
-        mqtt_restart();
-        //do_reboot_exe();
+        do_reboot_exe();
       //return 0;
     }
   }
