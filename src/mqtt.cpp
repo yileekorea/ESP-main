@@ -111,7 +111,7 @@ boolean reconnect() {
     if (mqttclient.connect(strID.c_str(), mqtt_user.c_str(), mqtt_pass.c_str())) {
         Serial.println("connected");
         // Once connected, publish an announcement...
-        if (mqttclient.publish((char *)topic_pub.c_str(), "hello world again...")) {
+        if (mqttclient.publish((char *)topic_pub.c_str(), "hello world againII...")) {
             Serial.println("publish ok2");
         }
         else {
