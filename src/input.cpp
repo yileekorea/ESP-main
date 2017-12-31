@@ -122,16 +122,18 @@ byte i;
 
     	//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
     	{
+        rStatus[nSensor] = L_Temp[nSensor];
+        isOFF[nSensor] = 0;
+        Timer_1[nSensor] = millis();
+        Timer_2[nSensor] = millis();
+/*
         for ( i = 0; i < (numSensor-1) ; i++) {
-          //rStatus[nSensor] = L_Temp[nSensor];
-          //isOFF[nSensor] = 0;
-          //Timer_1[nSensor] = millis();
-          //Timer_2[nSensor] = millis();
           rStatus[i] = L_Temp[i];
           isOFF[i] = 0;
           Timer_1[i] = millis();
           Timer_2[i] = millis();
         }
+*/
     	}
     } //else if((millis() - Timer_1...
   }
