@@ -87,7 +87,7 @@ void INTsetup() {
  */
 void setON_OFFstatus(byte Sensor){
 byte nSensor = Sensor;
-
+byte i;
 
   if(heating_system_status)
   {
@@ -100,8 +100,12 @@ byte nSensor = Sensor;
 
     //going ON condition
     if(L_Temp[nSensor] > celsius[nSensor]) {
-      rStatus[nSensor] = L_Temp[nSensor];
-      isOFF[nSensor] = 0;
+      for ( i = 0; i < (numSensor-1) ; i++) {
+        //rStatus[nSensor] = L_Temp[nSensor];
+        //isOFF[nSensor] = 0;
+        rStatus[i] = L_Temp[i];
+        isOFF[i] = 0;
+      }
     }
     //for auto off on timer condition...
     else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
@@ -119,10 +123,16 @@ byte nSensor = Sensor;
 
     	//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
     	{
-    		rStatus[nSensor] = L_Temp[nSensor];
-    		isOFF[nSensor] = 0;
-    		Timer_1[nSensor] = millis();
-    		Timer_2[nSensor] = millis();
+        for ( i = 0; i < (numSensor-1) ; i++) {
+          //rStatus[nSensor] = L_Temp[nSensor];
+          //isOFF[nSensor] = 0;
+          //Timer_1[nSensor] = millis();
+          //Timer_2[nSensor] = millis();
+          rStatus[i] = L_Temp[i];
+          isOFF[i] = 0;
+          Timer_1[i] = millis();
+          Timer_2[i] = millis();
+        }
     	}
     } //else if((millis() - Timer_1...
   }
