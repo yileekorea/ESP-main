@@ -85,58 +85,47 @@ void INTsetup() {
 /*
  * setON_OFFstatus by the measured Temperature
  */
-void setON_OFFstatus(byte Sensor){
-byte nSensor = Sensor;
-byte i;
+ void setON_OFFstatus(byte Sensor){
+ byte nSensor = Sensor;
 
-  if(heating_system_status)
-  {
-    //really going OFF condition...
-    if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-      rStatus[nSensor] = 0;
-      Timer_1[nSensor] = millis();
-      isOFF[nSensor] = 1;
-    }
 
-    //going ON condition
-    if(L_Temp[nSensor] > celsius[nSensor]) {
-      rStatus[nSensor] = L_Temp[nSensor];
-      isOFF[nSensor] = 0;
-      for ( i = 0; i < (numSensor-1) ; i++) {
-        Timer_1[i] += 500000UL;
-      }
-    }
-    //for auto off on timer condition...
-    else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
-      DEBUG.println();
-      DEBUG.print(nSensor);
-      DEBUG.print(" : millis-");
-      DEBUG.print(millis());
-      DEBUG.print("  -   vControlTimer-");
-      DEBUG.print(Timer_1[nSensor]);
-      DEBUG.print("  =  ");
-      DEBUG.println((millis() - Timer_1[nSensor]));
+   if(heating_system_status)
+   {
+     //really going OFF condition...
+     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+       rStatus[nSensor] = 0;
+       Timer_1[nSensor] = millis();
+       isOFF[nSensor] = 1;
+     }
 
-  	//Timer_1[nSensor] = millis();
-  	//Timer_2[nSensor] = millis();
+     //going ON condition
+     if(L_Temp[nSensor] > celsius[nSensor]) {
+       rStatus[nSensor] = L_Temp[nSensor];
+       isOFF[nSensor] = 0;
+     }
+     //for auto off on timer condition...
+     else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
+       DEBUG.println();
+       DEBUG.print(nSensor);
+       DEBUG.print(" : millis-");
+       DEBUG.print(millis());
+       DEBUG.print("  -   vControlTimer-");
+       DEBUG.print(Timer_1[nSensor]);
+       DEBUG.print("  =  ");
+       DEBUG.println((millis() - Timer_1[nSensor]));
 
-    	//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
-    	{
-        rStatus[nSensor] = L_Temp[nSensor];
-        isOFF[nSensor] = 0;
-        Timer_1[nSensor] = millis();
-        Timer_2[nSensor] = millis();
-/*
-        for ( i = 0; i < (numSensor-1) ; i++) {
-          rStatus[i] = L_Temp[i];
-          isOFF[i] = 0;
-          Timer_1[i] = millis();
-          Timer_2[i] = millis();
-        }
-*/
-    	}
-    } //else if((millis() - Timer_1...
-  }
+   	//Timer_1[nSensor] = millis();
+   	//Timer_2[nSensor] = millis();
+
+     	//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
+     	{
+     		rStatus[nSensor] = L_Temp[nSensor];
+     		isOFF[nSensor] = 0;
+     		Timer_1[nSensor] = millis();
+     		Timer_2[nSensor] = millis();
+     	}
+     } //else if((millis() - Timer_1...
+   }
 
 /*
   if(heating_system_status)
