@@ -225,6 +225,7 @@ void sendTempData() {
 
     for ( i = 0; i < numSensor ; i++) {
       send_a_TempData(i);
+      delay(100);
 /*
 		//if(old_celsius[i] != celsius[i]){
     //if(abs(old_celsius[i] - celsius[i]) > 0.1 )
