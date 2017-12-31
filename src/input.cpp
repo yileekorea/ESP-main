@@ -100,11 +100,10 @@ byte i;
 
     //going ON condition
     if(L_Temp[nSensor] > celsius[nSensor]) {
+      rStatus[nSensor] = L_Temp[nSensor];
+      isOFF[nSensor] = 0;
       for ( i = 0; i < (numSensor-1) ; i++) {
-        //rStatus[nSensor] = L_Temp[nSensor];
-        //isOFF[nSensor] = 0;
-        rStatus[i] = L_Temp[i];
-        isOFF[i] = 0;
+        Timer_1[i] += 500000UL;
       }
     }
     //for auto off on timer condition...
