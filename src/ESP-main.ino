@@ -215,7 +215,8 @@ void loop()
     					else {
     					  send_a_TempData(s_loop);
     					}
-    				s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
+              //s_loop == (numSensor-1) ? s_loop=0 : s_loop++;
+				      s_loop == (numSensor-0) ? s_loop=0 : s_loop++;
     			}
     			valve_relayControl();
     			tempTry = millis();
