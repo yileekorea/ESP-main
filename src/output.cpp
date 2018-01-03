@@ -104,6 +104,14 @@ void valve_relayControl() {
 			//DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
 		  }
 		}
+    //to control RELAY for temp_input
+    if (rStatus[numSensor-1] > 0){
+      delay(10);
+      mcp.gpioDigitalWrite(0,LOW);
+    } else {
+      delay(10);
+      mcp.gpioDigitalWrite(0,HIGH);
+    }
 	}
 	else
   {
