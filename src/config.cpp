@@ -232,8 +232,8 @@ void SPIFFS2systemSTATUS()
 			heating_system_status = atof(json[systemSTATUS]);
 			DEBUG.println(systemSTATUS);
 		}
-          } 
-        } 
+          }
+        }
         else {
           Serial.println("failed to load json systemSTATUS");
         }
@@ -242,7 +242,7 @@ void SPIFFS2systemSTATUS()
     else{
 	heating_system_status = 1;
     }
-  
+
   } else { //if (SPIFFS.begin()) {
     Serial.println("failed to mount FS for systemSTATUS");
   }
@@ -260,7 +260,7 @@ void L_Temp2SPIFFS()
     DynamicJsonBuffer jsonBuffer;
     JsonObject& json = jsonBuffer.createObject();
     String roomNo = "room_";
-    for (byte i = 1; i < numSensor; ++i) {
+    for (byte i = 1; i < (numSensor+1); ++i) {
       String roomNo = "";
       roomNo = "room_";
       roomNo += i;
@@ -305,7 +305,7 @@ void SPIFFS2L_Temp()
           Serial.println("\nparsed json");
 
           String roomNo = "room_";
-          for (byte i = 1; i < numSensor; ++i) {
+          for (byte i = 1; i < (numSensor+1); ++i) {
             String roomNo = "";
             roomNo = "room_";
             roomNo += i;

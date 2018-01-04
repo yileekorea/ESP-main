@@ -209,7 +209,7 @@ void loop()
     				measureTemperature(s_loop);
     				readoutTemperature(s_loop);
     					if (initSending > 0) {
-    					  sendTempData(); //send all sensor temp data
+    					  //sendTempData(); //send all sensor temp data
     					  initSending > 0 ? initSending-- : initSending = 0;
     					}
     					else {
