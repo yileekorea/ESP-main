@@ -103,6 +103,29 @@ void INTsetup() {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
      }
+
+/*
+ //going ON condition
+    if(L_Temp[nSensor] > celsius[nSensor]) {
+       rStatus[nSensor] = L_Temp[nSensor];
+       isOFF[nSensor] = 0;
+
+		float Low_temp = 100.0;
+		int Low_seq = -1;
+				
+		for(i=0;i<(numSensor-1);i++){
+			sum_isOFF += isOFF[i];
+			if((Low_t > celsiou[i])&&(i != nSensor)&&(isOFF[i])){
+				Low_temp = celsiou[i];
+				Low_seq = i;
+			}
+		}
+		if(sum_isOFF > (numSensor-3)&&(Low_seq =>0)) //Only one valve is ON state
+		{
+			Timer_1[Low_seq]) = 	mills() + (autoOff_OnTimer * a_min*2);
+		} 
+    }
+*/
      //for auto off on timer condition...
      else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
        DEBUG.println();
