@@ -88,7 +88,7 @@ void INTsetup() {
  void setON_OFFstatus(byte Sensor){
  byte nSensor = Sensor;
  byte i;
- byte sum_isOFF;
+ byte sum_isOFF=0;
  float Low_temp = 100.0;
  int Low_seq = -1;
 
