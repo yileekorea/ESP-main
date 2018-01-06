@@ -87,6 +87,10 @@ void INTsetup() {
  */
  void setON_OFFstatus(byte Sensor){
  byte nSensor = Sensor;
+ byte i;
+ byte sum_isOFF;
+ float Low_temp = 100.0;
+ int Low_seq = -1;
 
 
    if(heating_system_status)
@@ -109,11 +113,6 @@ void INTsetup() {
     if(L_Temp[nSensor] > celsius[nSensor]) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
-
-      byte i;
-      byte sum_isOFF;
-      float Low_temp = 100.0;
-      int Low_seq = -1;
 
   		for(i=0;i<(numSensor-1);i++){
   			sum_isOFF += isOFF[i];
