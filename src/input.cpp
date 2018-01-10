@@ -127,7 +127,8 @@ void INTsetup() {
         Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
   		}
 */
-      if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
+      //if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
+      if((sum_isOFF > (numSensor-4)) && (Low_seq >= 0)) //Only two valve is ON state
       {
         for(i=0;i<numSensor-1;i++){
           Timer_1[i] = millis() + (autoOff_OnTimer * a_min*2);
