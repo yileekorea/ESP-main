@@ -141,7 +141,7 @@ void INTsetup() {
    	//Timer_1[nSensor] = millis();
    	//Timer_2[nSensor] = millis();
 
-     	if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 26.5 ))
+     	if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 27.5 ))
      	{
      		rStatus[nSensor] = L_Temp[nSensor];
      		isOFF[nSensor] = 0;
