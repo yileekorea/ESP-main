@@ -115,6 +115,10 @@ void INTsetup() {
        isOFF[nSensor] = 0;
        Timer_2[nSensor] = millis()-(interOpenTimer+1);
 
+       sum_isOFF=0;
+       Low_temp = 100.0;
+       Low_seq = -1;
+
   		for(i=0;i<(numSensor-1);i++){
   			sum_isOFF += isOFF[i];
   			if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
@@ -158,6 +162,10 @@ void INTsetup() {
      		isOFF[nSensor] = 0;
      		Timer_1[nSensor] = millis();
      		Timer_2[nSensor] = millis();
+
+        sum_isOFF=0;
+        Low_temp = 100.0;
+        Low_seq = -1;
 
         for(i=0;i<(numSensor-1);i++){
           sum_isOFF += isOFF[i];
