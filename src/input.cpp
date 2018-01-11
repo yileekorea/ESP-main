@@ -158,7 +158,20 @@ void INTsetup() {
      		isOFF[nSensor] = 0;
      		Timer_1[nSensor] = millis();
      		Timer_2[nSensor] = millis();
-     	}
+
+        for(i=0;i<(numSensor-1);i++){
+          sum_isOFF += isOFF[i];
+          if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
+            Low_temp = celsius[i];
+            Low_seq = i;
+          }
+        }
+
+        if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
+    		{
+          Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
+    		}
+     	} //if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 28 ))
      } //else if((millis() - Timer_1...
    }
 
