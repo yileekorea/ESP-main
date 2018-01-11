@@ -114,14 +114,14 @@ void INTsetup() {
     if(L_Temp[nSensor] > celsius[nSensor]) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
-       Timer_2[nSensor] = millis()-(interOpenTimer+1);
+       //Timer_2[nSensor] = millis()-(interOpenTimer+1);
 
        sum_isOFF=0;
        Low_temp = 100.0;
        Low_seq = -1;
        Low_seq_2 = -1;
 
-  		for(i=0;i<(numSensor-1);i++){
+       for(i=0;i<(numSensor-1);i++){
   			sum_isOFF += isOFF[i];
   			if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
   				Low_temp = celsius[i];
