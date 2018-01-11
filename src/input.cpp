@@ -91,6 +91,7 @@ void INTsetup() {
  byte sum_isOFF=0;
  float Low_temp = 100.0;
  int Low_seq = -1;
+ int Low_seq_2 = -1;
 
 
    if(heating_system_status)
@@ -118,18 +119,21 @@ void INTsetup() {
        sum_isOFF=0;
        Low_temp = 100.0;
        Low_seq = -1;
+       Low_seq_2 = -1;
 
   		for(i=0;i<(numSensor-1);i++){
   			sum_isOFF += isOFF[i];
   			if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
   				Low_temp = celsius[i];
-  				Low_seq = i;
+  				Low_seq_2 = Low_seq;
+          Low_seq = i;
   			}
   		}
 
   		if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
   		{
         Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
+        Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
   		}
 /*
       //if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
@@ -171,6 +175,7 @@ void INTsetup() {
           sum_isOFF += isOFF[i];
           if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
             Low_temp = celsius[i];
+            Low_seq_2 = Low_seq;
             Low_seq = i;
           }
         }
@@ -178,6 +183,7 @@ void INTsetup() {
         if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
     		{
           Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
+          Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
     		}
      	} //if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 28 ))
      } //else if((millis() - Timer_1...
