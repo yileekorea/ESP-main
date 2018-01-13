@@ -152,15 +152,15 @@ void INTsetup() {
        DEBUG.print("  =  ");
        DEBUG.println((millis() - Timer_1[nSensor]));
 
-   	//Timer_1[nSensor] = millis();
-   	//Timer_2[nSensor] = millis();
+   	Timer_1[nSensor] = millis();
+   	Timer_2[nSensor] = millis();
 
      	if ((L_Temp[nSensor] >= 18 )&&(celsius[nSensor] <= 29 ))
      	{
      		rStatus[nSensor] = L_Temp[nSensor];
      		isOFF[nSensor] = 0;
-     		Timer_1[nSensor] = millis();
-     		Timer_2[nSensor] = millis();
+     		//Timer_1[nSensor] = millis();
+     		//Timer_2[nSensor] = millis();
 
         sum_isOFF=0;
         Low_temp = 100.0;
