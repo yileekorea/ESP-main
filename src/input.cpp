@@ -97,10 +97,10 @@ void INTsetup() {
    if(heating_system_status)
    {
      //really going OFF condition...
-     //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-     if((27.0 <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     //if((27.0 <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
        rStatus[nSensor] = 0;
-       //Timer_1[nSensor] = millis();
+       Timer_1[nSensor] = millis();
        isOFF[nSensor] = 1;
      }
 
