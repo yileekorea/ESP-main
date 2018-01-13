@@ -28,8 +28,8 @@
 
 #include <Arduino.h>
 //#define interOpenTimer 500000UL //5min
-//#define interOpenTimer 400000UL //4min
-#define interOpenTimer 300000UL //3min
+#define interOpenTimer 400000UL //4min
+//#define interOpenTimer 300000UL //3min
 
 // -------------------------------------------------------------------
 // Support for reading input
