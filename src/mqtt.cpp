@@ -351,7 +351,7 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     if(tmp_accCountValue != accCountValue)
     {
 		accCountValue = tmp_accCountValue;
-		INTstateHistory = 1;
+		//INTstateHistory = 1;
 	}
 	DEBUG.print("accCountValue : ");
 	DEBUG.println(accCountValue);
@@ -364,18 +364,18 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 			DEBUG.println(L_Temp[i]);
 			//printf ("found at %d\n",pch-buffer+1);
 			pch=strchr(pch+1,':');
-			old_celsius[i] += 0.5;
+			old_celsius[i] = 0;
 			++i;
 	}
-	old_celsius[i] += 0.5;
+	old_celsius[i] = 0;
 
     for ( i = 0; i < numSensor; i++) {
       isOFF[i] = 0;
-      Timer_2[i] += 5000000UL;
+      //Timer_2[i] += 5000000UL;
     }
 
 	userTempset = 1;
-    initSending = 2; //3times send all sensor data
+    initSending = 1; //3times send all sensor data
     L_Temp2SPIFFS(); //store received L_Temp to SPIFFS
 	}
 	else {
