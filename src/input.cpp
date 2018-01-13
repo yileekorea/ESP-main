@@ -98,18 +98,11 @@ void INTsetup() {
    {
      //really going OFF condition...
      //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-     if((27.5 <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     if((27.2 <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
        rStatus[nSensor] = 0;
        //Timer_1[nSensor] = millis();
        isOFF[nSensor] = 1;
      }
-/*
-     //going ON condition
-     if(L_Temp[nSensor] > celsius[nSensor]) {
-       rStatus[nSensor] = L_Temp[nSensor];
-       isOFF[nSensor] = 0;
-     }
-*/
 
  //going ON condition
     if(L_Temp[nSensor] > celsius[nSensor]) {
@@ -133,8 +126,9 @@ void INTsetup() {
 
   		if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
   		{
-        Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
-        Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
+		       DEBUG.print("skip the additional fource turn on");
+        //Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
+        //Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
   		}
 /*
       //if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
@@ -183,8 +177,9 @@ void INTsetup() {
 
         if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
     		{
-          Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
-          Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
+	       DEBUG.print("skip the additional fource turn on");
+          //Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
+          //Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
     		}
      	} //if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 28 ))
      } //else if((millis() - Timer_1...
