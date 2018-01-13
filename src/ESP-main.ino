@@ -198,9 +198,9 @@ void loop()
     			DEBUG.println();
     			DEBUG.println("Firmware: "+ currentfirmware);
     			if ((userTempset == 1)){
-            //DEBUG.println("send all sensor temp data");
+            			//DEBUG.println("send all sensor temp data");
     				readFromOneWire();
-    				sendTempData(); //send all sensor temp data
+    				//sendTempData(); //send all sensor temp data
     				userTempset = 0;
     				readOneWireAddr();
     			}
