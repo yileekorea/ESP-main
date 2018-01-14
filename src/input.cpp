@@ -104,8 +104,8 @@ void INTsetup() {
        isOFF[nSensor] = 1;
      }
 
- //going ON condition
-    if(L_Temp[nSensor] > celsius[nSensor]) {
+     //going ON condition
+     if(L_Temp[nSensor] > celsius[nSensor]) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
        //Timer_2[nSensor] = millis()-(interOpenTimer+1);
@@ -152,8 +152,8 @@ void INTsetup() {
        DEBUG.print("  =  ");
        DEBUG.println((millis() - Timer_1[nSensor]));
 
-   	Timer_1[nSensor] = millis();
-   	Timer_2[nSensor] = millis();
+     	Timer_1[nSensor] = millis();
+     	Timer_2[nSensor] = millis();
 
      	if ((L_Temp[nSensor] >= 18 )&&(celsius[nSensor] <= 29 ))
      	{
