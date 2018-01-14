@@ -47,6 +47,7 @@ extern float L_Temp[];
 extern byte address[9][8];
 extern int autoOff_OnTimer;
 extern byte isOFF[];
+extern unsigned long Timer_1[];
 extern unsigned long Timer_2[];
 
 extern float accCountValue;
