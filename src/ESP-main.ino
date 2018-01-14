@@ -162,6 +162,8 @@ void setup() {
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
 
+    Timer_1[nSensor] = millis();
+
 } // end setup
 
 // -------------------------------------------------------------------
