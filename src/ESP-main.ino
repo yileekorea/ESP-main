@@ -91,6 +91,8 @@ void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
 // SETUP
 // -------------------------------------------------------------------
 void setup() {
+  byte i = 0;
+
   pinMode(ESP_RESET_CTL, OUTPUT);
   digitalWrite(ESP_RESET_CTL, HIGH);
 
@@ -162,8 +164,9 @@ void setup() {
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
 
-    Timer_1[nSensor] = millis();
-
+    for(i=0;i<(numSensor-1);i++){
+      Timer_1[i] = millis();
+   }
 } // end setup
 
 // -------------------------------------------------------------------
