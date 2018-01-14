@@ -202,7 +202,7 @@ void loop()
     				//readFromOneWire();
     				//sendTempData(); //send all sensor temp data
     				userTempset = 0;
-    				readOneWireAddr();
+    				//readOneWireAddr();
     			}
     			else {
     				//readOneWireAddr();
