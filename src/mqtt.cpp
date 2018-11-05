@@ -38,7 +38,7 @@
 //#include <WiFiClient.h>
 #include <WiFiClientSecure.h>
 
-//const char* fingerprint = "E6:E0:09:FD:2F:2F:31:85:54:F2:EA:22:14:42:D6:1A:9C:44:36:15";  //mac book
+//sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint
 const char* fingerprint = "54:91:68:19:ED:B4:14:46:17:3F:69:48:EB:80:2F:60:2D:C6:83:0A";  //think pad
 long lastMqttReconnectAttempt = 0;
 int clientTimeout = 0;
