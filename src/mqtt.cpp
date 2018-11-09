@@ -39,7 +39,7 @@
 #include <WiFiClientSecure.h>
 
 //sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint
-const char* fingerprint = "54:91:68:19:ED:B4:14:46:17:3F:69:48:EB:80:2F:60:2D:C6:83:0A";  //think pad
+const char* fingerprint = "54:91:68:19:ED:B4:14:46:17:3F:69:48:EB:80:2F:60:2D:C6:83:0A";  //~~ 20181109 still using this print 
 long lastMqttReconnectAttempt = 0;
 int clientTimeout = 0;
 int i = 0;
