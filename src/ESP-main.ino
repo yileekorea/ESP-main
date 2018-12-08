@@ -51,8 +51,20 @@ int heating_system_status = 1; //ON state is default
 // -------------------------------------------------------------------
 // fauxmo_callback
 // -------------------------------------------------------------------
+// fauxmoESP 2.0.0 has changed the callback signature to add the device_id,
+// this way it's easier to match devices to action without having to compare strings.
+//fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
+//Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
+//digitalWrite(LED, !state);
+//});
+/*
 void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
   Serial.print("Device "); Serial.print(device_name); Serial.print(device_id);
+  Serial.print(" state is: ");
+*/
+
+void fauxmo_callback([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
+  Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
   Serial.print(" state is: ");
 
 
@@ -157,9 +169,17 @@ void setup() {
     mcp_GPIO_setup(); //SPI GPIO
 
     // Fauxmo
+    // You have to call enable(true) once you have a WiFi connection
+    // You can enable or disable the library at any moment
+    // Disabling it will prevent the devices from being discovered and switched
+    fauxmo.enable(true);
+    fauxmo.enable(false);
+    fauxmo.enable(true);
+
     fauxmo.addDevice("heating");
     //fauxmo.addDevice("relay");
-    fauxmo.onMessage(fauxmo_callback);
+    //fauxmo.onMessage(fauxmo_callback);
+    fauxmo.onSetState(fauxmo_callback);
 
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
