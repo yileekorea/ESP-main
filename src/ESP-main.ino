@@ -57,14 +57,9 @@ int heating_system_status = 1; //ON state is default
 //Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
 //digitalWrite(LED, !state);
 //});
-/*
+
 void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
   Serial.print("Device "); Serial.print(device_name); Serial.print(device_id);
-  Serial.print(" state is: ");
-*/
-
-void fauxmo_callback(unsigned char device_id, const char * device_name, bool state, unsigned char value) {
-  Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
   Serial.print(" state is: ");
 
 
@@ -178,7 +173,7 @@ void setup() {
 
     fauxmo.addDevice("heating");
     //fauxmo.addDevice("relay");
-    //fauxmo.onMessage(fauxmo_callback);
+    fauxmo.onMessage(fauxmo_callback);
     fauxmo.onSetState(fauxmo_callback);
 
     ESP.wdtDisable();
