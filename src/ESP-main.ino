@@ -63,7 +63,7 @@ void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
   Serial.print(" state is: ");
 */
 
-void fauxmo_callback([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
+void fauxmo_callback(unsigned char device_id, const char * device_name, bool state, unsigned char value) {
   Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
   Serial.print(" state is: ");
 
@@ -197,7 +197,13 @@ void loop()
   ESP.wdtFeed();
 
   fauxmo.handle();
-
+  static unsigned long last = millis();
+  if (millis() - last > 5000) {
+	last = millis();
+	Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
+  }
+	
+	
     ota_loop();
     web_server_loop();
     wifi_loop();
