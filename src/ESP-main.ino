@@ -167,7 +167,6 @@ void setup() {
     // You have to call enable(true) once you have a WiFi connection
     // You can enable or disable the library at any moment
     // Disabling it will prevent the devices from being discovered and switched
-	
     fauxmo.enable(true);
     fauxmo.enable(false);
     fauxmo.enable(true);
