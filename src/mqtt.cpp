@@ -38,12 +38,9 @@
 //#include <WiFiClient.h>
 #include <WiFiClientSecure.h>
 
-//echo | openssl s_client -connect localhost:1883 | openssl x509 -fingerprint -noout
-//sudo openssl x509 -in mosquitto/etc/certs/mqtt.local.crt.pem -sha1 -noout -fingerprint
 //sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint
 //const char* fingerprint = "54:91:68:19:ED:B4:14:46:17:3F:69:48:EB:80:2F:60:2D:C6:83:0A";  //~~ 20181109 still using this print
-//const char* fingerprint = "95:34:AF:46:C2:3B:D3:AB:C0:33:87:A7:1D:A6:82:AD:CA:FE:5B:AF";  //~~ 20181109 still using this print
-const char* fingerprint = "F3:59:2F:0B:AF:A1:C8:2E:63:B8:EE:BC:A3:72:14:59:79:5E:72:D9";  //for mqtt.realdata.shop 20190505
+const char* fingerprint = "95:34:AF:46:C2:3B:D3:AB:C0:33:87:A7:1D:A6:82:AD:CA:FE:5B:AF";  //~~ 20181109 still using this print
 long lastMqttReconnectAttempt = 0;
 int clientTimeout = 0;
 int i = 0;
