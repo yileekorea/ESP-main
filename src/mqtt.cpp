@@ -43,7 +43,7 @@
 //sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint
 //const char* fingerprint = "54:91:68:19:ED:B4:14:46:17:3F:69:48:EB:80:2F:60:2D:C6:83:0A";  //~~ 20181109 still using this print
 //const char* fingerprint = "95:34:AF:46:C2:3B:D3:AB:C0:33:87:A7:1D:A6:82:AD:CA:FE:5B:AF";  //~~ 20181109 still using this print
-const char* fingerprint = "E9:7E:7C:E4:53:98:D7:B3:A4:82:5B:87:29:D5:AE:F2:91:83:F6:FB";  //for mqtt.realdata.shop 20190505
+const char* fingerprint = "F3:59:2F:0B:AF:A1:C8:2E:63:B8:EE:BC:A3:72:14:59:79:5E:72:D9";  //for mqtt.realdata.shop 20190505
 long lastMqttReconnectAttempt = 0;
 int clientTimeout = 0;
 int i = 0;
