@@ -38,9 +38,9 @@
 //#include <WiFiClient.h>
 #include <WiFiClientSecure.h>
 
+
 //sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint
-//const char* fingerprint = "54:91:68:19:ED:B4:14:46:17:3F:69:48:EB:80:2F:60:2D:C6:83:0A";  //~~ 20181109 still using this print
-//const char* fingerprint = "95:34:AF:46:C2:3B:D3:AB:C0:33:87:A7:1D:A6:82:AD:CA:FE:5B:AF";  //~~ 20181109 still using this print
+
 //const char* fingerprint = "E9:7E:7C:E4:53:98:D7:B3:A4:82:5B:87:29:D5:AE:F2:91:83:F6:FB"; //mqtt.io2life.com 20190512
 
 //ubuntu@ip-172-26-7-181:/etc/mosquitto/conf.d$ sudo openssl x509 -in /etc/letsencrypt/live/mqtt.ipecsacademia.site/cert.pem -sha1 -noout -fingerprint
