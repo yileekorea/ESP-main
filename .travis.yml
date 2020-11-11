@@ -57,18 +57,3 @@ deploy:
 
   api-key:
     secure: wxyk/rYpKd0VcmS3Ogs1QZdhd02//Au6n6kFnrwt83ClgXsH8HC6FiLRqyi1Jr3kkbotWAPHLngosxSwM9liiQ9hjLpP8XMYkn5CkLs+QuXJq7Wwo8ECsYdj5AInI1eUDjjHCOBWjUAcPQ9GaHzCE/FGnycfPbL+U6VuKz1ZtGZxqGxvQ9yRK5xvCNwz8ZfBaSGUZJL9LKQCck4h/XwX7DajbEzgDq7rflByVb/71KRxJQr+KDZPgqtO3Ej5a/6guFm/PRdY7YJ7Yyc6v9T6eILvc+UrcApnP0FIqIdTsLlUEpj/EdvCp6K3+WnCiy1EVORg28T33VO0bXUemP+Fd7LMvyrqxivcTJm1jGlZ7zGqSkUQzC+uy3GLzr1pTkRVHErdKSdN38+PJow3ut/w3Tcqd6QYt79jd8oeIgn2ZUzUASUzT+lPS7nBZfqbVRyEYqNt8SQM+egebzCQdf3CcCZK+8RAX9TKyoOKQ5mllHo58phM02FdAIYgEcF8aAaEFi/aO5+89uMSA9+emx1UpPY/jjK5lNLRIPbeIbiIezX1QOykoThLnsHupTUm2ZU5OCL+BMy+74DaqeNLHwcl2oRz2eKMDVPJ59jmTJ7rfJQAF1wmx+4NwpkhJMRQ3gZPba4rFMB7wkh0+Wbt4qT7bNqg1VtsQfnr5q1mnwRIJxU=
-
-#Github Settings > Developer settings > Personal access tokens>
-#--> 85ec6d2beff87370b1551663b438a69c8295cac0
-
-#ubuntu@ip-172-26-7-181:~$ sudo apt install ruby ruby-dev
-#ubuntu@ip-172-26-7-181:~$ sudo gem install travis
-
-#ubuntu@ip-172-26-7-181:~$ travis login
-#Username: yilee.korea@gmail.com
-#Password for yilee.korea@gmail.com: ********
-#Successfully logged in as yileekorea!
-
-#ubuntu@ip-172-26-7-181:~$ travis encrypt 85ec6d2beff87370b1551663b438a69c8295cac0 -r yileekorea/ESP-main
-#Please add the following to your .travis.yml file:
-#secure: "wxyk/rYpKd0VcmS3Ogs1QZdhd02//Au6n6kFnrwt83ClgXsH8HC6FiLRqyi1Jr3kkbotWAPHLngosxSwM9liiQ9hjLpP8XMYkn5CkLs+QuXJq7Wwo8ECsYdj5AInI1eUDjjHCOBWjUAcPQ9GaHzCE/FGnycfPbL+U6VuKz1ZtGZxqGxvQ9yRK5xvCNwz8ZfBaSGUZJL9LKQCck4h/XwX7DajbEzgDq7rflByVb/71KRxJQr+KDZPgqtO3Ej5a/6guFm/PRdY7YJ7Yyc6v9T6eILvc+UrcApnP0FIqIdTsLlUEpj/EdvCp6K3+WnCiy1EVORg28T33VO0bXUemP+Fd7LMvyrqxivcTJm1jGlZ7zGqSkUQzC+uy3GLzr1pTkRVHErdKSdN38+PJow3ut/w3Tcqd6QYt79jd8oeIgn2ZUzUASUzT+lPS7nBZfqbVRyEYqNt8SQM+egebzCQdf3CcCZK+8RAX9TKyoOKQ5mllHo58phM02FdAIYgEcF8aAaEFi/aO5+89uMSA9+emx1UpPY/jjK5lNLRIPbeIbiIezX1QOykoThLnsHupTUm2ZU5OCL+BMy+74DaqeNLHwcl2oRz2eKMDVPJ59jmTJ7rfJQAF1wmx+4NwpkhJMRQ3gZPba4rFMB7wkh0+Wbt4qT7bNqg1VtsQfnr5q1mnwRIJxU="
