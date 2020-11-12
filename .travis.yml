@@ -13,11 +13,9 @@ install:
 - pip install -U platformio
 #- platformio lib install 567 562
 - platformio platform install espressif8266 --with-package tool-mkspiffs
-script:
-  - mkdir /tmp/build
-  - platformio ci --build-dir=/tmp/build --keep-build-dir --board=nodemcuv2
-  
+script:  
   - platformio --version
+  - platformio run -d firmware
   - platformio run -e io2life_deploy
   - platformio run -t buildfs -e io2life_deploy
 
@@ -49,10 +47,9 @@ deploy:
   skip_cleanup: true
   overwrite: true
   file:
-  #- ".pioenvs/io2life_deploy/firmware.bin"
-  #- ".pioenvs/io2life_deploy/spiffs.bin"
-  - "tmp/build/.pioenvs/io2life_deploy/firmware.bin"
-  - "tmp/build/.pioenvs/io2life_deploy/spiffs.bin"
+  - "firmware/.pioenvs/io2life_deploy/firmware.bin"
+  - "firmware/.pioenvs/io2life_deploy/spiffs.bin"
+
   on:
     repo: yileekorea/ESP-main
     all_branches: true
