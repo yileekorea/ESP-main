@@ -15,7 +15,6 @@ install:
 - platformio platform install espressif8266 --with-package tool-mkspiffs
 script:  
   - platformio --version
-  - platformio run -d firmware
   - platformio run -e io2life_deploy
   - platformio run -t buildfs -e io2life_deploy
 
@@ -47,9 +46,10 @@ deploy:
   skip_cleanup: true
   overwrite: true
   file:
-  - "firmware/.pioenvs/io2life_deploy/firmware.bin"
-  - "firmware/.pioenvs/io2life_deploy/spiffs.bin"
-
+  #- ".pioenvs/io2life_deploy/firmware.bin"
+  #- ".pioenvs/io2life_deploy/spiffs.bin"
+  - ".pio/build/io2life_deploy/firmware.bin"
+  - ".pio/build/io2life_deploy/spiffs.bin"
   on:
     repo: yileekorea/ESP-main
     all_branches: true
