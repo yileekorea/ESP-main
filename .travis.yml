@@ -15,7 +15,7 @@ install:
 - platformio platform install espressif8266 --with-package tool-mkspiffs
 script:
   - mkdir /tmp/build
-  - platformio ci --build-dir="/tmp/build" --keep-build-dir --board=nodemcuv2
+  - platformio ci --build-dir=/tmp/build --keep-build-dir --board=nodemcuv2
   
   - platformio --version
   - platformio run -e io2life_deploy
