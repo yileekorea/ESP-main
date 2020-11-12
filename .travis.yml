@@ -42,8 +42,10 @@ deploy:
   skip_cleanup: true
   overwrite: true
   file:
-  - ".pioenvs/io2life_deploy/firmware.bin"
-  - ".pioenvs/io2life_deploy/spiffs.bin"
+#  - ".pioenvs/io2life_deploy/firmware.bin"
+#  - ".pioenvs/io2life_deploy/spiffs.bin"
+  - ".pio/io2life_deploy/firmware.bin"
+  - ".pio/io2life_deploy/spiffs.bin"
   on:
     repo: yileekorea/ESP-main
     all_branches: true
