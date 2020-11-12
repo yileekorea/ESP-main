@@ -39,7 +39,7 @@
 #include <WiFiClientSecure.h>
 
 
-//sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint --> old
+//sudo openssl x509 -in io2better.net.crt -sha1 -noout -fingerprint
 
 //const char* fingerprint = "E9:7E:7C:E4:53:98:D7:B3:A4:82:5B:87:29:D5:AE:F2:91:83:F6:FB"; //mqtt.io2life.com 20190512
 
