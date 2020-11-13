@@ -103,7 +103,8 @@ t_httpUpdate_return ota_http_update()
   Serial.println("WILL start ESP flash update");
   SPIFFS.end(); // unmount filesystem
   ESPhttpUpdate.rebootOnUpdate(BOOT_AFTER_UPDATE);
-  t_httpUpdate_return ret = ESPhttpUpdate.update("http://iot2better.iptime.org:9000/firmware_SPI.php?tag=" + currentfirmware);
+//  t_httpUpdate_return ret = ESPhttpUpdate.update("http://iot2better.iptime.org:9000/firmware_SPI.php?tag=" + currentfirmware);
+  t_httpUpdate_return ret = ESPhttpUpdate.update("http://thinkway.ipecsacademia.site:9000/firmware_SPI.php?tag=" + currentfirmware);
   SPIFFS.begin(); //mount-file system
 
   switch(ret) {
