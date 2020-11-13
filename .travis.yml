@@ -18,7 +18,8 @@ script:
   - platformio run -e io2life_deploy
   - platformio run -t buildfs -e io2life_deploy
 
-  - RELEASE_VER="release.0.0.6"
+  #- RELEASE_VER="release.0.0.6"
+  - RELEASE_VER="R.0.0.7"
   #- LOCAL_VER="local.0.0.6"
   - echo $TRAVIS_BRANCH / $RELEASE_VER
 
