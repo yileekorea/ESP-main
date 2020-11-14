@@ -297,6 +297,7 @@ void readoutTemperature(byte Sensor)
     }
     celsius[nSensor] = (float)raw / 16.0;
     //fahrenheit[nSensor] = celsius[nSensor] * 1.8 + 32.0;
+    Serial.println("--- readoutTemperature");
     Serial.print("  Temps = ");
     Serial.print(celsius[nSensor]);
     Serial.print(" 'C");
@@ -459,6 +460,7 @@ String readFromOneWire()
     }
     celsius[nSensor] = (float)raw / 16.0;
     //fahrenheit[nSensor] = celsius[nSensor] * 1.8 + 32.0;
+    Serial.println("--- measuredTemperature");    
     Serial.print("  Temps = ");
     Serial.print(celsius[nSensor]);
     Serial.print(" 'C");
