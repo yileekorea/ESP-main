@@ -50,7 +50,7 @@ ESP8266HTTPUpdateServer httpUpdater;  // Create class for webupdate handleWebUpd
 //const char* updateServer = "http://iot2better.iptime.org:8003/fwImage/";
 const char* fwImage = "firmware.bin";
 
-const char* u_host = "http://iot2better.iptime.org:9000";
+const char* u_host = "http://thinkway.ipecsacademia.site:9000/";
 const char* u_url = "/firmware.php";
 const char* firmware_update_path = "/upload";
 
