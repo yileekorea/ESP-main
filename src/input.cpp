@@ -352,8 +352,8 @@ void measureTemperature(byte Sensor)
     ds.write(0x44, 1);  // start conversion, with parasite power on at the end
 
     //delay(1000);     	// maybe 750ms is enough, maybe not
-    //delay(200);     	// maybe 187.5ms is enough, maybe not
-    delay(20);     	// test purpose
+    delay(200);     	// maybe 187.5ms is enough, maybe not
+    //delay(20);     	// test purpose
   //} //numSensor
 } //measureTemperature
 
