@@ -97,7 +97,8 @@ void setON_OFFstatus(byte Sensor){
    {
      //really going OFF condition...
      //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-     if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
+     //if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
+     if((L_Temp[nSensor] <= celsius[nSensor])) {
        rStatus[nSensor] = 0;
        Timer_1[nSensor] = millis();
        isOFF[nSensor] = 1;
@@ -460,7 +461,7 @@ String readFromOneWire()
     }
     celsius[nSensor] = (float)raw / 16.0;
     //fahrenheit[nSensor] = celsius[nSensor] * 1.8 + 32.0;
-    Serial.println("--- measuredTemperature");    
+    Serial.println("--- measuredTemperature");
     Serial.print("  Temps = ");
     Serial.print(celsius[nSensor]);
     Serial.print(" 'C");
