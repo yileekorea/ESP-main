@@ -85,20 +85,19 @@ void INTsetup() {
 /*
  * setON_OFFstatus by the measured Temperature
  */
- void setON_OFFstatus(byte Sensor){
- byte nSensor = Sensor;
- byte i;
- byte sum_isOFF=0;
- float Low_temp = 100.0;
- int Low_seq = -1;
- int Low_seq_2 = -1;
-
+void setON_OFFstatus(byte Sensor){
+   byte nSensor = Sensor;
+   byte i;
+   byte sum_isOFF;
+   float Low_temp;
+   int Low_seq;
+   int Low_seq_2;
 
    if(heating_system_status)
    {
      //really going OFF condition...
-     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-     //if((27.0 <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
        rStatus[nSensor] = 0;
        Timer_1[nSensor] = millis();
        isOFF[nSensor] = 1;
@@ -108,41 +107,32 @@ void INTsetup() {
      if(L_Temp[nSensor] > celsius[nSensor]) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
-       //Timer_2[nSensor] = millis()-(interOpenTimer+1);
-
-       sum_isOFF=0;
+/*
+       sum_isOFF = 0;
        Low_temp = 100.0;
        Low_seq = -1;
        Low_seq_2 = -1;
 
-       for(i=0;i<(numSensor-1);i++){
-  			sum_isOFF += isOFF[i];
-  			if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
-  				Low_temp = celsius[i];
-  				Low_seq_2 = Low_seq;
-          Low_seq = i;
-  			}
+      for(i=0; i<(numSensor-1); i++){
+  		    sum_isOFF += isOFF[i];
+  			     if((Low_temp > celsius[i])&&(i != nSensor)&&(isOFF[i])){
+  				         Low_temp = celsius[i];
+  				         Low_seq_2 = Low_seq;
+                   Low_seq = i;
+  		       }
   		}
-
   		if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
+      //if((sum_isOFF > (numSensor-4)) && (Low_seq >= 0)) //Only two valve is ON state
   		{
 		       DEBUG.print("skip the additional fource turn on");
            Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
            //Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
   		}
-/*
-      //if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
-      if((sum_isOFF > (numSensor-4)) && (Low_seq >= 0)) //Only two valve is ON state
-      {
-        for(i=0;i<numSensor-1;i++){
-          Timer_1[i] = millis() - ((autoOff_OnTimer-3) * a_min);  //set after 3minutes
-        }
-      }
 */
     }
-
+/*
      //for auto off on timer condition...
-     else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
+    else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
        DEBUG.println();
        DEBUG.print(nSensor);
        DEBUG.print(" : millis-");
@@ -159,8 +149,6 @@ void INTsetup() {
      	{
      		rStatus[nSensor] = L_Temp[nSensor];
      		isOFF[nSensor] = 0;
-     		//Timer_1[nSensor] = millis();
-     		//Timer_2[nSensor] = millis();
 
         sum_isOFF=0;
         Low_temp = 100.0;
@@ -175,57 +163,21 @@ void INTsetup() {
           }
         }
 
+
         if((sum_isOFF > (numSensor-3)) && (Low_seq >= 0)) //Only one valve is ON state
     		{
 	         DEBUG.print("skip the additional fource turn on_auto");
            Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
-           //Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
     		}
      	} //if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 28 ))
      } //else if((millis() - Timer_1...
+*/
    }
 
-/*
-  if(heating_system_status)
-  {
-  	// going ON status
-  	if(L_Temp[nSensor] > celsius[nSensor]) {
-  		rStatus[nSensor] = L_Temp[nSensor];
-  		isOFF[nSensor] = 0;
-  	}
-  	//going OFF status
-  	else{
-  		if(((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-  			rStatus[nSensor] = 0;
-  			Timer_1[nSensor] = millis();
-  			isOFF[nSensor] = 1;	//really valve is OFF state
-  		}
-  		else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
-  			DEBUG.println();
-  			DEBUG.print(nSensor);
-  			DEBUG.print(" : millis-");
-  			DEBUG.print(millis());
-  			DEBUG.print("  -   vControlTimer-");
-  			DEBUG.print(Timer_1[nSensor]);
-  			DEBUG.print("  =  ");
-  			DEBUG.println((millis() - Timer_1[nSensor]));
-
-  			//if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 29 ))
-        {
-  				rStatus[nSensor] = L_Temp[nSensor];
-  				isOFF[nSensor] = 0;
-  				Timer_1[nSensor] = millis();
-  				Timer_2[nSensor] = millis();
-  			}
-  		} //else if((millis() - Timer_1...
-  	} //else
-  }
-*/
-  else{	//heating_system_status is OFF
-    rStatus[nSensor] = 0;
-  }
-
-} //void setON_OFFstatus(byte Sensor){
+   else{	//heating_system_status is OFF
+     rStatus[nSensor] = 0;
+   }
+} //void setON_OFFstatus(byte Sensor)
 
 /*
  * Sensor address read
