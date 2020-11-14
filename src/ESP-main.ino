@@ -194,11 +194,10 @@ void loop()
   fauxmo.handle();
   static unsigned long last = millis();
   if (millis() - last > 5000) {
-	last = millis();
-	Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
+	   last = millis();
+	    Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
   }
-	
-	
+
     ota_loop();
     web_server_loop();
     wifi_loop();
