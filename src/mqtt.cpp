@@ -189,20 +189,22 @@ void send_a_TempData(byte Sensor) {
 			payload += ",\"cStatus\":";
 			payload += rStatus[i];   // room status
 
+	    
       payload += ",\"cCount\":";
-/*
+      BuildVersion();
       if(buildVersion)
         payload += buildVersion;
       else
         payload += "1969";
-*/
+
+/*	
 			if ( isnan(accCountValue) )
 				payload += "0";
 			else {
 				dtostrf(accCountValue , 7, 2, pChrBuffer_acc);
 				payload += pChrBuffer_acc;
 			}
-
+*/
       payload += ",\"hOF\":";
 			payload += heating_system_status;   // heating_system_status ON_OFF
 
