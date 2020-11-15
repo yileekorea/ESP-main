@@ -96,9 +96,9 @@ void setON_OFFstatus(byte Sensor){
    if(heating_system_status)
    {
      //really going OFF condition...
-     //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
      //if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
-     if((L_Temp[nSensor] <= celsius[nSensor])) {
+     //if((L_Temp[nSensor] <= celsius[nSensor])) {
        rStatus[nSensor] = 0;
        Timer_1[nSensor] = millis();
        isOFF[nSensor] = 1;
@@ -108,7 +108,7 @@ void setON_OFFstatus(byte Sensor){
      if(L_Temp[nSensor] > celsius[nSensor]) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
-/*
+
        sum_isOFF = 0;
        Low_temp = 100.0;
        Low_seq = -1;
@@ -129,9 +129,9 @@ void setON_OFFstatus(byte Sensor){
            Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
            //Timer_1[Low_seq_2] = millis() + (autoOff_OnTimer * a_min*2);
   		}
-*/
+
     }
-/*
+
      //for auto off on timer condition...
     else if((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min)) {
        DEBUG.println();
@@ -170,12 +170,11 @@ void setON_OFFstatus(byte Sensor){
 	         DEBUG.print("skip the additional fource turn on_auto");
            Timer_1[Low_seq] = millis() + (autoOff_OnTimer * a_min*2);
     		}
-     	} //if ((L_Temp[nSensor] >= 22 )&&(celsius[nSensor] < 28 ))
-     } //else if((millis() - Timer_1...
-*/
-   }
+     	}
+     }
 
-   else{	//heating_system_status is OFF
+   }
+   else{
      rStatus[nSensor] = 0;
    }
 } //void setON_OFFstatus(byte Sensor)
