@@ -25,6 +25,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <time.h>
 
 #include "io2better.h"
 #include "config.h"
@@ -46,7 +47,38 @@ byte s_loop = 0;
 
 int heating_system_status = 1; //ON state is default
 
+time_t now = 0l;
+time_t lastTimestamp = 0l;
 
+void showChipInfo()
+{
+  Serial.println("-- CHIPINFO --");
+
+  Serial.printf("Chip Id = %08X\n", ESP.getChipId() );
+  Serial.printf("CPU Frequency = %dMHz\n", ESP.getCpuFreqMHz() );
+
+  uint32_t realSize = ESP.getFlashChipRealSize();
+  uint32_t ideSize = ESP.getFlashChipSize();
+  FlashMode_t ideMode = ESP.getFlashChipMode();
+
+  Serial.printf("\nFlash real id:   %08X\n", ESP.getFlashChipId());
+  Serial.printf("Flash real size: %u\n", realSize);
+  Serial.printf("Flash ide  size: %u\n", ideSize);
+  Serial.printf("Flash chip speed: %u\n", ESP.getFlashChipSpeed());
+  Serial.printf("Flash ide mode:  %s\n", (ideMode == FM_QIO ?
+                                          "QIO" : ideMode == FM_QOUT ?
+                                          "QOUT" : ideMode == FM_DIO ?
+                                          "DIO" : ideMode == FM_DOUT ?
+                                          "DOUT" : "UNKNOWN"));
+  if (ideSize != realSize)
+  {
+    Serial.println("Flash Chip configuration wrong!\n");
+  }
+  else
+  {
+    Serial.println("Flash Chip configuration ok.\n");
+  }
+}
 
 // -------------------------------------------------------------------
 // fauxmo_callback
@@ -119,6 +151,12 @@ void setup() {
   BuildVersion();
   DEBUG.println("Firmware: "+ currentfirmware);
   DEBUG.println("buildVersion: "+ buildVersion);
+
+  Serial.println( "Build date: " __DATE__ " " __TIME__  );
+  Serial.print( "Framework full version: " );
+  Serial.println( ESP.getFullVersion() );
+
+  showChipInfo();
 
   // Read saved settings from the config
   config_load_settings();
