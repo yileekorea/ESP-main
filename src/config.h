@@ -57,6 +57,9 @@ extern String mqtt_user;
 extern String mqtt_pass;
 extern String mqtt_feed_prefix;
 
+#define NTP_SERVER_NAME "pool.ntp.org"
+#define NTP_TIME_SHIFT  3600
+
 // -------------------------------------------------------------------
 // Load saved settings
 // -------------------------------------------------------------------

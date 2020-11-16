@@ -49,6 +49,8 @@ int heating_system_status = 1; //ON state is default
 
 time_t now = 0l;
 time_t lastTimestamp = 0l;
+//const unsigned long KST_time = 32400UL;
+const unsigned long KST_time = 28800UL;
 
 void showChipInfo()
 {
@@ -162,6 +164,10 @@ void setup() {
   config_load_settings();
   //config_save_wifi("iptime_multi_2.4G", "1234");
 
+  delay(500);                // longer but it is stable ;-)
+
+  configTime( NTP_TIME_SHIFT, 0, NTP_SERVER_NAME );
+
   // Initialise the WiFi
   wifi_setup();
 
@@ -174,6 +180,19 @@ void setup() {
   if (wifi_mode==WIFI_MODE_STA){
     DEBUG.println("Start finger print verify : ");
     verifyFingerprint();
+
+    // wait for ntp time
+    Serial.print( "Wait for NTP sync " );
+
+    while(( now = time(nullptr)) < 1550922262 )
+    {
+      Serial.print(".");
+      delay(100);
+    }
+    Serial.println( " done." );
+    Serial.println(ctime(&now));
+    now += KST_time;
+    Serial.println(ctime(&now));
   }
 
   SPIFFS2accHistory();
