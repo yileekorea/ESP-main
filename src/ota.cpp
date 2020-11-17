@@ -87,6 +87,7 @@ void ota_loop()
     if (flashButtonState == LOW || doUpdateCheck) {
       Serial.println("Going to update firmware...");
       ota_http_update();
+      Serial.println("Process of update firmware...completed");
       doUpdateCheck = false;
     }
   }
