@@ -30,8 +30,6 @@
 #include "OneWire.h"
 
 #define a_min 60000UL //1min
-//#define interOpenTimer 300000UL //5min
-//#define autoOff_OnTimer 1800000UL //30min
 
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
@@ -93,7 +91,7 @@ void setON_OFFstatus(byte Sensor){
    {
      //really going OFF condition...
      if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-       rStatus[nSensor] = 0;
+       rStatus[nSensor] = 18.2;
        isOFF[nSensor] = 1;
        Timer_1[nSensor] = millis();   //point of turned OFF
      }
