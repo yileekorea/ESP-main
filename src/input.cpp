@@ -33,10 +33,6 @@
 //#define interOpenTimer 300000UL //5min
 //#define autoOff_OnTimer 1800000UL //30min
 
-/*
-#define interOpenTimer 60000UL //1min
-#define autoOff_OnTimer 120000UL //2min
-*/
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
 String sName[]= {"a","b","c","d","e","f","g","h","i","j"};
@@ -97,13 +93,18 @@ void setON_OFFstatus(byte Sensor){
    {
      //really going OFF condition...
      if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-     //if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
-     //if((L_Temp[nSensor] <= celsius[nSensor])) {
        rStatus[nSensor] = 0;
-       Timer_1[nSensor] = millis();
        isOFF[nSensor] = 1;
+       Timer_1[nSensor] = millis();   //point of turned OFF
      }
 
+     //going ON condition
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > interOFF_Timer) && (isOFF[nSensor] == 1)) {
+       rStatus[nSensor] = L_Temp[nSensor];
+       isOFF[nSensor] = 0;
+       Timer_2[nSensor] = millis();   //point of turned ON
+     }
+/*
      //going ON condition
      if(L_Temp[nSensor] > celsius[nSensor]) {
        rStatus[nSensor] = L_Temp[nSensor];
@@ -172,7 +173,7 @@ void setON_OFFstatus(byte Sensor){
     		}
      	}
      }
-
+*/
    }
    else{
      rStatus[nSensor] = 0;

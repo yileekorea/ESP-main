@@ -27,6 +27,8 @@
 #define _EMONESP_INPUT_H
 
 #include <Arduino.h>
+#define interOFF_Timer 1500000UL //15min
+
 #define interOpenTimer 500000UL //5min
 //#define interOpenTimer 400000UL //4min
 //#define interOpenTimer 300000UL //3min
