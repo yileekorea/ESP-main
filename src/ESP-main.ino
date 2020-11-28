@@ -236,9 +236,10 @@ void setup() {
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
 
-    for(i=0;i<(numSensor-1);i++){
-      Timer_1[i] = millis();
-   }
+//    for(i=0;i<(numSensor-1);i++){
+//      Timer_1[i] = millis();
+//   }
+
 } // end setup
 
 // -------------------------------------------------------------------
@@ -248,7 +249,8 @@ void loop()
 {
   ESP.wdtFeed();
 
-  fauxmo.handle();
+  //fauxmo.handle();
+
   static unsigned long last = millis();
   if (millis() - last > 5000) {
 	   last = millis();
