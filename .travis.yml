@@ -13,7 +13,7 @@ install:
 - pip install -U platformio
 #- platformio lib install 567 562
 - platformio platform install espressif8266 --with-package tool-mkspiffs
-script:  
+script:
   - platformio --version
   - platformio run -e io2life_deploy
   - platformio run -t buildfs -e io2life_deploy
@@ -60,12 +60,12 @@ deploy:
     #condition: $TRAVIS_TAG =~ (pre|alpha|beta|build-master)[0-9]+\.[0-9]+\.[0-9]+$
     #condition: $TRAVIS_TAG =~ (pre|alpha|beta|build-)+$
     #condition: $TRAVIS_TAG =~ v[0-9]+\.[0-9]+\.[0-9]+*$
-    
+
     #~ 2020 11 12
-    #condition: $RELEASE_VER =~ ^(release.)[0-9]+\.[0-9]+\.[0-9]+$ 
+    #condition: $RELEASE_VER =~ ^(release.)[0-9]+\.[0-9]+\.[0-9]+$
     condition: $RELEASE_VER =~ ^(R.)[0-9]+\.[0-9]+\.[0-9]+$
 
   api-key:
 #    secure: wxyk/rYpKd0VcmS3Ogs1QZdhd02//Au6n6kFnrwt83ClgXsH8HC6FiLRqyi1Jr3kkbotWAPHLngosxSwM9liiQ9hjLpP8XMYkn5CkLs+QuXJq7Wwo8ECsYdj5AInI1eUDjjHCOBWjUAcPQ9GaHzCE/FGnycfPbL+U6VuKz1ZtGZxqGxvQ9yRK5xvCNwz8ZfBaSGUZJL9LKQCck4h/XwX7DajbEzgDq7rflByVb/71KRxJQr+KDZPgqtO3Ej5a/6guFm/PRdY7YJ7Yyc6v9T6eILvc+UrcApnP0FIqIdTsLlUEpj/EdvCp6K3+WnCiy1EVORg28T33VO0bXUemP+Fd7LMvyrqxivcTJm1jGlZ7zGqSkUQzC+uy3GLzr1pTkRVHErdKSdN38+PJow3ut/w3Tcqd6QYt79jd8oeIgn2ZUzUASUzT+lPS7nBZfqbVRyEYqNt8SQM+egebzCQdf3CcCZK+8RAX9TKyoOKQ5mllHo58phM02FdAIYgEcF8aAaEFi/aO5+89uMSA9+emx1UpPY/jjK5lNLRIPbeIbiIezX1QOykoThLnsHupTUm2ZU5OCL+BMy+74DaqeNLHwcl2oRz2eKMDVPJ59jmTJ7rfJQAF1wmx+4NwpkhJMRQ3gZPba4rFMB7wkh0+Wbt4qT7bNqg1VtsQfnr5q1mnwRIJxU=
-    secure: kIx1qdKzZ3rSrWkjYuQZ6VxUF6+GGnSDRz3QqdglN1LehdhI9XSEDiJ46SCHJWWoHAXeckJMz4BbP9wcSAJQzwfxQKd9uJNCF/er/2LwzQ68i5/XSLuZtHm/aoHA10N6wQV1cX1ZTPZnXJ235ScrMfPabTjsxjtpLvox0mwmphyNmryegVwA6HI66DPw3niEAPqRvQ66/9+bZmQVHonVzp2HDDREGSUNPuD9nD5u5xrsKyGR4sZ0SL0kr5gF89C8FmeNZ6J4JR+pt1tzczomdhCz1SfQqGWCUKPhbAqT2VpV8Npqug56fWHDX3RHOnm3FFnup8TrfA1mmAfqXHBPu5kmatcQUCYs/hxKC1HxghSbx1LgflZ6etgK3hn3b+Y9fPWcnvJKfGtZ9zbcu0MzHRjPTD7382xooB/+tk0rkExIDwjyW2d1FsngtqVTaubFCwFGXrrDfuiP9UAHjOZv1XpMKqAQ5TYMyhIrGxqm7oRxT5CLdb3/G7l5ESX2J5LlF5AWsMx07tWdRhwgs6QuGO3SXkJZrKhwKOi/re5P1f3yljdGK0HDSabaxKvLWb+2CnlCqySp+y+yvy1cs3nsvb3fd/E64MFjJBGupxAUTnagdEHJRJaiRs05e/eROKTGIfeH/CCXT7nn9E9/3TuYjM1d5OOkSogTyfcOA4rRm7o=
+    secure: nKJmIpe67D/M/Or8Z71GypMGJUaEvhBMZek8VIzcEK1/UyzcLbis5ZDdNHTuXEkmsLsFo8vQkuMhiLk5bLkzjt1yEdiblq5WVPGZaeWeSMb7NU9zW8mutHJmQmSdHFJJKYqDOdy5Hntl/x2Y8XFhgLX7yd9g1r9frsL7rCF0Xtj3DLXt1jlgsP6IeU07SqMqNbTEMIt0kUPOU4B5EKBt/wTnSwV6p94q/J1LYfev4IDSNNIIEi+36iU0vPJzpmiuR/8HpC7iqYXBMjL0uDE9BLTjLGGAASCdfxsC3MAHc2092rLv/aGIqrlu4k7cUA6fPwSEY7ZBUVdQJOgwNradJ/vK1s6lUxNBHk8kHXfiMoB5kKzwjpeM5/gGWeIL7zL1ZSCdGgauAJqODN1tcGUJCgqG5nFim+B/CGO1NkIu6424fG1J7fxKqQv73pzO8XXnlyHy4k8KkVuVW5RgIMgdS49GR3XXR4WfJqlPKpamfdr53MUyrPNpUtNsdsw0H6XbxoXjOauKeJ+dAfoQX1a6lBrKzBJIahQXDAe7oeaVIgHi6sE5k4EC5q9Riwyc7jNlKs8fNUSzk+2Rxq8eIrcfejk8QVNDcfn0ST8eOd86KTu79BsJ2SFfqdwJ3d4A8RqGrs5tEsDJYGfqxwE9d3/x5S7wbdcAIrYvgLjkQqXYVyk=
     
