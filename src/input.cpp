@@ -91,7 +91,7 @@ void setON_OFFstatus(byte Sensor){
    {
      //really going OFF condition...
      if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-       rStatus[nSensor] = 18.2;
+       rStatus[nSensor] = 18.2;       //OFF temperature
        isOFF[nSensor] = 1;
        Timer_1[nSensor] = millis();   //point of turned OFF
      }
