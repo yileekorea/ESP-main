@@ -99,7 +99,7 @@ void setON_OFFstatus(byte Sensor){
      }
 
      //going ON condition
-     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > interOFF_Timer) && (isOFF[nSensor] == 1)) {
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > interOFF_Timer)) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
        Timer_2[nSensor] = millis();   //point of turned ON
