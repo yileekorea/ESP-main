@@ -237,7 +237,7 @@ void setup() {
     ESP.wdtEnable(WDTO_8S);
 
     for(i=0;i<(numSensor-1);i++){
-      Timer_1[i] = millis()-interOFF_Timer;
+      Timer_1[i] = millis()-interOFF_Timer_30;
    }
 
 } // end setup
