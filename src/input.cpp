@@ -94,6 +94,7 @@ void setON_OFFstatus(byte Sensor){
 
    if(heating_system_status)
    {
+/*
      while(( now2 = time(nullptr)) < 1550922262 )
      {
        Serial.print(".");
@@ -103,7 +104,7 @@ void setON_OFFstatus(byte Sensor){
      now2 += KST_time2;
      Serial.println(ctime(&now2));
      Serial.println((now2));
-
+*/
 
      //really going OFF condition...
      //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
@@ -111,14 +112,14 @@ void setON_OFFstatus(byte Sensor){
     if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
        rStatus[nSensor] = 0;       //OFF temperature
        isOFF[nSensor] = 1;
-       Timer_1[nSensor] = now2; //millis();   //point of turned OFF
+       Timer_1[nSensor] = millis();   //point of turned OFF
      }
 
      //going ON condition,, based on autoOff_OnTimer
      //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30) && (isOFF[nSensor] == 1)) {
      //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_20)) {
-     if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > (autoOff_OnTimer * 60UL))) {
-         Timer_2[nSensor] = now2; //millis();   //point of turned ON
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * 60000UL))) {
+         Timer_2[nSensor] = millis();   //point of turned ON
          //0Serial.println("point of turned ONONONONONONONONONONONONONONONONONONONONONONONONONONONONONONONON ");
          rStatus[nSensor] = L_Temp[nSensor];
          isOFF[nSensor] = 0;
