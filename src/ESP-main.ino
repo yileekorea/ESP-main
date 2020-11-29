@@ -238,6 +238,7 @@ void setup() {
 
     for(i=0;i<(numSensor-1);i++){
       Timer_1[i] = millis()-interOFF_Timer_30;
+      Timer_2[i] = millis()-interOpenTimer;
    }
 
 } // end setup
