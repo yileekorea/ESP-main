@@ -247,8 +247,8 @@ void setup() {
          }
 */
       //Timer_1[i] = now - interOFF_Timer_20; //point of turned OFF
-      Timer_1[i] = now - (autoOff_OnTimer * 60000UL); //point of turned OFF
-      Timer_2[i] = now - interOpenTimer;    //point of turend ON
+      Timer_1[i] = millis() - (autoOff_OnTimer * 60000UL); //point of turned OFF
+      Timer_2[i] = millis() - interOpenTimer;    //point of turend ON
     }
 
 } // end setup
