@@ -196,6 +196,7 @@ void setup() {
   }
 
   for(i=0;i<(numSensor-1);i++){
+/*
     readoutTemperature(i);
     if(L_Temp[i] <= celsius[i])  {
          isOFF[i] = 0;
@@ -203,7 +204,8 @@ void setup() {
        else{
          isOFF[i] = 1;
        }
-           
+*/
+    isOFF[i] = 1;
     Timer_1[i] = now - interOFF_Timer_30; //point of turned OFF
     Timer_2[i] = now - interOpenTimer;    //point of turend ON
   }
