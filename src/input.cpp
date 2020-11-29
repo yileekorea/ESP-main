@@ -106,15 +106,17 @@ void setON_OFFstatus(byte Sensor){
 
 
      //really going OFF condition...
-//     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
-     if((L_Temp[nSensor] <= celsius[nSensor]) && ((now2 - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+    //if((L_Temp[nSensor] <= celsius[nSensor]) && ((now2 - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+    if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
        rStatus[nSensor] = 0;       //OFF temperature
        isOFF[nSensor] = 1;
        Timer_1[nSensor] = now2; //millis();   //point of turned OFF
      }
 
      //going ON condition
-     if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30) && (isOFF[nSensor] == 1)) {
+     //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30) && (isOFF[nSensor] == 1)) {
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30)) {
          Timer_2[nSensor] = now2; //millis();   //point of turned ON
          //0Serial.println("point of turned ONONONONONONONONONONONONONONONONONONONONONONONONONONONONONONONON ");
          rStatus[nSensor] = L_Temp[nSensor];
