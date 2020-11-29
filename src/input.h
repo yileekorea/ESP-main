@@ -27,9 +27,8 @@
 #define _EMONESP_INPUT_H
 
 #include <Arduino.h>
-#define interOFF_Timer_15 900000UL //15min = 60000UL x 15 -> 900000UL
-#define interOFF_Timer_20 1200000UL //20min = 60000UL x 20 -> 1200000UL
-//#define interOFF_Timer_30 1800000UL //30min = 60000UL x 30 -> 1800000UL
+#define interOFF_Timer_15 900UL //15min = 60000UL x 15 -> 900000UL
+#define interOFF_Timer_20 1200UL //20min = 60000UL x 20 -> 1200000UL
 #define interOFF_Timer_30 1800UL //30min = 60UL x 30 -> 1800UL
 
 //#define interOpenTimer 300000UL //5min = 60000UL x 5 -> 300000UL
