@@ -189,10 +189,15 @@ void setup() {
       Serial.print(".");
       delay(100);
     }
-    Serial.println( " done." );
-    Serial.println(ctime(&now));
-    now += KST_time;
-    Serial.println(ctime(&now));
+      Serial.println( " done." );
+      Serial.println(ctime(&now));
+      now += KST_time;
+      Serial.println(ctime(&now));
+  }
+
+  for(i=0;i<(numSensor-1);i++){
+    Timer_1[i] = now - interOFF_Timer_30; //point of turned OFF
+    Timer_2[i] = now - interOpenTimer;    //point of turend ON    
   }
 
   SPIFFS2accHistory();
@@ -235,13 +240,6 @@ void setup() {
 
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
-
-    for(i=0;i<(numSensor-1);i++){
-//      Timer_1[i] = millis()-interOFF_Timer_30;
-//      Timer_2[i] = millis()-interOpenTimer;
-      Timer_1[i] = millis()+interOFF_Timer_30;
-      Timer_2[i] = millis()+interOpenTimer;
-   }
 
 } // end setup
 

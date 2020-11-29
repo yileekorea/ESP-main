@@ -22,6 +22,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+ #include <time.h>
 
 #include "io2better.h"
 #include "input.h"
@@ -30,6 +31,10 @@
 #include "OneWire.h"
 
 #define a_min 60000UL //1min
+
+time_t now2 = 0l;
+time_t lastTimestamp2 = 0l;
+const unsigned long KST_time2 = 28800UL;
 
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
@@ -89,18 +94,30 @@ void setON_OFFstatus(byte Sensor){
 
    if(heating_system_status)
    {
+     while(( now2 = time(nullptr)) < 1550922262 )
+     {
+       Serial.print(".");
+       delay(10);
+     }
+     Serial.println( " done." );
+     now2 += KST_time2;
+     Serial.println(ctime(&now2));
+     Serial.println((now2));
+
+
      //really going OFF condition...
-     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+//     if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
+     if((L_Temp[nSensor] <= celsius[nSensor]) && ((now2 - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
        rStatus[nSensor] = 18.2;       //OFF temperature
        isOFF[nSensor] = 1;
-       Timer_1[nSensor] = millis();   //point of turned OFF
+       Timer_1[nSensor] = now2; //millis();   //point of turned OFF
      }
 
      //going ON condition
-     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > interOFF_Timer_30)) {
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30)) {
        rStatus[nSensor] = L_Temp[nSensor];
        isOFF[nSensor] = 0;
-       Timer_2[nSensor] = millis();   //point of turned ON
+       Timer_2[nSensor] = now2; //millis();   //point of turned ON
      }
 /*
      //going ON condition
