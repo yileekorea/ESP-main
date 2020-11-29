@@ -195,21 +195,6 @@ void setup() {
       Serial.println(ctime(&now));
   }
 
-  for(i=0;i<(numSensor-1);i++){
-/*
-    readoutTemperature(i);
-    if(L_Temp[i] <= celsius[i])  {
-         isOFF[i] = 0;
-       }
-       else{
-         isOFF[i] = 1;
-       }
-*/
-    isOFF[i] = 1;
-    Timer_1[i] = now - interOFF_Timer_30; //point of turned OFF
-    Timer_2[i] = now - interOpenTimer;    //point of turend ON
-  }
-
   SPIFFS2accHistory();
 
   SPIFFS2systemSTATUS();
@@ -250,6 +235,20 @@ void setup() {
 
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
+
+    for(i=0;i<(numSensor-1);i++){
+
+      readoutTemperature(i);
+      if(L_Temp[i] <= celsius[i])  {
+           isOFF[i] = 1;
+         }
+         else{
+           isOFF[i] = 0;
+         }
+
+      Timer_1[i] = now - interOFF_Timer_30; //point of turned OFF
+      Timer_2[i] = now - interOpenTimer;    //point of turend ON
+    }
 
 } // end setup
 
