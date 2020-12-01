@@ -110,8 +110,7 @@ void setON_OFFstatus(byte Sensor){
      //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
     //if((L_Temp[nSensor] <= celsius[nSensor]) && ((now2 - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
     if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
-       rStatus[nSensor] = 0;       //OFF temperature
-       //rStatus[nSensor] = L_Temp[nSensor];	//OFF valve
+       rStatus[nSensor] = 0;       //OFF valve
        isOFF[nSensor] = 1;
        Timer_1[nSensor] = millis();   //point of turned OFF
      }
@@ -119,10 +118,9 @@ void setON_OFFstatus(byte Sensor){
      //going ON condition,, based on autoOff_OnTimer
      //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30) && (isOFF[nSensor] == 1)) {
      //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_20)) {
-     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * 60000UL))) {
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min))) {
          Timer_2[nSensor] = millis();   //point of turned ON
          rStatus[nSensor] = L_Temp[nSensor];	//ON valve
-         //rStatus[nSensor] = 0;	//ON valve
          isOFF[nSensor] = 0;
      }
 /*
