@@ -162,6 +162,11 @@ void send_a_TempData(byte Sensor) {
 
       char pChrBuffer[5];
 			char pChrBuffer_acc[8];
+
+      if(celsius[i] > 45){
+        celsius[i] = 45;
+      }
+
 			String payload = "{\"tbl_name\":";
 			payload += "\"";
 			payload += MAC;
@@ -189,7 +194,7 @@ void send_a_TempData(byte Sensor) {
 			payload += ",\"cStatus\":";
 			payload += rStatus[i];   // room status
 
-	    
+
       payload += ",\"cCount\":";
       BuildVersion();
       if(buildVersion)
@@ -197,7 +202,7 @@ void send_a_TempData(byte Sensor) {
       else
         payload += "1969";
 
-/*	
+/*
 			if ( isnan(accCountValue) )
 				payload += "0";
 			else {
