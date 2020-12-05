@@ -197,7 +197,7 @@ void send_a_TempData(byte Sensor) {
 
       payload += ",\"cCount\":";
       BuildVersion();
-      if(buildVersion)
+      if(buildVersion !="")
         payload += buildVersion;
       else
         payload += "1969";

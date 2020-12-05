@@ -34,11 +34,10 @@
 #include "ota.h"
 #include "input.h"
 #include "output.h"
-//#include "ESP-main-2.h"
 #include "mqtt.h"
-#include "fauxmoESP.h"
+//#include "fauxmoESP.h"
 
-fauxmoESP fauxmo;
+//fauxmoESP fauxmo;
 
 
 unsigned long tempTry = 0;
@@ -224,14 +223,13 @@ void setup() {
     // You have to call enable(true) once you have a WiFi connection
     // You can enable or disable the library at any moment
     // Disabling it will prevent the devices from being discovered and switched
-    fauxmo.enable(true);
-    fauxmo.enable(false);
-    fauxmo.enable(true);
+//    fauxmo.enable(true);
+//    fauxmo.enable(false);
+//    fauxmo.enable(true);
 
-    fauxmo.addDevice("heating");
-    //fauxmo.addDevice("relay");
-    fauxmo.onMessage(fauxmo_callback);
-    fauxmo.onSetState(fauxmo_callback);
+//    fauxmo.addDevice("heating");
+//    fauxmo.onMessage(fauxmo_callback);
+//    fauxmo.onSetState(fauxmo_callback);
 
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
