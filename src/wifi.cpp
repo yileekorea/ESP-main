@@ -228,7 +228,7 @@ void wifi_loop()
   // Remain in AP mode for 9 Minutes before resetting
   if (wifi_mode == WIFI_MODE_AP_STA_RETRY){
      if ((millis() - Timer) >= 900000){
-		Serial.println("WILL reboot ESP system soon!!!!");
+		Serial.println("WIFI_MODE_AP_STA_RETRY,,,reboot ESP system soon!!!!");
 		pinMode(0, OUTPUT);
 		digitalWrite(0, HIGH);
 		delay(5000);
