@@ -312,13 +312,14 @@ void sendmqttMsg(char* topictosend, String payload)
     }
 
     if (mqttclient.publish(topictosend, p, msg_length)) {
-        Serial.println("Publish length TEMP ok");
+      Serial.println("Publish length TEMP ok");
       free(p);
       //return 1;
     }
     else {
-        free(p);
-        Serial.println("Publish length TEMP failed");
+      Serial.println("Publish length TEMP failed,,, trying again.");
+      mqttclient.publish(topictosend, p, msg_length); // try again onece
+      free(p);
         //skil reboot when fail - 20201206
         //do_reboot_exe();
       //return 0;
