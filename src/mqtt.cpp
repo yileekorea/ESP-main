@@ -319,7 +319,8 @@ void sendmqttMsg(char* topictosend, String payload)
     else {
         free(p);
         Serial.println("Publish length TEMP failed");
-        do_reboot_exe();
+        //skil reboot when fail - 20201206
+        //do_reboot_exe();
       //return 0;
     }
   }
