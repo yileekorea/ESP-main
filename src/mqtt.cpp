@@ -320,6 +320,8 @@ void sendmqttMsg(char* topictosend, String payload)
       free(p);
       Serial.println("Publish length TEMP failed,,, trying mqtt_restart");
       mqtt_restart(); // try to disconnect
+      delay(5000);
+
       //do_reboot_exe();
       //return 0;
     }
