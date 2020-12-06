@@ -52,7 +52,7 @@ ESP8266HTTPUpdateServer httpUpdater;  // Create class for webupdate handleWebUpd
 const char* fwImage = "firmware.bin";
 
 const char* u_host = "http://thinkway.ipecsacademia.site:9000/";
-const char* u_url = "/firmware.php";
+const char* u_url = "/firmware_SIP.php";
 const char* firmware_update_path = "/upload";
 
 extern const char *esp_hostname;
