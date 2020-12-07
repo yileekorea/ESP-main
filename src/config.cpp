@@ -284,13 +284,13 @@ void Timer_1_SPIFFS()
 // -------------------------------------------------------------------
 void SPIFFS_Timer_1()
 {
-  Serial.println("Before .... mounted file system");
+  Serial.println("Before .... mounted file system-SPIFFS_Timer_1");
   if (SPIFFS.begin()) {
     Serial.println("mounted file system for SPIFFS_Timer_1");
     if (SPIFFS.exists("/Timer_1.json"))
     {
       //file exists, reading and loading
-      Serial.println("reading config file");
+      Serial.println("reading config file-Timer_1.json");
       File configFile = SPIFFS.open("/Timer_1.json", "r");
       if (configFile) {
         Serial.println("opened config file");
@@ -328,7 +328,7 @@ void SPIFFS_Timer_1()
       }
     }
   } else {
-    Serial.println("failed to mount FS");
+    Serial.println("failed to mount FS of Timer_1.json");
   }
 }
 
@@ -339,7 +339,7 @@ void L_Temp2SPIFFS()
 {
   if (SPIFFS.begin())
   {
-   Serial.println("ESP8266 config json save...");
+   Serial.println("ESP8266 config L_temp.json save...");
     DynamicJsonBuffer jsonBuffer;
     JsonObject& json = jsonBuffer.createObject();
     String roomNo = "room_";
@@ -372,7 +372,7 @@ void SPIFFS2L_Temp()
     if (SPIFFS.exists("/L_temp.json"))
     {
       //file exists, reading and loading
-      Serial.println("reading config file");
+      Serial.println("reading config file L_temp.json");
       File configFile = SPIFFS.open("/L_temp.json", "r");
       if (configFile) {
         Serial.println("opened config file");
