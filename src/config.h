@@ -91,6 +91,9 @@ extern void config_save_wifi(String qsid, String qpass);
 // -------------------------------------------------------------------
 extern void config_reset();
 
+extern void Timer_1_SPIFFS();
+extern void SPIFFS_Timer_1();
+
 extern void L_Temp2SPIFFS();
 extern void SPIFFS2L_Temp();
 

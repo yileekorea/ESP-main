@@ -251,6 +251,88 @@ void SPIFFS2systemSTATUS()
 
 
 // -------------------------------------------------------------------
+//save the Timer_1[] parameters to FS
+// -------------------------------------------------------------------
+void Timer_1_SPIFFS()
+{
+  if (SPIFFS.begin())
+  {
+   Serial.println("ESP8266 Timer_1 to json save...");
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& json = jsonBuffer.createObject();
+    String timerNo = "Timer_1_";
+    for (byte i = 1; i < (numSensor+1); ++i) {
+      String timerNo = "";
+      timerNo = "Timer_1_";
+      timerNo += i;
+      json[timerNo] = Timer_1[i-1];
+    }
+
+    File configFile = SPIFFS.open("/Timer_1.json", "w");
+    if (!configFile) {
+      Serial.println("failed to open config file for writing");
+    }
+    json.prettyPrintTo(Serial);
+    json.printTo(configFile);
+    configFile.close();
+    //end save
+  }
+}
+
+// -------------------------------------------------------------------
+//save the Timer_1 parameters to FS
+// -------------------------------------------------------------------
+void SPIFFS_Timer_1()
+{
+  Serial.println("Before .... mounted file system");
+  if (SPIFFS.begin()) {
+    Serial.println("mounted file system for SPIFFS_Timer_1");
+    if (SPIFFS.exists("/Timer_1.json"))
+    {
+      //file exists, reading and loading
+      Serial.println("reading config file");
+      File configFile = SPIFFS.open("/Timer_1.json", "r");
+      if (configFile) {
+        Serial.println("opened config file");
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        json.printTo(Serial);
+        if (json.success()) {
+          Serial.println("\nparsed json");
+
+          String timerNo = "Timer_1_";
+          for (byte i = 1; i < (numSensor+1); ++i) {
+            String timerNo = "";
+            timerNo = "Timer_1_";
+            timerNo += i;
+            //L_Temp[i-1] = atof(strcpy(config_Temp, json[roomNo]));
+            //DEBUG.println(L_Temp[i-1]);
+      			if((json[timerNo])) {
+      				Timer_1[i-1] = atof(json[timerNo]);
+      				DEBUG.println(Timer_1[i-1]);
+      			}
+      			else {
+      				break;
+      			}
+          } //for
+
+        } //if (json.success())
+        else {
+          Serial.println("failed to load Timer_1.json config");
+        }
+      }
+    }
+  } else {
+    Serial.println("failed to mount FS");
+  }
+}
+
+// -------------------------------------------------------------------
 //save the custom parameters to FS
 // -------------------------------------------------------------------
 void L_Temp2SPIFFS()

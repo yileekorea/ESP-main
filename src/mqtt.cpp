@@ -319,9 +319,9 @@ void sendmqttMsg(char* topictosend, String payload)
     else {
       free(p);
       Serial.println("Publish length TEMP failed,,, trying mqtt REBOOT");
+      Timer_1_SPIFFS();
       //mqtt_restart(); // try to disconnect
       //delay(5000);
-
       do_reboot_exe();
       //return 0;
     }

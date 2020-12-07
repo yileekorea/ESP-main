@@ -322,6 +322,10 @@ void readoutTemperature(byte Sensor)
     Serial.print(celsius[nSensor]);
     Serial.print(" 'C");
 
+  if(celsius[nSensor] == 85){
+    Serial.println("Temperature is abnormal -- set to manual");
+    celsius[nSensor] = L_Temp[nSensor]-1;
+  }
 
 	if(L_Temp[nSensor]){
 		Serial.print("  L_Temp[");

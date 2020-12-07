@@ -204,6 +204,7 @@ void setup() {
 
   SPIFFS2L_Temp();
 
+  SPIFFS_Timer_1();
   //delay(500);
 
   INTsetup();
@@ -235,19 +236,10 @@ void setup() {
     ESP.wdtEnable(WDTO_8S);
 
     for(i=0;i<(numSensor-1);i++){
-/*
-      readoutTemperature(i);
-      if(L_Temp[i] <= celsius[i])  {
-           isOFF[i] = 1;
-         }
-         else{
-           isOFF[i] = 0;
-         }
-*/
-      //Timer_1[i] = now - interOFF_Timer_20; //point of turned OFF
       Timer_1[i] = millis() - (autoOff_OnTimer * 60000UL); //point of turned OFF
       Timer_2[i] = millis() - interOpenTimer;    //point of turend ON
     }
+    SPIFFS_Timer_1();
 
 } // end setup
 
