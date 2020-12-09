@@ -239,7 +239,7 @@ void setup() {
       Timer_1[i] = millis() - (autoOff_OnTimer * 60000UL); //point of turned OFF
       Timer_2[i] = millis() - interOpenTimer;    //point of turend ON
     }
-    SPIFFS_Timer_1();
+    //SPIFFS_Timer_1();
 
 } // end setup
 
