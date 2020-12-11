@@ -22,7 +22,9 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- #include <time.h>
+ //#include <time.h>
+#include "NTPClient.h"
+#include <WiFiUdp.h>
 
 #include "io2better.h"
 #include "input.h"
@@ -110,20 +112,41 @@ void setON_OFFstatus(byte Sensor){
      //if((L_Temp[nSensor] <= celsius[nSensor]) && ((millis() - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
     //if((L_Temp[nSensor] <= celsius[nSensor]) && ((now2 - Timer_2[nSensor]) > interOpenTimer) && (isOFF[nSensor] == 0)) {
     if((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0)) {
-    //if((L_Temp[nSensor] <= celsius[nSensor])) {
        rStatus[nSensor] = 0;       //OFF valve
        isOFF[nSensor] = 1;
-       Timer_1[nSensor] = millis();   //point of turned OFF
+
+       Serial.print("going OFF Formatted Time: ");
+       Serial.println(formattedTime);
+
+       Serial.print("going OFF Epoch Time: ");
+       Serial.println(epochTime);
+
+       //Timer_1[nSensor] = millis();   //point of turned OFF
+       Timer_1[nSensor] = epochTime;   //point of turned OFF
      }
+
+
+     Serial.print("epochTime - Timer_1[nSensor]: ");
+     Serial.println((epochTime - Timer_1[nSensor]));
+     Serial.print("autoOff_OnTimer * 60UL: ");
+     Serial.println((autoOff_OnTimer * 60UL));
 
      //going ON condition,, based on autoOff_OnTimer
      //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30) && (isOFF[nSensor] == 1)) {
-     //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_20)) {
-     if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min))) {
-         Timer_2[nSensor] = millis();   //point of turned ON
+     //if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min))) {
+     if((L_Temp[nSensor] > celsius[nSensor]) && ((epochTime - Timer_1[nSensor]) > (autoOff_OnTimer * 60UL))) {
          rStatus[nSensor] = L_Temp[nSensor];	//ON valve
          isOFF[nSensor] = 0;
-     }
+
+         Serial.print("going ON Formatted Time: ");
+         Serial.println(formattedTime);
+
+         Serial.print("going ON Epoch Time: ");
+         Serial.println(epochTime);
+
+         //Timer_2[nSensor] = millis();   //point of turned ON
+         Timer_2[nSensor] = epochTime;   //point of turned ON
+    }
 /*
      //going ON condition
      if(L_Temp[nSensor] > celsius[nSensor]) {
@@ -321,13 +344,13 @@ void readoutTemperature(byte Sensor)
     Serial.println("--- readoutTemperature");
     Serial.print("  Temps = ");
     Serial.print(celsius[nSensor]);
-    Serial.print(" 'C");
-
+    Serial.println(" 'C");
+/*
   if(celsius[nSensor] == 85){
     Serial.println("Temperature is abnormal -- set to manual");
     celsius[nSensor] = L_Temp[nSensor]-1;
   }
-
+*/
 	if(L_Temp[nSensor]){
 		Serial.print("  L_Temp[");
 		Serial.print(nSensor);

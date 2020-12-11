@@ -25,7 +25,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <time.h>
+//#include <time.h>
+#include "NTPClient.h"
+#include <WiFiUdp.h>
 
 #include "io2better.h"
 #include "config.h"
@@ -35,16 +37,18 @@
 #include "input.h"
 #include "output.h"
 #include "mqtt.h"
-//#include "fauxmoESP.h"
 
-//fauxmoESP fauxmo;
-
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", 3600, 60000);
 
 unsigned long tempTry = 0;
 int numSensor = 0;
 byte s_loop = 0;
 
 int heating_system_status = 1; //ON state is default
+
+unsigned long epochTime;
+String formattedTime="";
 
 time_t now = 0l;
 time_t lastTimestamp = 0l;
@@ -82,52 +86,6 @@ void showChipInfo()
 }
 
 // -------------------------------------------------------------------
-// fauxmo_callback
-// -------------------------------------------------------------------
-// fauxmoESP 2.0.0 has changed the callback signature to add the device_id,
-// this way it's easier to match devices to action without having to compare strings.
-//fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
-//Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
-//digitalWrite(LED, !state);
-//});
-
-void fauxmo_callback(uint8_t device_id, const char * device_name, bool state) {
-  Serial.print("Device "); Serial.print(device_name); Serial.print(device_id);
-  Serial.print(" state is: ");
-
-
-  if (state) {
-    Serial.println("ON");
-  } else {
-    Serial.println("OFF");
-  }
-
-  if (device_id == 0){
-    if (state) {
-			Serial.println("heating is ON");
-			heating_system_status = 1; //"ON"
-      userTempset = 1;
-
-		} else {
-			Serial.println("heating is OFF");
-			heating_system_status = 0; //"OFF"
-      userTempset = 1;
-
-		}
-  }
-  else if (device_id == 1){
-    if (state) {
-			Serial.println("relay is ON");
-			heating_system_status = 1; //"ON"
-		} else {
-			Serial.println("relay is OFF");
-			heating_system_status = 0; //"OFF"
-		}
-  }
-
-  systemSTATUS2SPIFFS();
-}
-// -------------------------------------------------------------------
 // SETUP
 // -------------------------------------------------------------------
 void setup() {
@@ -135,9 +93,7 @@ void setup() {
 
   pinMode(ESP_RESET_CTL, OUTPUT);
   digitalWrite(ESP_RESET_CTL, HIGH);
-
   LED_setup(0.2);
-
   delay(1000);
 
   Serial.begin(115200);
@@ -165,8 +121,6 @@ void setup() {
 
   delay(500);                // longer but it is stable ;-)
 
-  configTime( NTP_TIME_SHIFT, 0, NTP_SERVER_NAME );
-
   // Initialise the WiFi
   wifi_setup();
 
@@ -180,6 +134,12 @@ void setup() {
     DEBUG.println("Start finger print verify : ");
     verifyFingerprint();
 
+    timeClient.begin();
+    // GMT +1 = 3600
+    timeClient.setTimeOffset(3600*9);
+    timeClient.update();
+/*
+    configTime( NTP_TIME_SHIFT, 0, NTP_SERVER_NAME );
     // wait for ntp time
     Serial.print( "Wait for NTP sync " );
 
@@ -192,13 +152,12 @@ void setup() {
       Serial.println(ctime(&now));
       now += KST_time;
       Serial.println(ctime(&now));
+*/
   }
 
   SPIFFS2accHistory();
 
   SPIFFS2systemSTATUS();
-
-  // wireSetup(); //I2C setup
 
   readOneWireAddr();
 
@@ -220,24 +179,25 @@ void setup() {
 
     mcp_GPIO_setup(); //SPI GPIO
 
-    // Fauxmo
-    // You have to call enable(true) once you have a WiFi connection
-    // You can enable or disable the library at any moment
-    // Disabling it will prevent the devices from being discovered and switched
-//    fauxmo.enable(true);
-//    fauxmo.enable(false);
-//    fauxmo.enable(true);
-
-//    fauxmo.addDevice("heating");
-//    fauxmo.onMessage(fauxmo_callback);
-//    fauxmo.onSetState(fauxmo_callback);
-
     ESP.wdtDisable();
     ESP.wdtEnable(WDTO_8S);
 
+
+//    delay(500);                // longer but it is stable ;-)
+
+    timeClient.update();
+    formattedTime = timeClient.getFormattedTime();
+    Serial.print("Formatted Time: ");
+    Serial.println(formattedTime);
+    epochTime = timeClient.getEpochTime();
+    Serial.print("Epoch Time: ");
+    Serial.println(epochTime);
+
     for(i=0;i<(numSensor-1);i++){
-      Timer_1[i] = millis() - (autoOff_OnTimer * 60000UL); //point of turned OFF
-      Timer_2[i] = millis() - interOpenTimer;    //point of turend ON
+//      Timer_1[i] = millis() - (autoOff_OnTimer * 60000UL); //point of turned OFF
+//      Timer_2[i] = millis() - interOpenTimer;    //point of turend ON
+      Timer_1[i] = epochTime - (autoOff_OnTimer * 60UL); //point of turned OFF
+      Timer_2[i] = epochTime - interOpenTimer;    //point of turend ON
     }
     //SPIFFS_Timer_1();
 
@@ -250,7 +210,14 @@ void loop()
 {
   ESP.wdtFeed();
 
-  //fauxmo.handle();
+  timeClient.update();
+  formattedTime = timeClient.getFormattedTime();
+//  Serial.print("Formatted Time: ");
+//  Serial.println(formattedTime);
+
+  epochTime = timeClient.getEpochTime();
+//  Serial.print("Epoch Time: ");
+//  Serial.println(epochTime);
 
   static unsigned long last = millis();
   if (millis() - last > 5000) {
@@ -259,6 +226,7 @@ void loop()
   }
 
     ota_loop();
+
     web_server_loop();
     wifi_loop();
     //valve_relayControl();
@@ -272,7 +240,7 @@ void loop()
   		mqtt_loop();
       //if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && mqtt_connected())  // 6sec
       if ((tempTry == 0 || ((millis() - tempTry) > 3000UL))  && 1)  // 3sec
-  		//if ((tempTry == 0 || ((millis() - tempTry) > 5000UL))  && 1)  // 3sec
+  		//if ((tempTry == 0 || ((millis() - tempTry) > 6000UL))  && 1)  // 6sec
   		{
     			if(INTstateHistory){
     			  INTstateHistory = 0;

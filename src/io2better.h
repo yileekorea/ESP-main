@@ -25,6 +25,7 @@
 
 #ifndef _IO2BETTER_H
 #define _IO2BETTER_H
+#include <Arduino.h>
 
 
 // -------------------------------------------------------------------
@@ -47,7 +48,7 @@ extern int numSensor;
 extern unsigned long tempTry;
 extern int heating_system_status;
 
-
-
+extern unsigned long epochTime;
+extern String formattedTime;
 
 #endif // _IO2BETTER_H

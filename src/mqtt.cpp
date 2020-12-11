@@ -72,7 +72,6 @@ WiFiClientSecure espClient;                 // Create client for MQTT
 //PubSubClient mqttclient(espClient);   // Create client for MQTT
 PubSubClient mqttclient(mqtt_server.c_str(), MQTT_PORT, mqttCallback, espClient);
 
-
 // -------------------------------------------------------------------
 // MQTT exec_save_command
 // -------------------------------------------------------------------
@@ -157,7 +156,7 @@ void send_a_TempData(byte Sensor) {
     //for ( i = 0; i < numSensor ; i++) {
     //if((abs(old_celsius[i] - celsius[i]) > 0.1) || (old_rStatus[i] != rStatus[i])) { //temp. difference is...
     //if((abs(old_celsius[i] - celsius[i]) > 0.0) || (old_rStatus[i] != rStatus[i]))
-    if((old_celsius[i] != celsius[i]) || (old_rStatus[i] != rStatus[i]))
+    if(((old_celsius[i] != celsius[i]) || (old_rStatus[i] != rStatus[i])) && (85 != celsius[i]))
     { //temp. difference is...
 
       char pChrBuffer[5];
