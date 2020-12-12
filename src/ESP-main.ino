@@ -193,13 +193,7 @@ void setup() {
     Serial.print("Epoch Time: ");
     Serial.println(epochTime);
 
-    for(i=0;i<(numSensor-1);i++){
-//      Timer_1[i] = millis() - (autoOff_OnTimer * 60000UL); //point of turned OFF
-//      Timer_2[i] = millis() - interOpenTimer;    //point of turend ON
-      Timer_1[i] = epochTime - (autoOff_OnTimer * 60UL); //point of turned OFF
-      Timer_2[i] = epochTime - interOpenTimer;    //point of turend ON
-    }
-    //SPIFFS_Timer_1();
+    SPIFFS_Timer_1();
 
 } // end setup
 
