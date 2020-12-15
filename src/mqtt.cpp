@@ -366,9 +366,9 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     tmp_accCountValue = atof(pch+1);
     if(tmp_accCountValue != accCountValue)
     {
-		accCountValue = tmp_accCountValue;
-		//INTstateHistory = 1;
-	}
+		    accCountValue = tmp_accCountValue;
+		      //INTstateHistory = 1;
+	  }
 	DEBUG.print("accCountValue : ");
 	DEBUG.println(accCountValue);
 	pch=strchr(pch+1,':');
@@ -390,9 +390,9 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
       //Timer_2[i] += 5000000UL;
     }
 
-	userTempset = 1;
-    initSending = 1; //3times send all sensor data
-    L_Temp2SPIFFS(); //store received L_Temp to SPIFFS
+	   userTempset = 1;
+     initSending = 1; //3times send all sensor data
+     L_Temp2SPIFFS(); //store received L_Temp to SPIFFS
 	}
 	else {
 		String exec = String(buffer);
