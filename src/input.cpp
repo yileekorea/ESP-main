@@ -107,10 +107,11 @@ void setON_OFFstatus(byte Sensor){
        Serial.println(yileeMacaddress);  //2C:3A:E8:08:E3:3D
 
        //really going OFF condition...
-       if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))&&(nSensor==2)) {
+       //if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))&&(nSensor==2)) {
+       if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))) {
           rStatus[nSensor] = 0;       //OFF valve
           isOFF[nSensor] = 1;
-
+/*
           rStatus[nSensor-1] = 0;       //OFF valve
           isOFF[nSensor-1] = 1;
 
@@ -119,7 +120,7 @@ void setON_OFFstatus(byte Sensor){
 
           rStatus[nSensor+2] = 0;       //OFF valve
           isOFF[nSensor+2] = 1;
-
+*/
           Serial.print("going OFF Formatted Time: ");
           Serial.println(formattedTime);
 
