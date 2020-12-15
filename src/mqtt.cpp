@@ -162,10 +162,6 @@ void send_a_TempData(byte Sensor) {
       char pChrBuffer[5];
 			char pChrBuffer_acc[8];
 
-      if(celsius[i] > 45){
-        celsius[i] = 45;
-      }
-
 			String payload = "{\"tbl_name\":";
 			payload += "\"";
 			payload += MAC;
