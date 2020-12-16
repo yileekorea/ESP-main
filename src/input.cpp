@@ -35,8 +35,8 @@
 #define a_min 60000UL //1min
 
 
-String testMacaddress = "5C:CF:7F:23:F1:36";
-String yileeMacaddress = "2C:3A:E8:08:E3:3D";
+String testMacaddress = "5C:CF:7F:23:F1:36";	//"5C:CF:7F:23:F1:36";
+String yileeMacaddress = "2C:3A:E8:08:E3:FF";	//"2C:3A:E8:08:E3:3D";
 
 time_t now2 = 0l;
 time_t lastTimestamp2 = 0l;
