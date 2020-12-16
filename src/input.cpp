@@ -112,7 +112,11 @@ void setON_OFFstatus(byte Sensor){
           rStatus[nSensor] = 0;       //OFF valve
           isOFF[nSensor] = 1;
 
-          if(nSensor == 2){
+          if(nSensor == 3){
+            rStatus[nSensor-2] = 0;       //OFF valve
+            isOFF[nSensor-2] = 1;
+            Timer_1[nSensor-2] = epochTime;   //point of turned OFF
+
             rStatus[nSensor-1] = 0;       //OFF valve
             isOFF[nSensor-1] = 1;
             Timer_1[nSensor-1] = epochTime;   //point of turned OFF
@@ -120,10 +124,6 @@ void setON_OFFstatus(byte Sensor){
             rStatus[nSensor+1] = 0;       //OFF valve
             isOFF[nSensor+1] = 1;
             Timer_1[nSensor+1] = epochTime;   //point of turned OFF
-
-            rStatus[nSensor+2] = 0;       //OFF valve
-            isOFF[nSensor+2] = 1;
-            Timer_1[nSensor+2] = epochTime;   //point of turned OFF
           }
 
           Serial.print("going OFF Formatted Time: ");
@@ -146,15 +146,15 @@ void setON_OFFstatus(byte Sensor){
             rStatus[nSensor] = L_Temp[nSensor];	//ON valve
             isOFF[nSensor] = 0;
 
-            if(nSensor == 2){
+            if(nSensor == 3){
+              rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve
+              isOFF[nSensor-2] = 0;
+
               rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
               isOFF[nSensor-1] = 0;
 
               rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
               isOFF[nSensor+1] = 0;
-
-              rStatus[nSensor+2] = L_Temp[nSensor+2];	//ON valve
-              isOFF[nSensor+2] = 0;
             }
               Serial.print("going ON Formatted Time: ");
               Serial.println(formattedTime);
