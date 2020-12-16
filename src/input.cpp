@@ -36,7 +36,7 @@
 
 
 String testMacaddress = "5C:CF:7F:23:F1:36";	//"5C:CF:7F:23:F1:36";
-String yileeMacaddress = "2C:3A:E8:08:E3:FF";	//"2C:3A:E8:08:E3:3D";
+String yileeMacaddress = "2C:3A:E8:08:E3:3D";	//"2C:3A:E8:08:E3:3D";
 
 time_t now2 = 0l;
 time_t lastTimestamp2 = 0l;
@@ -107,19 +107,24 @@ void setON_OFFstatus(byte Sensor){
        Serial.println(yileeMacaddress);  //2C:3A:E8:08:E3:3D
 
        //really going OFF condition...
-       if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))&&(nSensor==2)) {
-       //if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))) {
+       //if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))&&(nSensor==2)) {
+       if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))) {
           rStatus[nSensor] = 0;       //OFF valve
           isOFF[nSensor] = 1;
 
-          rStatus[nSensor-1] = 0;       //OFF valve
-          isOFF[nSensor-1] = 1;
+          if(nSensor == 2){
+            rStatus[nSensor-1] = 0;       //OFF valve
+            isOFF[nSensor-1] = 1;
+            Timer_1[nSensor-1] = epochTime;   //point of turned OFF
 
-          rStatus[nSensor+1] = 0;       //OFF valve
-          isOFF[nSensor+1] = 1;
+            rStatus[nSensor+1] = 0;       //OFF valve
+            isOFF[nSensor+1] = 1;
+            Timer_1[nSensor+1] = epochTime;   //point of turned OFF
 
-          rStatus[nSensor+2] = 0;       //OFF valve
-          isOFF[nSensor+2] = 1;
+            rStatus[nSensor+2] = 0;       //OFF valve
+            isOFF[nSensor+2] = 1;
+            Timer_1[nSensor+2] = epochTime;   //point of turned OFF
+          }
 
           Serial.print("going OFF Formatted Time: ");
           Serial.println(formattedTime);
@@ -136,24 +141,26 @@ void setON_OFFstatus(byte Sensor){
         Serial.println((autoOff_OnTimer * 60UL));
 
         //going ON condition,, based on autoOff_OnTimer
-        if(((L_Temp[nSensor] > celsius[nSensor]) && ((epochTime - Timer_1[nSensor]) > (autoOff_OnTimer * 60UL)))&&(nSensor==2)) {
+        //if(((L_Temp[nSensor] > celsius[nSensor]) && ((epochTime - Timer_1[nSensor]) > (autoOff_OnTimer * 60UL)))&&(nSensor==2)) {
+        if(((L_Temp[nSensor] > celsius[nSensor]) && ((epochTime - Timer_1[nSensor]) > (autoOff_OnTimer * 60UL)))) {
             rStatus[nSensor] = L_Temp[nSensor];	//ON valve
             isOFF[nSensor] = 0;
 
-            rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
-            isOFF[nSensor-1] = 0;
+            if(nSensor == 2){
+              rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
+              isOFF[nSensor-1] = 0;
 
-            rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
-            isOFF[nSensor+1] = 0;
+              rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
+              isOFF[nSensor+1] = 0;
 
-            rStatus[nSensor+2] = L_Temp[nSensor+2];	//ON valve
-            isOFF[nSensor+2] = 0;
+              rStatus[nSensor+2] = L_Temp[nSensor+2];	//ON valve
+              isOFF[nSensor+2] = 0;
+            }
+              Serial.print("going ON Formatted Time: ");
+              Serial.println(formattedTime);
 
-            Serial.print("going ON Formatted Time: ");
-            Serial.println(formattedTime);
-
-            Serial.print("going ON Epoch Time: ");
-            Serial.println(epochTime);
+              Serial.print("going ON Epoch Time: ");
+              Serial.println(epochTime);
 
             Timer_2[nSensor] = epochTime;   //point of turned ON
        }
