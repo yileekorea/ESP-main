@@ -113,7 +113,7 @@ t_httpUpdate_return ota_http_update()
   switch(ret) {
     case HTTP_UPDATE_FAILED:
         Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
-        DEBUG.println("ESP flash update Error");
+        Serial.println("ESP flash update Error");
         break;
 
     case HTTP_UPDATE_NO_UPDATES:
@@ -169,16 +169,16 @@ t_httpUpdate_return ota_spiffs_update()
 
         switch(ret_spiffs) {
             case HTTP_UPDATE_FAILED:
-                DEBUG.printf("SPIFFS HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
-                DEBUG.println("SPIFFS update Error");
+                Serial.printf("SPIFFS HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
+                Serial.println("SPIFFS update Error");
                 break;
 
             case HTTP_UPDATE_NO_UPDATES:
-                DEBUG.println("SPIFFS HTTP_UPDATE_NO_UPDATES");
+                Serial.println("SPIFFS HTTP_UPDATE_NO_UPDATES");
                 break;
 
             case HTTP_UPDATE_OK:
-                DEBUG.println("SPIFFS HTTP_UPDATE_OK");
+                Serial.println("SPIFFS HTTP_UPDATE_OK");
 				        do_reboot_exe();
                 break;
         }

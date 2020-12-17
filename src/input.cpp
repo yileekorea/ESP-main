@@ -150,8 +150,10 @@ void setON_OFFstatus(byte Sensor){
               rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve
               isOFF[nSensor-2] = 0;
 
-              rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
-              isOFF[nSensor-1] = 0;
+              if(L_Temp[nSensor-1] > celsius[nSensor-1]){
+                rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
+                isOFF[nSensor-1] = 0;
+              }
 
               rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
               isOFF[nSensor+1] = 0;
@@ -242,7 +244,7 @@ void readOneWireAddr()
     delay(250);
   }
   numSensor = nSensor;
-  DEBUG.printf("number of Sensors are '%d'\n", numSensor);
+  Serial.printf("number of Sensors are '%d'\n", numSensor);
 
 }
 
@@ -557,7 +559,7 @@ boolean input_get(String& data)
     data.trim();
 
     if(data.length() > 0) {
-      DEBUG.printf("Got '%s'\n", data.c_str());
+      Serial.printf("Got '%s'\n", data.c_str());
       last_datastr = data;
     } else {
       gotData = false;

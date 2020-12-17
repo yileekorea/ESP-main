@@ -79,26 +79,26 @@ void exec_save_command(String exec)
 {
   exec_command = exec;
   if (exec_command == do_fw_update) {
-    DEBUG.println(">> do_ots_update_exe ");
+    Serial.println(">> do_ots_update_exe ");
     ota_http_update();
     mqtt_restart();
   }
   else if (exec_command == do_web_update) {
-    DEBUG.println(">> do_web_update_exe ");
+    Serial.println(">> do_web_update_exe ");
     ota_spiffs_update();
     mqtt_restart();
   }
   else if (exec_command == do_reboot) {
-    DEBUG.println(">> do_reboot_exe ");
+    Serial.println(">> do_reboot_exe ");
     do_reboot_exe();
   }
   else if (exec_command == do_format) {
-    DEBUG.println(">> do_format_exe:SPIFFS.format() ");
+    Serial.println(">> do_format_exe:SPIFFS.format() ");
     SPIFFS.format();
     do_reboot_exe();
   }
   else if (exec_command == do_erase_all) {
-    DEBUG.println(">> do_erase_all_exec");
+    Serial.println(">> do_erase_all_exec");
     config_reset();
     do_reboot_exe();
   }
@@ -216,11 +216,11 @@ void send_a_TempData(byte Sensor) {
 		}
     else
     {
-        DEBUG.print("NOT send a TempData : ");
-        DEBUG.print(i);
-        DEBUG.print(",  Temps = ");
-        DEBUG.print(celsius[i]);
-        DEBUG.println(" 'C");
+        Serial.print("NOT send a TempData : ");
+        Serial.print(i);
+        Serial.print(",  Temps = ");
+        Serial.print(celsius[i]);
+        Serial.println(" 'C");
     }
 		//old_celsius[i] = celsius[i];
 		old_rStatus[i] = rStatus[i];
@@ -233,8 +233,8 @@ void send_a_TempData(byte Sensor) {
 // -------------------------------------------------------------------
 void sendTempData() {
     byte i;
-    DEBUG.print("sendTempData numSensor : ");
-    DEBUG.println(numSensor);
+    Serial.print("sendTempData numSensor : ");
+    Serial.println(numSensor);
 
     for ( i = 0; i < numSensor ; i++) {
       send_a_TempData(i);
@@ -339,11 +339,11 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     memcpy(buffer, payload, len);
     buffer[length] = 0;
 
-    DEBUG.print(">> Topic: ");
-    DEBUG.println(topic_sub);
+    Serial.print(">> Topic: ");
+    Serial.println(topic_sub);
 
-    DEBUG.print(">> Payload: ");
-    DEBUG.println(buffer);
+    Serial.print(">> Payload: ");
+    Serial.println(buffer);
 
 	char * pch=0;
 	//printf ("Looking for the ':' chars in \"%s\"...\n",buffer);
@@ -369,15 +369,15 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
 		    accCountValue = tmp_accCountValue;
 		      //INTstateHistory = 1;
 	  }
-	DEBUG.print("accCountValue : ");
-	DEBUG.println(accCountValue);
+	Serial.print("accCountValue : ");
+	Serial.println(accCountValue);
 	pch=strchr(pch+1,':');
 
 
 	while (pch!=NULL)
 	{
 			L_Temp[i] = atof(pch+1);
-			DEBUG.println(L_Temp[i]);
+			Serial.println(L_Temp[i]);
 			//printf ("found at %d\n",pch-buffer+1);
 			pch=strchr(pch+1,':');
 			old_celsius[i] = 0;
@@ -399,21 +399,21 @@ void mqttCallback(char* topic_sub, byte* payload, unsigned int length)
     exec_save_command(exec);
 /*
 		if (exec_command == do_fw_update) {
-			DEBUG.println(">> do_ots_update_exe ");
+			Serial.println(">> do_ots_update_exe ");
       ota_http_update();
       mqtt_restart();
 		}
     else if (exec_command == do_web_update) {
-			DEBUG.println(">> do_web_update_exe ");
+			Serial.println(">> do_web_update_exe ");
 			io2LIFEhttpUpdate(updateServer, fwImage);
       mqtt_restart();
 		}
 		else if (exec_command == do_reboot) {
-			DEBUG.println(">> do_reboot_exe ");
+			Serial.println(">> do_reboot_exe ");
 			do_reboot_exe();
 		}
 		else if (exec_command == do_format) {
-			DEBUG.println(">> do_format_exe:SPIFFS.format() ");
+			Serial.println(">> do_format_exe:SPIFFS.format() ");
 			SPIFFS.format();
 			do_reboot_exe();
 		}
@@ -478,31 +478,31 @@ boolean mqtt_connect()
   macToTopic();
 
   mqttclient.setServer(mqtt_server.c_str(), 8883);
-  DEBUG.println("MQTT Connecting...");
+  Serial.println("MQTT Connecting...");
   //String strID = String(ESP.getChipId());
   //String strID = String(WiFi.macAddress());
   if (mqttclient.connect(strID.c_str(), mqtt_user.c_str(), mqtt_pass.c_str())) {  // Attempt to connect
-    DEBUG.println("MQTT connected");
+    Serial.println("MQTT connected");
 		// Publish
 		//if (mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...")) {
 		if (mqttclient.publish((char *)topic_pub.c_str(), (char *)topic_pub.c_str())) {
         mqttclient.publish((char *)topic_pub.c_str(), "hello MQTT connected...");
-	      DEBUG.println("publish ok");
+	      Serial.println("publish ok");
 		}
 		else {
-        DEBUG.println("publish failed");
+        Serial.println("publish failed");
 		}
 		// Subscribe
 		if (mqttclient.subscribe((char *)topic_sub.c_str())) {
-        DEBUG.println("Subscribe ok");
+        Serial.println("Subscribe ok");
 		}
 		else {
-        DEBUG.println("Subscribe failed");
+        Serial.println("Subscribe failed");
 		}
 		//mqttclient.publish(mqtt_topic.c_str(), "connected"); // Once connected, publish an announcement..
   } else {
-    DEBUG.print("MQTT failed: ");
-    DEBUG.println(mqttclient.state());
+    Serial.print("MQTT failed: ");
+    Serial.println(mqttclient.state());
     return(0);
   }
   return (1);
@@ -541,7 +541,7 @@ void mqtt_publish(String data)
     }
     // send data via mqtt
     //delay(100);
-    DEBUG.printf("%s = %s\r\n", topic.c_str(), mqtt_data.c_str());
+    Serial.printf("%s = %s\r\n", topic.c_str(), mqtt_data.c_str());
     mqttclient.publish(topic.c_str(), mqtt_data.c_str());
     topic = mqtt_topic + "/" + mqtt_feed_prefix;
     mqtt_data="";
@@ -554,7 +554,7 @@ void mqtt_publish(String data)
   mqttclient.publish(ram_topic.c_str(), free_ram.c_str());
 
   		if (mqttclient.publish((char *)topic_pub.c_str(), "hello world...")) {
-			DEBUG.println("publish ok");
+			Serial.println("publish ok");
 		}
 }
 
@@ -584,7 +584,7 @@ void mqtt_loop()
 void mqtt_restart()
 {
   if (mqttclient.connected()) {
-    DEBUG.println(">> mqttclient.disconnect... ");
+    Serial.println(">> mqttclient.disconnect... ");
     mqttclient.disconnect();
     if (!mqttclient.connected()) {
     reconnect();

@@ -27,6 +27,7 @@
 #include "wifi.h"
 #include "config.h"
 #include "output.h"
+#include "mqtt.h"
 
 #include <ESP8266WiFi.h>              // Connect to Wifi
 #include <ESP8266mDNS.h>              // Resolve URL for update server etc.
@@ -42,8 +43,9 @@ const char* softAP_password = "password";
 IPAddress apIP(192, 168, 4, 1);
 IPAddress netMsk(255, 255, 255, 0);
 
-// hostname for mDNS. Should work at least on windows. Try http://ESP-main.local
-const char *esp_hostname = "ESP-main";
+// hostname for mDNS. Should work at least on windows. Try http://yilee.local
+const char *esp_hostname = "yilee";
+
 
 // Wifi Network Strings
 String connected_network = "";
@@ -63,24 +65,24 @@ int wifi_mode = WIFI_MODE_STA;
 // Access point is used for wifi network selection
 // -------------------------------------------------------------------
 void startAP() {
-  DEBUG.println("Starting AP");
+  Serial.println("Starting AP");
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   delay(100);
 /*
-  DEBUG.print("WiFi Scan: ");
+  Serial.print("WiFi Scan: ");
   int n = WiFi.scanNetworks();
-  DEBUG.print(n);
-  DEBUG.println(" networks found");
+  Serial.print(n);
+  Serial.println(" networks found");
   st = "";
   rssi = "";
   for (int i = 0; i < n; ++i){
     st += "\""+WiFi.SSID(i)+"\"";
     rssi += "\""+String(WiFi.RSSI(i))+"\"";
 
-	DEBUG.print(WiFi.SSID(i));
-	DEBUG.println(" : ");
-	DEBUG.println(String(WiFi.RSSI(i)));
+	Serial.print(WiFi.SSID(i));
+	Serial.println(" : ");
+	Serial.println(String(WiFi.RSSI(i)));
 
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
@@ -99,10 +101,10 @@ void startAP() {
   IPAddress myIP = WiFi.softAPIP();
   char tmpStr[40];
   sprintf(tmpStr,"%d.%d.%d.%d",myIP[0],myIP[1],myIP[2],myIP[3]);
-  DEBUG.print("AP IP Address: ");
-  DEBUG.println(tmpStr);
+  Serial.print("AP IP Address: ");
+  Serial.println(tmpStr);
   ipaddress = tmpStr;
-  DEBUG.println("AP Server Started!");
+  Serial.println("AP Server Started!");
 }
 
 // -------------------------------------------------------------------
@@ -110,21 +112,22 @@ void startAP() {
 // -------------------------------------------------------------------
 void startClient() {
   LED_setup(0.8);
+
 /*
   delay(100);
-  DEBUG.print("WiFi Scan: ");
+  Serial.print("WiFi Scan: ");
   int n = WiFi.scanNetworks();
-  DEBUG.print(n);
-  DEBUG.println(" networks found");
+  Serial.print(n);
+  Serial.println(" networks found");
   st = "";
   rssi = "";
   for (int i = 0; i < n; ++i){
     st += "\""+WiFi.SSID(i)+"\"";
     rssi += "\""+String(WiFi.RSSI(i))+"\"";
 
-  DEBUG.print(WiFi.SSID(i));
-  DEBUG.println(" : ");
-  DEBUG.println(String(WiFi.RSSI(i)));
+  Serial.print(WiFi.SSID(i));
+  Serial.println(" : ");
+  Serial.println(String(WiFi.RSSI(i)));
 
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
@@ -132,10 +135,10 @@ void startClient() {
 */
   delay(100);
 
-  DEBUG.print("Connecting as client to ");
-  DEBUG.print(esid.c_str());
-  DEBUG.print(" epass:");
-  DEBUG.println(epass.c_str());
+  Serial.print("Connecting as client to ");
+  Serial.print(esid.c_str());
+  Serial.print(" epass:");
+  Serial.println(epass.c_str());
   WiFi.hostname("io2better");
   WiFi.begin(esid.c_str(), epass.c_str());
 
@@ -148,8 +151,8 @@ void startClient() {
     t++;
     // push and hold boot button after power on to skip stright to AP mode
     if (t >= 20 || digitalRead(0) == LOW){
-      DEBUG.println(" ");
-      DEBUG.println("Try Again...");
+      Serial.println(" ");
+      Serial.println("Try Again...");
       delay(2000);
       WiFi.disconnect();
       WiFi.begin(esid.c_str(), epass.c_str());
@@ -169,8 +172,8 @@ void startClient() {
       static const uint8_t D10  = 1;
       */
       if (attempt >= 3 || digitalRead(0) == LOW){
-		      DEBUG.println();
-		      DEBUG.println("Terminate Client mode ... start AP mode");
+		      Serial.println();
+		      Serial.println("Terminate Client mode ... start AP mode");
         WiFi.disconnect();
         startAP();
         // AP mode with SSID in EEPROM, connection will retry in 5 minutes
@@ -185,8 +188,8 @@ void startClient() {
     IPAddress myAddress = WiFi.localIP();
     char tmpStr[40];
     sprintf(tmpStr,"%d.%d.%d.%d",myAddress[0],myAddress[1],myAddress[2],myAddress[3]);
-    DEBUG.print("Connected, IP: ");
-    DEBUG.println(tmpStr);
+    Serial.print("Connected, IP: ");
+    Serial.println(tmpStr);
     // Copy the connected network and ipaddress to global strings for use in status request
     connected_network = esid;
     ipaddress = tmpStr;
@@ -216,6 +219,8 @@ void wifi_setup()
     if (MDNS.begin(esp_hostname)) {
       MDNS.addService("http", "tcp", 80);
     }
+    MDNS.addService("telnet", "tcp", 23);
+
   }
 
   Timer = millis();
@@ -233,7 +238,7 @@ void wifi_loop()
 		digitalWrite(0, HIGH);
 		delay(5000);
 		ESP.reset();
-		DEBUG.println("WIFI Mode = 1, resetting");
+		Serial.println("WIFI Mode = 1, resetting");
      }
   }
 }
@@ -257,10 +262,10 @@ void wifi_restart()
 
 void wifi_scan()
 {
-  DEBUG.println("WIFI Scan");
+  Serial.println("WIFI Scan");
   int n = WiFi.scanNetworks();
-  DEBUG.print(n);
-  DEBUG.println(" networks found");
+  Serial.print(n);
+  Serial.println(" networks found");
   st = "";
   rssi = "";
   for (int i = 0; i < n; ++i){

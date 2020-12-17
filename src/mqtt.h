@@ -35,6 +35,7 @@
 
 extern byte userTempset;
 extern byte initSending;
+extern String MAC;
 
 // -------------------------------------------------------------------
 // Perform the background MQTT operations. Must be called in the main

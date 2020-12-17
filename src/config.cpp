@@ -157,11 +157,11 @@ void SPIFFS2accHistory()
             //roomNo = "room_";
             //roomNo += i;
             //L_Temp[i-1] = atof(strcpy(config_Temp, json[roomNo]));
-            //DEBUG.println(L_Temp[i-1]);
+            //Serial.println(L_Temp[i-1]);
       			//if((json[accHistory]))
             {
       				accCountValue = atof(json[accHistory]);
-      				DEBUG.println(accCountValue);
+      				Serial.println(accCountValue);
       			}
           } //for
 
@@ -231,7 +231,7 @@ void SPIFFS2systemSTATUS()
           {
 		{
 			heating_system_status = atof(json[systemSTATUS]);
-			DEBUG.println(systemSTATUS);
+			Serial.println(systemSTATUS);
 		}
           }
         }
@@ -311,10 +311,10 @@ void SPIFFS_Timer_1()
             timerNo = "Timer_1_";
             timerNo += i;
             //L_Temp[i-1] = atof(strcpy(config_Temp, json[roomNo]));
-            //DEBUG.println(L_Temp[i-1]);
+            //Serial.println(L_Temp[i-1]);
       			if((json[timerNo])) {
       				Timer_1[i-1] = atof(json[timerNo]);
-      				DEBUG.println(Timer_1[i-1]);
+      				Serial.println(Timer_1[i-1]);
       			}
       			else {
       				break;
@@ -393,10 +393,10 @@ void SPIFFS2L_Temp()
             roomNo = "room_";
             roomNo += i;
             //L_Temp[i-1] = atof(strcpy(config_Temp, json[roomNo]));
-            //DEBUG.println(L_Temp[i-1]);
+            //Serial.println(L_Temp[i-1]);
       			if((json[roomNo])) {
       				L_Temp[i-1] = atof(json[roomNo]);
-      				DEBUG.println(L_Temp[i-1]);
+      				Serial.println(L_Temp[i-1]);
       			}
       			else {
       				break;
@@ -418,10 +418,10 @@ void SPIFFS2L_Temp()
 // Reset EEPROM, wipes all settings
 // -------------------------------------------------------------------
 void ResetEEPROM(){
-  //DEBUG.println("Erasing EEPROM");
+  //Serial.println("Erasing EEPROM");
   for (int i = 0; i < EEPROM_SIZE; ++i) {
     EEPROM.write(i, 0);
-    //DEBUG.print("#");
+    //Serial.print("#");
   }
   EEPROM.commit();
 }

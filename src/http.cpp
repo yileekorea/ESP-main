@@ -40,7 +40,7 @@ HTTPClient http;                      // Create class for HTTP TCP connections g
 String get_https(const char* fingerprint, const char* host, String url, int httpsPort){
   // Use WiFiClient class to create TCP connections
   if (!client.connect(host, httpsPort)) {
-    DEBUG.print(host + httpsPort); //debug
+    Serial.print(host + httpsPort); //debug
     return("Connection error");
   }
   if (client.verify(fingerprint, host)) {
@@ -56,7 +56,7 @@ String get_https(const char* fingerprint, const char* host, String url, int http
     // Handle message receive
     while(client.available()){
       String line = client.readStringUntil('\r');
-      DEBUG.println(line); //debug
+      Serial.println(line); //debug
       if (line.startsWith("HTTP/1.1 200 OK")) {
         return("ok");
       }
@@ -77,7 +77,7 @@ String get_http(const char* host, String url){
   int httpCode = http.GET();
   if((httpCode > 0) && (httpCode == HTTP_CODE_OK)){
     String payload = http.getString();
-    DEBUG.println(payload);
+    Serial.println(payload);
     http.end();
     return(payload);
   }

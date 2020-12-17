@@ -95,10 +95,10 @@ bool handleFileRead(String path){
     File file = SPIFFS.open(path, "r");
     size_t sent = server.streamFile(file, contentType);
     file.close();
-    DEBUG.println("handleFileRead-true");
+    Serial.println("handleFileRead-true");
     return true;
   }
-  DEBUG.println("handleFileRead-false");
+  Serial.println("handleFileRead-false");
   return false;
 }
 
@@ -153,42 +153,42 @@ void decodeURI(String& val)
 // -------------------------------------------------------------------
 void handleHome() {
   SPIFFS.begin(); // mount the fs
-  DEBUG.println("simple_home");
+  Serial.println("simple_home");
   File f = SPIFFS.open("/simple_home.html", "r");
 /*
   if (wifi_mode = WIFI_MODE_AP_ONLY) {
     f.close();
-    DEBUG.println("handleHome");
+    Serial.println("handleHome");
     File f = SPIFFS.open("/home.html", "r");
     //File f = SPIFFS.open("/simple_home.html", "r");
   }
 */
-  DEBUG.println("f.readString()");
+  Serial.println("f.readString()");
   if (f) {
     String s = f.readString();
     //String s = "f.readString()";
     server.send(200, "text/html", s);
-    DEBUG.println("server.send(200, text/html, s)");
+    Serial.println("server.send(200, text/html, s)");
     f.close();
-    //DEBUG.println(s);
+    //Serial.println(s);
   } else {
     server.send(200, "text/plain","/home.html not found, have you flashed the SPIFFS?");
   }
   delay(100);
 /*
-  DEBUG.print("WiFi Scan: ");
+  Serial.print("WiFi Scan: ");
   int n = WiFi.scanNetworks();
-  DEBUG.print(n);
-  DEBUG.println(" networks found");
+  Serial.print(n);
+  Serial.println(" networks found");
   st = "";
   rssi = "";
   for (int i = 0; i < n; ++i){
     st += "\""+WiFi.SSID(i)+"\"";
     rssi += "\""+String(WiFi.RSSI(i))+"\"";
 
-  DEBUG.print(WiFi.SSID(i));
-  DEBUG.println(" : ");
-  DEBUG.println(String(WiFi.RSSI(i)));
+  Serial.print(WiFi.SSID(i));
+  Serial.println(" : ");
+  Serial.println(String(WiFi.RSSI(i)));
 
     if (i<n-1) st += ",";
     if (i<n-1) rssi += ",";
@@ -212,8 +212,8 @@ void handleScan() {
   s += "\"networks\":["+st+"],";
   s += "\"rssi\":["+rssi+"],";
 
-  DEBUG.println(st);
-  //DEBUG.println(rssi);
+  Serial.println(st);
+  //Serial.println(rssi);
 
   s += "\"free_heap\":\""+String(ESP.getFreeHeap())+"\",";
   s += "\"version\":\""+currentfirmware+"\"";
@@ -228,7 +228,7 @@ void handleScan() {
 // -------------------------------------------------------------------
 void handleAPOff() {
   server.send(200, "text/html", "Turning AP Off");
-  DEBUG.println("Turning AP Off");
+  Serial.println("Turning AP Off");
   WiFi.disconnect();
   delay(1000);
   ESP.reset();
@@ -281,7 +281,7 @@ void handleSaveEmoncms()
   //      input so could overflow the buffer no matter the length
   char tmpStr[200];
   sprintf(tmpStr,"Saved: %s %s %s %s",emoncms_server.c_str(),emoncms_node.c_str(),emoncms_apikey.c_str(),emoncms_fingerprint.c_str());
-  DEBUG.println(tmpStr);
+  Serial.println(tmpStr);
   server.send(200, "text/html", tmpStr);
 }
 
@@ -300,7 +300,7 @@ void handleSaveMqtt() {
   // BUG: Potential buffer overflow issue the values mqtt_xxx come from user
   //      input so could overflow the buffer no matter the length
   sprintf(tmpStr,"Saved: %s %s %s %s %s",mqtt_server.c_str(),mqtt_topic.c_str(),mqtt_feed_prefix.c_str(),mqtt_user.c_str(),mqtt_pass.c_str());
-  DEBUG.println(tmpStr);
+  Serial.println(tmpStr);
   server.send(200, "text/html", tmpStr);
 
   // If connected disconnect MQTT to trigger re-connect with new details
@@ -330,7 +330,7 @@ void handleSaveCommand() {
   String qexec = server.arg("exec");
 
   decodeURI(qexec);
-  DEBUG.println("handleSaveCommand: "+ qexec);
+  Serial.println("handleSaveCommand: "+ qexec);
   server.send(200, "text/html", "executed");
 
   exec_save_command(qexec);
@@ -350,7 +350,7 @@ void handleLastValues() {
 // url: /status
 // -------------------------------------------------------------------
 void handleStatus() {
-DEBUG.println("handleStatus-in");
+Serial.println("handleStatus-in");
 
   String s = "{";
   if (wifi_mode==WIFI_MODE_STA) {
@@ -364,8 +364,8 @@ DEBUG.println("handleStatus-in");
   s += "\"networks\":["+st+"],";
   s += "\"rssi\":["+rssi+"],";
 
-  DEBUG.println(st);
-  //DEBUG.println(rssi);
+  Serial.println(st);
+  //Serial.println(rssi);
 
   s += "\"ssid\":\""+esid+"\",";
   //s += "\"pass\":\""+epass+"\",";
@@ -428,7 +428,7 @@ void handleRestart() {
 void handleInput(){
   input_string = server.arg("string");
   server.send(200, "text/html", input_string);
-  DEBUG.println(input_string);
+  Serial.println(input_string);
 }
 
 // -------------------------------------------------------------------
@@ -436,10 +436,10 @@ void handleInput(){
 // url: /firmware
 // -------------------------------------------------------------------
 String handleUpdateCheck() {
-  DEBUG.println("Running: " + currentfirmware);
+  Serial.println("Running: " + currentfirmware);
   // Get latest firmware version number
   String latestfirmware = ota_get_latest_version();
-  DEBUG.println("Latest: " + latestfirmware);
+  Serial.println("Latest: " + latestfirmware);
   // Update web interface with firmware version(s)
   String s = "{";
   s += "\"current\":\""+currentfirmware+"\",";
@@ -455,7 +455,7 @@ String handleUpdateCheck() {
 // url: /update
 // -------------------------------------------------------------------
 void handleUpdate() {
-  DEBUG.println("UPDATING...");
+  Serial.println("UPDATING...");
   delay(500);
 
   t_httpUpdate_return ret = ota_http_update();
@@ -464,7 +464,7 @@ void handleUpdate() {
   String str="error";
   switch(ret) {
     case HTTP_UPDATE_FAILED:
-      str = DEBUG.printf("Update failed error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
+      str = Serial.printf("Update failed error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
       break;
     case HTTP_UPDATE_NO_UPDATES:
       str = "No update, running latest firmware";
@@ -475,12 +475,12 @@ void handleUpdate() {
       break;
   }
   server.send(retCode, "text/plain", str);
-  DEBUG.println(str);
+  Serial.println(str);
 }
 
 void web_server_setup()
 {
-DEBUG.println("web_server_setup");
+Serial.println("web_server_setup");
   // Start server & server root html /
   server.on("/", [](){
     if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()) && wifi_mode == WIFI_MODE_STA)
@@ -495,7 +495,7 @@ DEBUG.println("web_server_setup");
   server.on("/status", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))
     return server.requestAuthentication();
-DEBUG.println("handleStatus-out1");
+Serial.println("handleStatus-out1");
   handleStatus();
   });
   server.on("/savenetwork", [](){
@@ -528,7 +528,7 @@ DEBUG.println("handleStatus-out1");
   server.on("/scan", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))
     return server.requestAuthentication();
-DEBUG.println("handleScan,,,");
+Serial.println("handleScan,,,");
   handleScan();
   });
 
@@ -552,7 +552,7 @@ DEBUG.println("handleScan,,,");
   server.on("/status", [](){
   if(www_username!="" && !server.authenticate(www_username.c_str(), www_password.c_str()))
     return server.requestAuthentication();
-DEBUG.println("handleStatus-out2");
+Serial.println("handleStatus-out2");
   handleStatus();
   });
   server.on("/lastvalues", [](){
@@ -579,12 +579,12 @@ DEBUG.println("handleStatus-out2");
 
 
   server.onNotFound([](){
-DEBUG.println(server.uri());
+Serial.println(server.uri());
   if(!handleFileRead(server.uri()))
     server.send(404, "text/plain", "NotFound");
   });
 
-DEBUG.println("server.begin()");
+Serial.println("server.begin()");
   server.begin();
 }
 

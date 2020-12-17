@@ -25,7 +25,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-//#include <time.h>
 #include "NTPClient.h"
 #include <WiFiUdp.h>
 
@@ -50,40 +49,6 @@ int heating_system_status = 1; //ON state is default
 unsigned long epochTime;
 String formattedTime="";
 
-time_t now = 0l;
-time_t lastTimestamp = 0l;
-//const unsigned long KST_time = 32400UL;
-const unsigned long KST_time = 28800UL;
-
-void showChipInfo()
-{
-  Serial.println("-- CHIPINFO --");
-
-  Serial.printf("Chip Id = %08X\n", ESP.getChipId() );
-  Serial.printf("CPU Frequency = %dMHz\n", ESP.getCpuFreqMHz() );
-
-  uint32_t realSize = ESP.getFlashChipRealSize();
-  uint32_t ideSize = ESP.getFlashChipSize();
-  FlashMode_t ideMode = ESP.getFlashChipMode();
-
-  Serial.printf("\nFlash real id:   %08X\n", ESP.getFlashChipId());
-  Serial.printf("Flash real size: %u\n", realSize);
-  Serial.printf("Flash ide  size: %u\n", ideSize);
-  Serial.printf("Flash chip speed: %u\n", ESP.getFlashChipSpeed());
-  Serial.printf("Flash ide mode:  %s\n", (ideMode == FM_QIO ?
-                                          "QIO" : ideMode == FM_QOUT ?
-                                          "QOUT" : ideMode == FM_DIO ?
-                                          "DIO" : ideMode == FM_DOUT ?
-                                          "DOUT" : "UNKNOWN"));
-  if (ideSize != realSize)
-  {
-    Serial.println("Flash Chip configuration wrong!\n");
-  }
-  else
-  {
-    Serial.println("Flash Chip configuration ok.\n");
-  }
-}
 
 // -------------------------------------------------------------------
 // SETUP
@@ -101,13 +66,13 @@ void setup() {
   Serial1.begin(115200);
 #endif
 
-  DEBUG.println();
-  DEBUG.print("io2Better ");
-  //DEBUG.println(ESP.getChipId());
-  DEBUG.println(WiFi.macAddress());
+  Serial.println();
+  Serial.print("io2Better ");
+  //Serial.println(ESP.getChipId());
+  Serial.println(WiFi.macAddress());
   BuildVersion();
-  DEBUG.println("Firmware: "+ currentfirmware);
-  DEBUG.println("buildVersion: "+ buildVersion);
+  Serial.println("Firmware: "+ currentfirmware);
+  Serial.println("buildVersion: "+ buildVersion);
 
   Serial.println( "Build date: " __DATE__ " " __TIME__  );
   Serial.print( "Framework full version: " );
@@ -120,7 +85,6 @@ void setup() {
   //config_save_wifi("iptime_multi_2.4G", "1234");
 
   delay(500);                // longer but it is stable ;-)
-
   // Initialise the WiFi
   wifi_setup();
 
@@ -131,7 +95,7 @@ void setup() {
   ota_setup();
 
   if (wifi_mode==WIFI_MODE_STA){
-    DEBUG.println("Start finger print verify : ");
+    Serial.println("Start finger print verify : ");
     verifyFingerprint();
 
     timeClient.begin();
@@ -169,11 +133,11 @@ void setup() {
   INTsetup();
 
   if (wifi_mode == WIFI_MODE_STA){
-      DEBUG.println("Loop start...");
+      Serial.println("Loop start...");
       LED_clear();
   }
   else{
-	   DEBUG.println("WIFI_MODE is not STA...");
+	   Serial.println("WIFI_MODE is not STA...");
      LED_setup(0.2);
   }
 
@@ -242,10 +206,10 @@ void loop()
     			  accHistory2SPIFFS();
     			}
 
-    			DEBUG.println();
-    			DEBUG.println("Firmware: "+ currentfirmware);
+    			Serial.println();
+    			Serial.println("Firmware: "+ currentfirmware);
     			if ((userTempset == 1)){
-            DEBUG.println("send all sensor temp data");
+            Serial.println("send all sensor temp data");
     				//readFromOneWire();
     				//sendTempData(); //send all sensor temp data
     				userTempset = 0;
@@ -253,7 +217,7 @@ void loop()
     			}
     			else {
     				//readOneWireAddr();
-            //DEBUG.println("send single sensor temp data");
+            //Serial.println("send single sensor temp data");
     				measureTemperature(s_loop);
     				readoutTemperature(s_loop);
     					if (initSending > 0) {
@@ -272,3 +236,33 @@ void loop()
     } //if((mqtt_server != 0) ...
   } //if (wifi_mode==WIFI_MODE_STA ...
 } // end loop
+
+void showChipInfo()
+{
+  Serial.println("-- CHIPINFO --");
+
+  Serial.printf("Chip Id = %08X\n", ESP.getChipId() );
+  Serial.printf("CPU Frequency = %dMHz\n", ESP.getCpuFreqMHz() );
+
+  uint32_t realSize = ESP.getFlashChipRealSize();
+  uint32_t ideSize = ESP.getFlashChipSize();
+  FlashMode_t ideMode = ESP.getFlashChipMode();
+
+  Serial.printf("\nFlash real id:   %08X\n", ESP.getFlashChipId());
+  Serial.printf("Flash real size: %u\n", realSize);
+  Serial.printf("Flash ide  size: %u\n", ideSize);
+  Serial.printf("Flash chip speed: %u\n", ESP.getFlashChipSpeed());
+  Serial.printf("Flash ide mode:  %s\n", (ideMode == FM_QIO ?
+                                          "QIO" : ideMode == FM_QOUT ?
+                                          "QOUT" : ideMode == FM_DIO ?
+                                          "DIO" : ideMode == FM_DOUT ?
+                                          "DOUT" : "UNKNOWN"));
+  if (ideSize != realSize)
+  {
+    Serial.println("Flash Chip configuration wrong!\n");
+  }
+  else
+  {
+    Serial.println("Flash Chip configuration ok.\n");
+  }
+}

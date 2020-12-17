@@ -52,7 +52,7 @@ void wireSetup() //I2C setup
 {
   byte i;
   mcp.begin();      // use default address 0
-  DEBUG.println("Start I2C wireSetup: ");
+  Serial.println("Start I2C wireSetup: ");
 
   for ( i = 0; i < numberofOUT_gpio ; i++) {
     mcp.pinMode(i, OUTPUT);
@@ -65,7 +65,7 @@ void wireSetup() //I2C setup
     delay(100);
   }
 
-  DEBUG.println("End I2C wireSetup: ");
+  Serial.println("End I2C wireSetup: ");
 
   for ( i = 8; i < (numberofIN_gpio + 8) ; i++) {
     mcp.pinMode(i, INPUT);
@@ -84,10 +84,10 @@ void valve_relayControl() {
 		for ( i = 0; i < (numSensor-1) ; i++) {
 		  //rStatus[i] == 0 ? mcp.digitalWrite(i,HIGH) : mcp.digitalWrite(i,LOW);
 
-      //DEBUG.print("valve_relayControl rStatus-");
-		  //DEBUG.print(i);
-		  //DEBUG.print(" : ");
-		  //DEBUG.println(rStatus[i]);
+      //Serial.print("valve_relayControl rStatus-");
+		  //Serial.print(i);
+		  //Serial.print(" : ");
+		  //Serial.println(rStatus[i]);
 
 		  //rStatus[i] > 0 ? mcp.gpioDigitalWrite(i+8,LOW) : mcp.gpioDigitalWrite(i+8,HIGH);
 		  if (rStatus[i] > 0){
@@ -95,13 +95,13 @@ void valve_relayControl() {
       //mcp.gpioDigitalWrite(i+8,LOW);
   		delay(10);
 			mcp.gpioDigitalWrite(i+8,LOW);
-			//DEBUG.println("mcp.gpioDigitalWrite(i+8,LOW)");
+			//Serial.println("mcp.gpioDigitalWrite(i+8,LOW)");
 		  } else {
 			//mcp.gpioPinMode(OUTPUT);
       //mcp.gpioDigitalWrite(i+8,HIGH);
   		delay(10);
 			mcp.gpioDigitalWrite(i+8,HIGH);
-			//DEBUG.println("mcp.gpioDigitalWrite(i+8,HIGH)");
+			//Serial.println("mcp.gpioDigitalWrite(i+8,HIGH)");
 		  }
 		}
     //to control RELAY for temp_input
@@ -132,9 +132,9 @@ void valve_relayControl() {
         mcp.digitalWrite(i,HIGH); //if current celsius Greater than setting --> off
         Timer_1[i] = millis();
         isOFF[i] = 1;
-        DEBUG.print(" isOFF: ");
-        DEBUG.print(i);
-        DEBUG.println(isOFF[i]);
+        Serial.print(" isOFF: ");
+        Serial.print(i);
+        Serial.println(isOFF[i]);
       }
 		}
 
@@ -142,29 +142,29 @@ void valve_relayControl() {
 
     //if((L_Temp[i] > celsius[i]) || ((millis() - Timer_1[i]) > 60000UL)) {
     if(L_Temp[i] > celsius[i]) {
-      DEBUG.println();
-      DEBUG.print("L_Temp-");
-      DEBUG.print(i);
-      DEBUG.print(" : ");
-      DEBUG.print(L_Temp[i]);
-      DEBUG.print("    celsius-");
-      DEBUG.print(i);
-      DEBUG.print(" : ");
-      DEBUG.println(celsius[i]);
-      DEBUG.println();
+      Serial.println();
+      Serial.print("L_Temp-");
+      Serial.print(i);
+      Serial.print(" : ");
+      Serial.print(L_Temp[i]);
+      Serial.print("    celsius-");
+      Serial.print(i);
+      Serial.print(" : ");
+      Serial.println(celsius[i]);
+      Serial.println();
 
       mcp.digitalWrite(i,LOW);
       isOFF[i] = 0;
 		}
     else if((millis() - Timer_1[i]) > 180000UL) { //3min
-      DEBUG.println();
-      DEBUG.print(i);
-      DEBUG.print(" : millis-");
-      DEBUG.print(millis());
-      DEBUG.print("  -   vControlTimer-");
-      DEBUG.print(Timer_1[i]);
-      DEBUG.print("  =  ");
-      DEBUG.println((millis() - Timer_1[i]));
+      Serial.println();
+      Serial.print(i);
+      Serial.print(" : millis-");
+      Serial.print(millis());
+      Serial.print("  -   vControlTimer-");
+      Serial.print(Timer_1[i]);
+      Serial.print("  =  ");
+      Serial.println((millis() - Timer_1[i]));
 
       Timer_1[i] = millis();
       Timer_2[i] = millis();
@@ -181,7 +181,7 @@ void valve_relayControl() {
 void wireLoop()
 {
   int state = mcp.digitalRead(0);  // get the current state of GPIO1 pin
-      DEBUG.println(" digitalRead(0): " + state);
+      Serial.println(" digitalRead(0): " + state);
 
   mcp.digitalWrite(0, !state);     // set pin to the opposite state
   mcp.digitalWrite(7, state);     // set pin to the opposite state
