@@ -147,16 +147,20 @@ void setON_OFFstatus(byte Sensor){
             isOFF[nSensor] = 0;
 
             if(nSensor == 3){
-              rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve
-              isOFF[nSensor-2] = 0;
+              if(L_Temp[nSensor-2] > celsius[nSensor-2]){
+                rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve
+                isOFF[nSensor-2] = 0;
+              }
 
               if(L_Temp[nSensor-1] > celsius[nSensor-1]){
                 rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
                 isOFF[nSensor-1] = 0;
               }
 
-              rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
-              isOFF[nSensor+1] = 0;
+              if(L_Temp[nSensor+1] > celsius[nSensor+1]){
+                rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
+                isOFF[nSensor+1] = 0;
+              }
             }
               Serial.print("going ON Formatted Time: ");
               Serial.println(formattedTime);
