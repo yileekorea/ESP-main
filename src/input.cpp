@@ -38,9 +38,7 @@
 String testMacaddress = "5C:CF:7F:23:F1:36";	//"5C:CF:7F:23:F1:36";
 String yileeMacaddress = "2C:3A:E8:08:E3:3D";	//"2C:3A:E8:08:E3:3D";
 
-time_t now2 = 0l;
-time_t lastTimestamp2 = 0l;
-const unsigned long KST_time2 = 28800UL;
+byte Master_room = 3; //livingroom2
 
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
@@ -92,11 +90,7 @@ void INTsetup() {
  */
 void setON_OFFstatus(byte Sensor){
    byte nSensor = Sensor;
-   byte i;
-   byte sum_isOFF;
-   float Low_temp;
-   int Low_seq;
-   int Low_seq_2;
+
 
    if(heating_system_status)
    {
@@ -111,8 +105,8 @@ void setON_OFFstatus(byte Sensor){
        if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))) {
           rStatus[nSensor] = 0;       //OFF valve
           isOFF[nSensor] = 1;
-
-          if(nSensor == 3){
+/*
+          if(nSensor == Master_room){
             rStatus[nSensor-2] = 0;       //OFF valve
             isOFF[nSensor-2] = 1;
             Timer_1[nSensor-2] = epochTime;   //point of turned OFF
@@ -125,7 +119,7 @@ void setON_OFFstatus(byte Sensor){
             isOFF[nSensor+1] = 1;
             Timer_1[nSensor+1] = epochTime;   //point of turned OFF
           }
-
+*/
           Serial.print("going OFF Formatted Time: ");
           Serial.println(formattedTime);
 
@@ -146,7 +140,7 @@ void setON_OFFstatus(byte Sensor){
             rStatus[nSensor] = L_Temp[nSensor];	//ON valve
             isOFF[nSensor] = 0;
 
-            if(nSensor == 3){
+            if(nSensor == Master_room){
               if(L_Temp[nSensor-2] > celsius[nSensor-2]){
                 rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve
                 isOFF[nSensor-2] = 0;
