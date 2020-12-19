@@ -224,10 +224,7 @@ void send_a_TempData(byte Sensor) {
         Serial.print(",  Temps = ");
         Serial.print(celsius[i]);
         Serial.println(" 'C");
-
-//        char pChrBuffer[5];
-//  			char pChrBuffer_acc[8];
-
+/*
   			String payload = "{\"tbl_name\":";
   			payload += "\"";
   			payload += MAC;
@@ -243,7 +240,7 @@ void send_a_TempData(byte Sensor) {
   			payload += "}";
 
   			sendmqttMsg((char *)topic_pub.c_str(), (char *)payload.c_str());
-
+*/
     }
 		//old_celsius[i] = celsius[i];
 		old_rStatus[i] = rStatus[i];
