@@ -105,6 +105,7 @@ void setON_OFFstatus(byte Sensor){
        if(((L_Temp[nSensor] <= celsius[nSensor]) && (isOFF[nSensor] == 0))) {
           rStatus[nSensor] = 0;       //OFF valve
           isOFF[nSensor] = 1;
+          Timer_1[nSensor] = epochTime;   //point of turned OFF
 /*
           if(nSensor == Master_room){
             rStatus[nSensor-2] = 0;       //OFF valve
@@ -125,8 +126,6 @@ void setON_OFFstatus(byte Sensor){
 
           Serial.print("going OFF Epoch Time: ");
           Serial.println(epochTime);
-
-          Timer_1[nSensor] = epochTime;   //point of turned OFF
         }
 
         Serial.print("epochTime - Timer_1[nSensor]: ");
