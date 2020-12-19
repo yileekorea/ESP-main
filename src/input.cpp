@@ -38,7 +38,8 @@
 String testMacaddress = "5C:CF:7F:23:F1:36";	//"5C:CF:7F:23:F1:36";
 String yileeMacaddress = "2C:3A:E8:08:E3:3D";	//"2C:3A:E8:08:E3:3D";
 
-byte Master_room = 3; //livingroom2
+byte Master_room = 2; //livingroom1
+//byte Master_room = 3; //livingroom2
 
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
@@ -110,15 +111,15 @@ void setON_OFFstatus(byte Sensor){
           if(nSensor == Master_room){
             //rStatus[nSensor-2] = 0;       //OFF valve
             //isOFF[nSensor-2] = 1;
-            Timer_1[nSensor-2] = epochTime;   //point of turned OFF
+            Timer_1[nSensor-1] = epochTime;   //point of turned OFF
 
             //rStatus[nSensor-1] = 0;       //OFF valve
             //isOFF[nSensor-1] = 1;
-            Timer_1[nSensor-1] = epochTime;   //point of turned OFF
+            Timer_1[nSensor+1] = epochTime;   //point of turned OFF
 
             //rStatus[nSensor+1] = 0;       //OFF valve
             //isOFF[nSensor+1] = 1;
-            Timer_1[nSensor+1] = epochTime;   //point of turned OFF
+            Timer_1[nSensor+2] = epochTime;   //point of turned OFF
           }
 
           Serial.print("going OFF Formatted Time: ");
@@ -140,11 +141,6 @@ void setON_OFFstatus(byte Sensor){
             isOFF[nSensor] = 0;
 
             if(nSensor == Master_room){
-              if(L_Temp[nSensor-2] > celsius[nSensor-2]){
-                rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve
-                isOFF[nSensor-2] = 0;
-              }
-
               if(L_Temp[nSensor-1] > celsius[nSensor-1]){
                 rStatus[nSensor-1] = L_Temp[nSensor-1];	//ON valve
                 isOFF[nSensor-1] = 0;
@@ -153,6 +149,11 @@ void setON_OFFstatus(byte Sensor){
               if(L_Temp[nSensor+1] > celsius[nSensor+1]){
                 rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve
                 isOFF[nSensor+1] = 0;
+              }
+
+              if(L_Temp[nSensor+2] > celsius[nSensor+2]){
+                rStatus[nSensor+2] = L_Temp[nSensor+2];	//ON valve
+                isOFF[nSensor+2] = 0;
               }
             }
               Serial.print("going ON Formatted Time: ");
