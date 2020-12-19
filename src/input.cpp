@@ -126,6 +126,11 @@ void setON_OFFstatus(byte Sensor){
             isOFF[nSensor] = 0;
 
             if(nSensor == Master_room){
+              if(L_Temp[nSensor-3] > celsius[nSensor-3]){
+                rStatus[nSensor-3] = L_Temp[nSensor-3];	//ON valve - Father room
+                isOFF[nSensor-3] = 0;
+              }
+
               if(L_Temp[nSensor-2] > celsius[nSensor-2]){
                 rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve - YS room
                 isOFF[nSensor-2] = 0;
