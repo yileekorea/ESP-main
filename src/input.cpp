@@ -106,21 +106,21 @@ void setON_OFFstatus(byte Sensor){
           rStatus[nSensor] = 0;       //OFF valve
           isOFF[nSensor] = 1;
           Timer_1[nSensor] = epochTime;   //point of turned OFF
-/*
+
           if(nSensor == Master_room){
-            rStatus[nSensor-2] = 0;       //OFF valve
-            isOFF[nSensor-2] = 1;
+            //rStatus[nSensor-2] = 0;       //OFF valve
+            //isOFF[nSensor-2] = 1;
             Timer_1[nSensor-2] = epochTime;   //point of turned OFF
 
-            rStatus[nSensor-1] = 0;       //OFF valve
-            isOFF[nSensor-1] = 1;
+            //rStatus[nSensor-1] = 0;       //OFF valve
+            //isOFF[nSensor-1] = 1;
             Timer_1[nSensor-1] = epochTime;   //point of turned OFF
 
-            rStatus[nSensor+1] = 0;       //OFF valve
-            isOFF[nSensor+1] = 1;
+            //rStatus[nSensor+1] = 0;       //OFF valve
+            //isOFF[nSensor+1] = 1;
             Timer_1[nSensor+1] = epochTime;   //point of turned OFF
           }
-*/
+
           Serial.print("going OFF Formatted Time: ");
           Serial.println(formattedTime);
 
