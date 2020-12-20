@@ -36,7 +36,7 @@
 
 
 String testMacaddress = "5C:CF:7F:23:F1:36";	//"5C:CF:7F:23:F1:36";
-String yileeMacaddress = "2C:3A:E8:08:E3:3D";	//"2C:3A:E8:08:E3:3D";
+String yileeMacaddress = "2C:3A:E8:08:E3:ff";	//"2C:3A:E8:08:E3:3D";
 
 byte Master_room = 3; //livingroom2
 
