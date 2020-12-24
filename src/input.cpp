@@ -53,7 +53,7 @@ byte address[9][8]; // sensor's max 9, each address is 8
 unsigned long Timer_1[] = {0,0,0,0,0,0,0,0,0};
 unsigned long Timer_2[] = {0,0,0,0,0,0,0,0,0};
 byte isOFF[] = {0,0,0,0,0,0,0,0,0};
-int autoOff_OnTimer = 30; //30min
+int autoOff_OnTimer = 20; //20min
 
 String input_string="";
 String last_datastr="";
@@ -175,7 +175,6 @@ void setON_OFFstatus(byte Sensor){
        Serial.println((autoOff_OnTimer * 60UL));
 
        //going ON condition,, based on autoOff_OnTimer
-       //if((L_Temp[nSensor] > celsius[nSensor]) && ((now2 - Timer_1[nSensor]) > interOFF_Timer_30) && (isOFF[nSensor] == 1)) {
        //if((L_Temp[nSensor] > celsius[nSensor]) && ((millis() - Timer_1[nSensor]) > (autoOff_OnTimer * a_min))) {
        if((L_Temp[nSensor] > celsius[nSensor]) && ((epochTime - Timer_1[nSensor]) > (autoOff_OnTimer * 60UL))) {
            rStatus[nSensor] = L_Temp[nSensor];	//ON valve
