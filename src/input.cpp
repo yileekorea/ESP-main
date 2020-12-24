@@ -128,23 +128,23 @@ void setON_OFFstatus(byte Sensor){
             isOFF[nSensor] = 0;
             Timer_2[nSensor] = epochTime;   //point of turned ON
 
-            if(nSensor == Master_room){
-              if(L_Temp[nSensor-3] > celsius[nSensor-3]){
-                rStatus[nSensor-3] = L_Temp[nSensor-3];	//ON valve - Father room
-                isOFF[nSensor-3] = 0;
-              }
+       }
 
-              if(L_Temp[nSensor-2] > celsius[nSensor-2]){
-                rStatus[nSensor-2] = L_Temp[nSensor-2];	//ON valve - YS room
-                isOFF[nSensor-2] = 0;
-              }
+       if(isOFF[Master_room] == 0){
+           if(L_Temp[Master_room-3] > celsius[Master_room-3]){
+             rStatus[Master_room-3] = L_Temp[Master_room-3];	//ON valve - Father room
+             isOFF[Master_room-3] = 0;
+           }
 
-              if(L_Temp[nSensor+1] > celsius[nSensor+1]){
-                rStatus[nSensor+1] = L_Temp[nSensor+1];	//ON valve - YJ room
-                isOFF[nSensor+1] = 0;
-              }
+           if(L_Temp[Master_room-2] > celsius[Master_room-2]){
+             rStatus[Master_room-2] = L_Temp[Master_room-2];	//ON valve - YS room
+             isOFF[Master_room-2] = 0;
+           }
 
-            }
+           if(L_Temp[Master_room+1] > celsius[Master_room+1]){
+             rStatus[Master_room+1] = L_Temp[Master_room+1];	//ON valve - YJ room
+             isOFF[Master_room+1] = 0;
+           }
        }
 
      }
