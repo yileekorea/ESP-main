@@ -38,7 +38,11 @@
 String testMacaddress = "5C:CF:7F:23:F1:36";	//"5C:CF:7F:23:F1:36";
 String yileeMacaddress = "2C:3A:E8:08:E3:3D";	//"2C:3A:E8:08:E3:3D";
 
+byte Father_room = 0; //Fatherroom
+byte Mother_room = 1; //Motherroom
 byte Master_room = 3; //livingroom2
+byte YJ_room = 4; //Yejinroom2
+byte HJ_room = 5; //Hyunjunroom
 
 OneWire  ds(2);  // on pin 2 (a 4.7K resistor is necessary)
 
@@ -129,24 +133,24 @@ void setON_OFFstatus(byte Sensor){
             Timer_2[nSensor] = epochTime;   //point of turned ON
 
        }
-
+/*
        if(isOFF[Master_room] == 0){
-           if(L_Temp[Master_room-3] > celsius[Master_room-3]){
-             rStatus[Master_room-3] = L_Temp[Master_room-3];	//ON valve - Father room
-             isOFF[Master_room-3] = 0;
+           if(L_Temp[Father_room] > celsius[Father_room]){
+             rStatus[Father_room] = L_Temp[Father_room];	//ON valve - Father room
+             isOFF[Father_room] = 0;
            }
 
-           if(L_Temp[Master_room-2] > celsius[Master_room-2]){
-             rStatus[Master_room-2] = L_Temp[Master_room-2];	//ON valve - YS room
-             isOFF[Master_room-2] = 0;
+           if(L_Temp[Mother_room] > celsius[Mother_room]){
+             rStatus[Mother_room] = L_Temp[Mother_room];	//ON valve - YS room
+             isOFF[Mother_room] = 0;
            }
 
-           if(L_Temp[Master_room+1] > celsius[Master_room+1]){
-             rStatus[Master_room+1] = L_Temp[Master_room+1];	//ON valve - YJ room
-             isOFF[Master_room+1] = 0;
+           if(L_Temp[YJ_room] > celsius[YJ_room]){
+             rStatus[YJ_room] = L_Temp[YJ_room];	//ON valve - YJ room
+             isOFF[YJ_room] = 0;
            }
        }
-
+*/
      }
      else{
       //really going OFF condition...
