@@ -50,7 +50,7 @@ deploy:
   #- ".pioenvs/io2life_deploy/firmware.bin"
   #- ".pioenvs/io2life_deploy/spiffs.bin"
   - ".pio/build/io2life_deploy/firmware.bin"
-  - ".pio/build/io2life_deploy/spiffs.bin"
+  #- ".pio/build/io2life_deploy/spiffs.bin"
   on:
     repo: yileekorea/ESP-main
     all_branches: true
