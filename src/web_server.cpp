@@ -154,15 +154,15 @@ void decodeURI(String& val)
 void handleHome() {
   SPIFFS.begin(); // mount the fs
   Serial.println("simple_home");
-  File f = SPIFFS.open("/simple_home.html", "r");
-/*
-  if (wifi_mode = WIFI_MODE_AP_ONLY) {
-    f.close();
+//  File f = SPIFFS.open("/simple_home.html", "r");
+
+//  if (wifi_mode = WIFI_MODE_AP_ONLY) {
+//    f.close();
     Serial.println("handleHome");
     File f = SPIFFS.open("/home.html", "r");
     //File f = SPIFFS.open("/simple_home.html", "r");
-  }
-*/
+//  }
+
   Serial.println("f.readString()");
   if (f) {
     String s = f.readString();
